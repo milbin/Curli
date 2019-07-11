@@ -2,6 +2,7 @@ package com.fitness.curli;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 public class GroupsView extends AppCompatActivity {
     ArrayList<String> muscleGroups = new ArrayList<>(Arrays.asList("arms", "legs", "core"));
+    LinkedHashMap<String, ArrayList<String>> groupToMuscle = new LinkedHashMap<>();
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -32,6 +35,9 @@ public class GroupsView extends AppCompatActivity {
         context = getApplicationContext();
 
         linearLayout = findViewById(R.id.GroupsViewLinearLayout);
+        groupToMuscle.put("arms", new ArrayList<String>(Arrays.asList("biceps", "triceps")));
+        groupToMuscle.put("legs", new ArrayList<String>(Arrays.asList("quads", "hams")));
+        groupToMuscle.put("core", new ArrayList<String>(Arrays.asList("abs", "lats")));
 
         getGroupsTask = new getGroups().execute();
     }
@@ -61,10 +67,28 @@ public class GroupsView extends AppCompatActivity {
                 TextView title = card.findViewById(R.id.title);
                 title.setText(muscleGroups.get(i));
 
+                System.out.println("TITLE ------> " + title);
+
+                card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView rl = v.findViewById(R.id.title);
+                        String group = rl.getText().toString();
+                        ArrayList<String> muscles = groupToMuscle.get(group);
+                        System.out.println("VIEW ------> " + v);
+                        System.out.println("THIS ------> " + group);
+                        Intent intent = new Intent(GroupsView.this, MuscleView.class);
+                        intent.putExtra("muscles", muscles);
+                        startActivity(intent);
+                    }
+                });
+
                 linearLayout.addView(card);
             }
 
             dialog.dismiss();
         }
     }
+
+
 }
