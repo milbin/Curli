@@ -23,7 +23,6 @@ public class GroupsView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
-    private AsyncTask getGroupsTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -39,55 +38,33 @@ public class GroupsView extends AppCompatActivity {
         groupToMuscle.put("legs", new ArrayList<String>(Arrays.asList("quads", "hams")));
         groupToMuscle.put("core", new ArrayList<String>(Arrays.asList("abs", "lats")));
 
-        getGroupsTask = new getGroups().execute();
+        getGroups();
     }
 
-    private class getGroups extends AsyncTask<String, Integer, JSONObject>{
-        @Override
-        protected void onPreExecute(){
+    private void getGroups(){
+        int length = muscleGroups.size();
 
+        for (int i = 0; i < length; i++){
+            View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            TextView title = card.findViewById(R.id.title);
+            title.setText(muscleGroups.get(i));
+
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView rl = v.findViewById(R.id.title);
+                    String group = rl.getText().toString();
+                    ArrayList<String> muscles = groupToMuscle.get(group);
+                    Intent intent = new Intent(GroupsView.this, MuscleView.class);
+                    intent.putExtra("muscles", muscles);
+                    startActivity(intent);
+                }
+            });
+
+            linearLayout.addView(card);
         }
 
-        @Override
-        protected JSONObject doInBackground(String... strings) {
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            int length = muscleGroups.size();
-
-            for (int i = 0; i < length; i++){
-                View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
-                TextView title = card.findViewById(R.id.title);
-                title.setText(muscleGroups.get(i));
-
-                System.out.println("TITLE ------> " + title);
-
-                card.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TextView rl = v.findViewById(R.id.title);
-                        String group = rl.getText().toString();
-                        ArrayList<String> muscles = groupToMuscle.get(group);
-                        System.out.println("VIEW ------> " + v);
-                        System.out.println("THIS ------> " + group);
-                        Intent intent = new Intent(GroupsView.this, MuscleView.class);
-                        intent.putExtra("muscles", muscles);
-                        startActivity(intent);
-                    }
-                });
-
-                linearLayout.addView(card);
-            }
-
-            dialog.dismiss();
-        }
+        dialog.dismiss();
     }
 
 
