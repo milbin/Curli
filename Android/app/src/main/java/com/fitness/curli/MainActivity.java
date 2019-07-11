@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.jar.Attributes;
+
 public class MainActivity extends AppCompatActivity {
+    Handler helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
-
+        Handler helper = new Handler(this);
 
     }
 
