@@ -1,0 +1,11 @@
+<resources>
+    <!-- Margins -->
+    <dimen name="test">16dp</dimen>
+
+    <!-- padding -->
+    <dimen name="workout_card_top_padding">5dp</dimen>
+
+    <!-- Heights -->
+    <dimen name="min_height_of_workout_card">100dp</dimen>
+
+</resources>
