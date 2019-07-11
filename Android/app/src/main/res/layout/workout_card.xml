@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+    <RelativeLayout
+
+        android:id="@+id/relativeLayout_marks_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cardview_background"
+        android:minHeight="@dimen/min_height_of_workout_card"
+        android:layout_gravity="top"
+        android:elevation="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="4dp"
+
+        >
+        <TextView
+            android:id="@+id/exercise_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:paddingTop="@dimen/workout_card_top_padding"
+            android:text="Bicep Curl"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="25sp"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_three_dots_24dp"
+            android:background="@null"
+            android:padding="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            />
+        <RelativeLayout
+            android:id="@+id/weight_relative_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp">
+            <TextView
+                android:id="@+id/exercise_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_weight"
+                android:layout_marginTop="-9dp"
+                android:layout_centerHorizontal="true"
+                android:hint="115lbs" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/weight_relative_layout"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp">
+            <TextView
+                android:id="@+id/exercise_reps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reps"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"
+                />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_reps"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-9dp"
+                android:hint=" 8 " />
+        </RelativeLayout>
+
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/exercise_name"
+            android:layout_centerHorizontal="true"
+            android:text="Done"
+            android:textColor="@android:color/white"
+            android:background="@drawable/done_button_background"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="25dp"
+            >
+            <TextView
+                android:id="@+id/exercise_sets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="     Sets     "
+                android:textSize="18sp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_sets"
+                android:src="@drawable/ic_check_circle_black_24dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_sets"
+                android:src="@drawable/ic_check_circle_black_24dp"
+                android:layout_marginStart="30dp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_sets"
+                android:src="@drawable/ic_check_circle_grey_24dp"
+                android:layout_marginStart="60dp"
+                />
+
+
+        </RelativeLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
