@@ -25,10 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:paddingTop="@dimen/workout_card_top_padding"
             android:text="Bicep Curl"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/darker_gray"
             android:textSize="25sp"
             />
 
@@ -42,107 +42,121 @@
             android:focusable="true"
             android:layout_alignParentEnd="true"
             />
-
-        <RelativeLayout
-            android:id="@+id/exercise_reps_relative_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp">
-            <TextView
-                android:id="@+id/exercise_reps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reps"
-                android:textSize="18sp"
-                android:layout_centerHorizontal="true"
-                />
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/exercise_reps"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="-9dp"
-                android:hint=" 8 " />
-        </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/weight_relative_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="35dp">
             <TextView
                 android:id="@+id/exercise_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LBS"
+                android:text="Weight"
                 android:layout_centerHorizontal="true"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/exercise_weight"
-                android:layout_marginTop="-9dp"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
                 android:layout_centerHorizontal="true"
-                android:hint="115" />
+                android:text="115lbs" />
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="35dp">
+            <TextView
+                android:id="@+id/exercise_reps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reps"
+                android:textSize="22sp"
+                android:layout_centerHorizontal="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/exercise_reps"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                android:layout_marginTop="5dp"
+                android:text="8"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/done_button"
+            android:layout_marginTop="10dp"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/exercise_name"
+            android:layout_centerHorizontal="true"
+            android:text="Done"
+            android:textColor="@android:color/white"
+            android:background="@drawable/done_button_background"
+            />
 
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/exercise_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/weight_relative_layout"
+            android:layout_alignParentStart="true"
             >
             <TextView
                 android:id="@+id/exercise_sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sets:"
-                android:layout_centerHorizontal="true"
-                android:textSize="20sp"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentStart="true"
+                android:textSize="18sp"
                 />
             <LinearLayout
                 android:id="@+id/checkbox_linear_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/exercise_sets"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/exercise_sets"
                 >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/exercise_sets"
+                    android:src="@drawable/ic_check_circle_grey_24dp"
+                    />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/exercise_sets"
                     android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="7dp"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/exercise_sets"
                     android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="7dp"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/exercise_sets"
                     android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="7dp"
                     />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
-                    />
+
             </LinearLayout>
 
 

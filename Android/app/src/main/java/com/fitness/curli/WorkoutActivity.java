@@ -1,15 +1,14 @@
 package com.fitness.curli;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,9 +25,8 @@ public class WorkoutActivity extends AppCompatActivity {
         linearLayout.addView(relativeLayout);
         TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
         exerciseName.setText("Lat Pulldown (Cable)");
-        relativeLayout.setOnClickListener(new onExerciseClick());
-
-
+        Button doneButton = relativeLayout.findViewById(R.id.done_button);
+        doneButton.setOnClickListener(new onExerciseClick());
 
         View relativeLayout1 = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
         linearLayout.addView(relativeLayout1);
@@ -42,7 +40,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            LinearLayout linearLayout = v.findViewById(R.id.checkbox_linear_layout);
+            LinearLayout linearLayout = ((View)v.getParent()).findViewById(R.id.checkbox_linear_layout);
             for (int i = 0; i < linearLayout.getChildCount(); i++) {
                 ImageView checkbox = (ImageView) linearLayout.getChildAt(i);
                 System.out.println(checkbox.getDrawable());
