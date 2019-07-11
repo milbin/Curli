@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -20,6 +21,7 @@ public class ExerciseView extends AppCompatActivity {
     Context context;
     ArrayList<String> exercises;
     LinearLayout linearLayout;
+    Integer defaultHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -44,6 +46,28 @@ public class ExerciseView extends AppCompatActivity {
             View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
             TextView title = card.findViewById(R.id.title);
             title.setText(exercises.get(i));
+            RelativeLayout rel = card.findViewById(R.id.group);
+            defaultHeight = rel.getHeight();
+            defaultHeight = 394;
+            System.out.println(rel);
+
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RelativeLayout rlNested = v.findViewById(R.id.group);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rlNested.getLayoutParams();
+                    int expandedHeight = defaultHeight*2;
+
+                    if (rlNested.getHeight() == defaultHeight){
+                        params.height = expandedHeight;
+                        rlNested.setLayoutParams(params);
+                    }
+                    else if (rlNested.getHeight() > defaultHeight){
+                        params.height = defaultHeight;
+                        rlNested.setLayoutParams(params);
+                    }
+                }
+            });
 
             linearLayout.addView(card);
         }

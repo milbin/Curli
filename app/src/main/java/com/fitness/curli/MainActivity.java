@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.text);
         text.setOnClickListener(new Click());
+
     }
 
     private class Click implements View.OnClickListener{
