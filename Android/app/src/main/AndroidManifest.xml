@@ -12,9 +12,26 @@
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- TODO change this after to a website url we actually own -->
+                <data android:host="curli.com"/>
+                <data android:host="www.curli.com"/>
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".WorkoutActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fitness.curli.MainActivity" />
+
+
         </activity>
     </application>
 
