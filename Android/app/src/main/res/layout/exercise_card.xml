@@ -25,10 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/workout_card_top_padding"
             android:text="Bicep Curl"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/black"
             android:textSize="25sp"
             />
 
@@ -48,8 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="25dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp">
             <TextView
                 android:id="@+id/exercise_reps"
                 android:layout_width="wrap_content"
@@ -71,15 +71,15 @@
             android:id="@+id/weight_relative_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/exercise_reps_relative_layout"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp">
             <TextView
                 android:id="@+id/exercise_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weight"
+                android:text="LBS"
                 android:layout_centerHorizontal="true"
                 android:textSize="18sp"
                 />
@@ -90,7 +90,7 @@
                 android:layout_below="@+id/exercise_weight"
                 android:layout_marginTop="-9dp"
                 android:layout_centerHorizontal="true"
-                android:hint="115lbs" />
+                android:hint="115" />
         </RelativeLayout>
 
 
@@ -98,15 +98,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/exercise_name"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
             >
             <TextView
                 android:id="@+id/exercise_sets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sets:     "
-                android:textSize="22sp"
+                android:text="Sets:"
+                android:layout_centerHorizontal="true"
+                android:textSize="20sp"
                 />
             <LinearLayout
                 android:id="@+id/checkbox_linear_layout"
@@ -114,37 +115,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp"
-                android:layout_toEndOf="@+id/exercise_sets"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/exercise_sets"
                 >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="10dp"
-                    />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

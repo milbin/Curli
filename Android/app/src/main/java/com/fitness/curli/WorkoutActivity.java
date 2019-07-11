@@ -25,7 +25,7 @@ public class WorkoutActivity extends AppCompatActivity {
         View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
         linearLayout.addView(relativeLayout);
         TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-        exerciseName.setText("Leg Press");
+        exerciseName.setText("Lat Pulldown (Cable)");
         relativeLayout.setOnClickListener(new onExerciseClick());
 
 
