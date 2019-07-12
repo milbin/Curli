@@ -22,10 +22,10 @@ public class WorkoutActivity extends AppCompatActivity {
     //This is what the activity takes as input parameters, the reason that every set has a the name of the
     //exercise associated with it is so that we can create supersets easily later on
     //TODO create superset
-    //{"name": "Arms and Chest", "exercises": [[{"title": "Bench Press", "weight":135, "reps":8},
+    //{"name": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
-    //[{"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bench Press", "weight":75, "reps":8},
-    // {"title": "Bench Press", "weight":75, "reps":8}]]}
+    //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
+    // {"title": "Bicep Curl", "weight":75, "reps":8}]]}
 
     ArrayList<ArrayList> exercises;
 
@@ -45,13 +45,13 @@ public class WorkoutActivity extends AppCompatActivity {
             linearLayout.addView(relativeLayout);
 
             TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-            exerciseName.setText((String)exercise.get(0).get("title"));
+            exerciseName.setText((String)exercise.get(1).get("title"));
 
             TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-            exerciseReps.setText(Integer.toString((Integer)exercise.get(0).get("reps")));
+            exerciseReps.setText(Integer.toString((Integer)exercise.get(1).get("reps")));
 
             TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-            exerciseWeight.setText(Integer.toString((Integer)exercise.get(0).get("weight")));
+            exerciseWeight.setText(Integer.toString((Integer)exercise.get(1).get("weight")));
 
             LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for(HashMap i:exercise){

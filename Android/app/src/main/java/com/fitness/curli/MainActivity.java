@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
             ArrayList BCList = new ArrayList();
             ArrayList BPList = new ArrayList();
 
+            BCList.add(0);
+            BPList.add(0);
+
             for (int i = 0; i < 3; i++) {
                 BCList.add(BC);
                 BPList.add(BP);
