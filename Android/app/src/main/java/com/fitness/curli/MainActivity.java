@@ -40,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
             BC.put("title", "Bicep Curl");
             BC.put("weight", 75);
             BC.put("reps", 8);
+            LinkedHashMap BC1 = new LinkedHashMap<>();
+            BC1.put("title", "Bicep Curl");
+            BC1.put("weight", 80);
+            BC1.put("reps", 9);
+            LinkedHashMap BC2 = new LinkedHashMap<>();
+            BC2.put("title", "Bicep Curl");
+            BC2.put("weight", 90);
+            BC2.put("reps", 10);
 
             ArrayList BCList = new ArrayList();
             ArrayList BPList = new ArrayList();
@@ -48,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
             BPList.add(0);
 
             for (int i = 0; i < 3; i++) {
-                BCList.add(BC);
                 BPList.add(BP);
             }
+            BCList.add(BC);
+            BCList.add(BC1);
+            BCList.add(BC2);
 
             ArrayList exercises = new ArrayList();
             exercises.add(BPList);
