@@ -14,6 +14,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class WorkoutActivity extends AppCompatActivity {
+    //WORKOUT DATA STRUCTURE EXAMPLE:
+    //This is what the activity takes as input parameters, the reason that every set has a the name of the
+    //exercise associated with it is so that we can create supersets easily later on
+    //TODO create superset
+    //{"name": "Arms and Chest", "exercises": [[{"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
+    //[{"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bench Press", "weight":75, "reps":8},
+    // {"title": "Bench Press", "weight":75, "reps":8}]]}
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
