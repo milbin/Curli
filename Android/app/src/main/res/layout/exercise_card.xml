@@ -50,7 +50,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="35dp">
             <TextView
-                android:id="@+id/exercise_weight"
+                android:id="@+id/exercise_weight_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight"
@@ -59,9 +59,10 @@
                 />
 
             <TextView
+                android:id="@+id/exercise_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/exercise_weight"
+                android:layout_below="@+id/exercise_weight_TV"
                 android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 android:layout_centerHorizontal="true"
@@ -74,7 +75,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="35dp">
             <TextView
-                android:id="@+id/exercise_reps"
+                android:id="@+id/exercise_reps_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reps"
@@ -82,9 +83,10 @@
                 android:layout_centerHorizontal="true"
                 />
             <TextView
+                android:id="@+id/exercise_reps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/exercise_reps"
+                android:layout_below="@+id/exercise_reps_TV"
                 android:layout_centerHorizontal="true"
                 android:textSize="18sp"
                 android:layout_marginTop="5dp"
@@ -128,34 +130,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/exercise_sets"
                 >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/exercise_sets"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/exercise_sets"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="7dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/exercise_sets"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="7dp"
-                    />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/exercise_sets"
-                    android:src="@drawable/ic_check_circle_grey_24dp"
-                    android:layout_marginStart="7dp"
-                    />
 
             </LinearLayout>
 

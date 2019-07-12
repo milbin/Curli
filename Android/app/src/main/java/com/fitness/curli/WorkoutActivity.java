@@ -11,7 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WorkoutActivity extends AppCompatActivity {
     //WORKOUT DATA STRUCTURE EXAMPLE:
@@ -23,6 +27,8 @@ public class WorkoutActivity extends AppCompatActivity {
     //[{"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bench Press", "weight":75, "reps":8},
     // {"title": "Bench Press", "weight":75, "reps":8}]]}
 
+    ArrayList<ArrayList> exercises;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +36,40 @@ public class WorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.workout_activity);
         LinearLayout linearLayout = findViewById(R.id.linearLayoutWorkout);
 
-        View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
-        linearLayout.addView(relativeLayout);
-        TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-        exerciseName.setText("Lat Pulldown (Cable)");
-        Button doneButton = relativeLayout.findViewById(R.id.done_button);
-        doneButton.setOnClickListener(new onExerciseClick());
+        HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
+        setTitle((String)workout.get("name"));
 
-        View relativeLayout1 = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
-        linearLayout.addView(relativeLayout1);
-        TextView exerciseName1 = relativeLayout1.findViewById(R.id.exercise_name);
-        exerciseName1.setText("Leg Press");
+        exercises = (ArrayList<ArrayList>) workout.get("exercises");
+        for(ArrayList<HashMap> exercise:exercises){
+            View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
+            linearLayout.addView(relativeLayout);
+
+            TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
+            exerciseName.setText((String)exercise.get(0).get("title"));
+
+            TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+            exerciseReps.setText(Integer.toString((Integer)exercise.get(0).get("reps")));
+
+            TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+            exerciseWeight.setText(Integer.toString((Integer)exercise.get(0).get("weight")));
+
+            LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
+            for(HashMap i:exercise){
+                ImageView checkbox = new ImageView(this);
+                checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMarginStart(10);
+                checkbox.setLayoutParams(params);
+                exerciseSets.addView(checkbox);
+            }
+
+            Button doneButton = relativeLayout.findViewById(R.id.done_button);
+            doneButton.setOnClickListener(new onExerciseClick());
+        }
+
 
 
     }
