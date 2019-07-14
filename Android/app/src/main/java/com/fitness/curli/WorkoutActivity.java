@@ -26,10 +26,11 @@ public class WorkoutActivity extends AppCompatActivity {
     //{"name": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
     //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
-    // {"title": "Bicep Curl", "weight":75, "reps":8}]]}
+    //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
 
     ArrayList<ArrayList> exercises;
     Context context;
+    int checkmark_size = 80;
 
 
     @Override
@@ -41,7 +42,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
         HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
         setTitle((String)workout.get("title"));
-        System.out.println((String)workout.get("title"));
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         for(ArrayList<HashMap> exercise:exercises){
@@ -61,12 +61,16 @@ public class WorkoutActivity extends AppCompatActivity {
             for(int i= 0; i<exercise.size()-1; i++){
                 ImageView checkbox = new ImageView(this);
                 checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                        checkmark_size,
+                        checkmark_size
                 );
-                params.setMarginStart(10);
+                if(i != 0) {
+                    params.setMarginStart(10);
+                }
                 checkbox.setLayoutParams(params);
+
                 exerciseSets.addView(checkbox);
             }
 
@@ -106,8 +110,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 checkboxLinearLayout.removeViewAt(setNumber);
                 ImageView checkbox = new ImageView(context);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                        checkmark_size,
+                        checkmark_size
                 );
                 params.setMarginStart(10);
                 checkbox.setLayoutParams(params);
@@ -119,10 +123,12 @@ public class WorkoutActivity extends AppCompatActivity {
                 checkboxLinearLayout.removeViewAt(setNumber);
                 ImageView checkbox = new ImageView(context);
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                        checkmark_size,
+                        checkmark_size
                 );
-                params.setMarginStart(10);
+                if(setNumber != 0) {
+                    params.setMarginStart(10);
+                }
                 checkbox.setLayoutParams(params);
                 checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                 checkboxLinearLayout.addView(checkbox, setNumber);
