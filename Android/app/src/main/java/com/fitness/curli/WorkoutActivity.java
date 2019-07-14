@@ -40,7 +40,8 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
-        setTitle((String)workout.get("name"));
+        setTitle((String)workout.get("title"));
+        System.out.println((String)workout.get("title"));
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         for(ArrayList<HashMap> exercise:exercises){
