@@ -8,8 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,10 +46,13 @@ public class WorkoutActivity extends AppCompatActivity {
         HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
         setTitle((String)workout.get("title"));
 
+
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         for(ArrayList<HashMap> exercise:exercises){
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
             linearLayout.addView(relativeLayout);
+            ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
+            overflowButton.setOnClickListener(new onOverflowClick());
 
             TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
             exerciseName.setText((String)exercise.get(1).get("title"));
@@ -81,6 +87,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
     }
+
 
     public class onExerciseClick implements View.OnClickListener {
 
@@ -142,6 +149,14 @@ public class WorkoutActivity extends AppCompatActivity {
                 TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
                 exerciseWeight.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 2)).get("weight")));
             }
+        }
+    }
+
+    public class onOverflowClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            System.out.println("CLICKED BUTTON");
         }
     }
 }
