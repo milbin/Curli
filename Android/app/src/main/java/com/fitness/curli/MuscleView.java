@@ -18,11 +18,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class MuscleView extends AppCompatActivity {
+    SQLData data = new SQLData();
     ArrayList<String> muscles;
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
-    LinkedHashMap<String, ArrayList<String>> muscleToExercise = new LinkedHashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -34,12 +34,6 @@ public class MuscleView extends AppCompatActivity {
         context = getApplicationContext();
 
         linearLayout = findViewById(R.id.MusclesViewLinearLayout);
-        muscleToExercise.put("biceps",  new ArrayList<String>(Arrays.asList("dumbbell curl", "barbell curl")));
-        muscleToExercise.put("triceps", new ArrayList<String>(Arrays.asList("skull crushers", "rope extension")));
-        muscleToExercise.put("quads",   new ArrayList<String>(Arrays.asList("leg extension", "squat")));
-        muscleToExercise.put("hams",    new ArrayList<String>(Arrays.asList("leg curl", "deadlift")));
-        muscleToExercise.put("abs",     new ArrayList<String>(Arrays.asList("crunches", "sit ups")));
-        muscleToExercise.put("lats",    new ArrayList<String>(Arrays.asList("pull up", "")));
         Intent intent = getIntent();
         muscles = intent.getStringArrayListExtra("muscles");
 
@@ -59,7 +53,7 @@ public class MuscleView extends AppCompatActivity {
                 public void onClick(View v){
                     TextView rl = v.findViewById(R.id.title);
                     String muscle = rl.getText().toString();
-                    ArrayList<String> exercises = muscleToExercise.get(muscle);
+                    ArrayList<String> exercises = data.MUSCLE_TO_EXCERCISE.get(muscle);
                     Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                     intent.putExtra("exercises", exercises);
                     startActivity(intent);
