@@ -52,53 +52,45 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
-        for(ArrayList<HashMap> exercise:exercises){
-            for(int i= 1; i<exercise.size(); i++){
-                View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
-                linearLayout.addView(relativeLayout);
-                ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
-                overflowButton.setOnClickListener(new onOverflowClick(context));
+        for(ArrayList<HashMap> exercise:exercises) {
+            View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
+            linearLayout.addView(relativeLayout);
 
-                TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-                EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-                EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-                TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
+            ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
+            overflowButton.setOnClickListener(new onOverflowClick(context));
+            Button doneButton = relativeLayout.findViewById(R.id.done_button);
+            doneButton.setOnClickListener(new onExerciseClick());
 
-                if(i != 1){
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) relativeLayout.getLayoutParams();
-                    params.height = 500;
-                    relativeLayout.setLayoutParams(params);
-                }
+            TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
+            EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+            EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+            TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
 
 
-                exerciseName.setText((String)exercise.get(i).get("title"));
-                exerciseReps.setText(Integer.toString((Integer)exercise.get(i).get("reps")));
-                exerciseWeight.setText(Integer.toString((Integer)exercise.get(i).get("weight")));
-                excerciseSets.setText("Set: " + i + "/" + (exercise.size()-1));
+            exerciseName.setText((String) exercise.get(1).get("title"));
+            exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
+            exerciseWeight.setText(Integer.toString((Integer) exercise.get(1).get("weight")));
+            excerciseSets.setText("Sets: " + 0 + "/" + (exercise.size() - 1));
 
-                LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
-                for(int x=1;x < exercise.size(); x++) {
-                    ImageView checkbox = new ImageView(this);
-                    if(x<i){
-                        checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
-                    }else {
-                        checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
-                    }
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            checkmark_size,
-                            checkmark_size
-                    );
+            LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
+            for (int i = 1; i < exercise.size(); i++) {
+                ImageView checkbox = new ImageView(this);
+                checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        checkmark_size,
+                        checkmark_size
+                );
+                if (i != 1) {
                     params.setMarginStart(10);
                     checkbox.setLayoutParams(params);
-                    exerciseSets.addView(checkbox);
                 }
-
-                Button doneButton = relativeLayout.findViewById(R.id.done_button);
-                doneButton.setOnClickListener(new onExerciseClick());
+                exerciseSets.addView(checkbox);
             }
-
-
         }
+
+
+
 
 
 
@@ -140,6 +132,9 @@ public class WorkoutActivity extends AppCompatActivity {
                 checkbox.setLayoutParams(params);
                 checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                 checkboxLinearLayout.addView(checkbox, setNumber);
+
+                TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+                exerciseSets.setText("Sets: "+(setNumber+1)+"/"+(setNumber+1));
             }else {
                 LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 checkboxLinearLayout.getChildAt(setNumber);
@@ -164,6 +159,9 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
                 exerciseWeight.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 2)).get("weight")));
+
+                TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+                exerciseSets.setText("Sets: "+(setNumber+1)+"/"+(exercise.size()-1));
             }
         }
     }

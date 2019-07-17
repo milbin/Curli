@@ -120,7 +120,7 @@
                 android:id="@+id/set_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set 0/3"
+                android:text="Sets: 0/3"
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
