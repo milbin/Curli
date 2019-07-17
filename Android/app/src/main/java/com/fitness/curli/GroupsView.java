@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -52,6 +53,7 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
+        list.setVisibility(View.INVISIBLE);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -94,6 +96,15 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
                 }
             });
 
+            ImageView info = card.findViewById(R.id.info);
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(GroupsView.this, Info_View.class);
+                    startActivity(intent);
+                }
+            });
+
             linearLayout.addView(card);
         }
 
@@ -108,6 +119,7 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        list.setVisibility(View.VISIBLE);
         String text = newText;
         adapter.filter(text);
         return false;

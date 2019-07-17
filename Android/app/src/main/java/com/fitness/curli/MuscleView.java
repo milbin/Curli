@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +57,15 @@ public class MuscleView extends AppCompatActivity {
                     ArrayList<String> exercises = data.MUSCLE_TO_EXCERCISE.get(muscle);
                     Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                     intent.putExtra("exercises", exercises);
+                    startActivity(intent);
+                }
+            });
+
+            ImageView info = card.findViewById(R.id.info);
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MuscleView.this, Info_View.class);
                     startActivity(intent);
                 }
             });

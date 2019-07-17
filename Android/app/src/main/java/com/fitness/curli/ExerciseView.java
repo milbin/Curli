@@ -110,6 +110,15 @@ public class ExerciseView extends AppCompatActivity {
                 }
             });
 
+            ImageView info = card.findViewById(R.id.info);
+            info.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ExerciseView.this, Info_View.class);
+                    startActivity(intent);
+                }
+            });
+
             cardsList.add(card);
             linearLayout.addView(card);
         }
