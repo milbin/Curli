@@ -45,7 +45,7 @@ public class MuscleView extends AppCompatActivity {
         int length = muscles.size();
 
         for (int i = 0; i < length; i++){
-            View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            final View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
             TextView title = card.findViewById(R.id.title);
             title.setText(muscles.get(i));
 
@@ -65,7 +65,12 @@ public class MuscleView extends AppCompatActivity {
             info.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    TextView t = card.findViewById(R.id.title);
+                    System.out.println(t);
+                    String title = t.getText().toString();
+
                     Intent intent = new Intent(MuscleView.this, Info_View.class);
+                    intent.putExtra("title", title);
                     startActivity(intent);
                 }
             });

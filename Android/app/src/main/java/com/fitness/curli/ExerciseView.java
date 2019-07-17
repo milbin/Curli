@@ -114,7 +114,11 @@ public class ExerciseView extends AppCompatActivity {
             info.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    TextView t = v.findViewById(R.id.title);
+                    String title = t.getText().toString();
+
                     Intent intent = new Intent(ExerciseView.this, Info_View.class);
+                    intent.putExtra("title", title);
                     startActivity(intent);
                 }
             });
