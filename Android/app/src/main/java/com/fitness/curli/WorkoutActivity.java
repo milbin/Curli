@@ -7,11 +7,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +37,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     ArrayList<ArrayList> exercises;
     Context context;
-    int checkmark_size = 80;
+    int checkmark_size = 70;
 
 
     @Override
@@ -49,39 +53,51 @@ public class WorkoutActivity extends AppCompatActivity {
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         for(ArrayList<HashMap> exercise:exercises){
-            View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
-            linearLayout.addView(relativeLayout);
-            ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
-            overflowButton.setOnClickListener(new onOverflowClick());
+            for(int i= 1; i<exercise.size(); i++){
+                View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
+                linearLayout.addView(relativeLayout);
+                ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
+                overflowButton.setOnClickListener(new onOverflowClick(context));
 
-            TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-            exerciseName.setText((String)exercise.get(1).get("title"));
+                TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
+                EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+                EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+                TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
 
-            TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-            exerciseReps.setText(Integer.toString((Integer)exercise.get(1).get("reps")));
-
-            TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-            exerciseWeight.setText(Integer.toString((Integer)exercise.get(1).get("weight")));
-
-            LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
-            for(int i= 0; i<exercise.size()-1; i++){
-                ImageView checkbox = new ImageView(this);
-                checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        checkmark_size,
-                        checkmark_size
-                );
-                if(i != 0) {
-                    params.setMarginStart(10);
+                if(i != 1){
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) relativeLayout.getLayoutParams();
+                    params.height = 500;
+                    relativeLayout.setLayoutParams(params);
                 }
-                checkbox.setLayoutParams(params);
 
-                exerciseSets.addView(checkbox);
+
+                exerciseName.setText((String)exercise.get(i).get("title"));
+                exerciseReps.setText(Integer.toString((Integer)exercise.get(i).get("reps")));
+                exerciseWeight.setText(Integer.toString((Integer)exercise.get(i).get("weight")));
+                excerciseSets.setText("Set: " + i + "/" + (exercise.size()-1));
+
+                LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
+                for(int x=1;x < exercise.size(); x++) {
+                    ImageView checkbox = new ImageView(this);
+                    if(x<i){
+                        checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
+                    }else {
+                        checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+                    }
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            checkmark_size,
+                            checkmark_size
+                    );
+                    params.setMarginStart(10);
+                    checkbox.setLayoutParams(params);
+                    exerciseSets.addView(checkbox);
+                }
+
+                Button doneButton = relativeLayout.findViewById(R.id.done_button);
+                doneButton.setOnClickListener(new onExerciseClick());
             }
 
-            Button doneButton = relativeLayout.findViewById(R.id.done_button);
-            doneButton.setOnClickListener(new onExerciseClick());
+
         }
 
 
@@ -153,10 +169,42 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
     public class onOverflowClick implements View.OnClickListener {
+        private Context mContext;
 
+        private onOverflowClick(Context context){
+            mContext = context;
+        }
         @Override
         public void onClick(View v) {
-            System.out.println("CLICKED BUTTON");
+            // This is an android.support.v7.widget.PopupMenu;
+            PopupMenu popupMenu = new PopupMenu(context, v);
+            popupMenu.inflate(R.menu.workout_overflow_menu);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.workout_overflow_info:
+                            System.out.println("INFO");
+                            return true;
+
+                        case R.id.workout_overflow_replace:
+                            System.out.println("REPLACE");
+                            return true;
+
+                        case R.id.workout_overflow_delete:
+                            System.out.println("DELETE");
+                            return true;
+
+                        default:
+                            return true;
+                    }
+                }
+            }
+            );
+
+
+
         }
     }
 }

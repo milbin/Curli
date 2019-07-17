@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cardview_background"
+        android:minHeight="@dimen/min_height_of_workout_card"
+        android:layout_gravity="top"
+        android:elevation="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="4dp"
+
+        >
+        <TextView
+            android:id="@+id/exercise_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:paddingTop="@dimen/workout_card_top_padding"
+            android:text="Bicep Curl"
+            android:textSize="25sp"
+            />
+        <TextView
+            android:id="@+id/set_number_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/weightTV"
+            android:layout_marginEnd="60dp"
+            android:layout_below="@+id/exercise_name"
+            android:text="Set Number"
+            />
+        <TextView
+            android:id="@+id/weightTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/exercise_name"
+            android:text="Weight"
+            />
+        <TextView
+            android:id="@+id/repsTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/weightTV"
+            android:layout_marginStart="100dp"
+            android:layout_below="@+id/exercise_name"
+            android:text="Reps"
+            />
+
+        <LinearLayout
+            android:id="@+id/set_number_LL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/set_number_TV"
+            android:layout_toStartOf="@+id/weight_LL"
+            android:layout_marginEnd="65dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textSize="20dp"
+                android:layout_marginTop="15dp"
+            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textSize="20dp"
+                android:layout_marginTop="15dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="20dp"
+                android:layout_marginTop="15dp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/weight_LL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/weightTV"
+            >
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="115lbs"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="115lbs"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="115lbs"
+                android:gravity="center_horizontal"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reps_LL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/weight_LL"
+            android:layout_marginStart="40dp"
+            android:layout_below="@+id/repsTV"
+            >
+
+
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="8"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="8"
+                android:gravity="center_horizontal"
+                />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="8"
+                android:gravity="center_horizontal"
+                />
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>
