@@ -33,20 +33,20 @@ public class MainActivity extends AppCompatActivity {
 
             LinkedHashMap BP = new LinkedHashMap<>();
             BP.put("title", "Bench Press");
-            BP.put("weight", 135);
+            BP.put("weight", 135.0);
             BP.put("reps", 8);
 
             LinkedHashMap BC = new LinkedHashMap<>();
             BC.put("title", "Bicep Curl");
-            BC.put("weight", 75);
+            BC.put("weight", 75.0);
             BC.put("reps", 8);
             LinkedHashMap BC1 = new LinkedHashMap<>();
             BC1.put("title", "Bicep Curl");
-            BC1.put("weight", 80);
+            BC1.put("weight", 80.0);
             BC1.put("reps", 9);
             LinkedHashMap BC2 = new LinkedHashMap<>();
             BC2.put("title", "Bicep Curl");
-            BC2.put("weight", 90);
+            BC2.put("weight", 90.0);
             BC2.put("reps", 10);
 
             ArrayList BCList = new ArrayList();
