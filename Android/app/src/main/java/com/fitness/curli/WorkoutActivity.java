@@ -59,7 +59,7 @@ public class WorkoutActivity extends AppCompatActivity {
             repsAddButton.setOnClickListener(new onAddOrSubtractClick());
             ImageButton repsSubtractButton = relativeLayout.findViewById(R.id.reps_subtract_button);
             repsSubtractButton.setOnClickListener(new onAddOrSubtractClick());
-            ImageButton setBackButton = relativeLayout.findViewById(R.id.exercise_sets_back_button);
+            Button setBackButton = relativeLayout.findViewById(R.id.exercise_sets_back_button);
             setBackButton.setOnClickListener(new onDecrementSet());
             Button doneButton = relativeLayout.findViewById(R.id.done_button);
             doneButton.setOnClickListener(new onIncrementSet());
@@ -98,10 +98,10 @@ public class WorkoutActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent();
+            LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent())).getParent().getParent();
             int exerciseNumber = 0;
             for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent()){
+                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent()){
                     exerciseNumber = i;
                     break;
                 }
@@ -111,7 +111,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             ArrayList exercise = exercises.get(exerciseNumber);
             int setNumber = (int) exercise.get(0)-1;
-            RelativeLayout relativeLayout = (RelativeLayout) v.getParent().getParent();
+            RelativeLayout relativeLayout = (RelativeLayout) v.getParent();
             System.out.println(setNumber);
             System.out.println(exercise.size()-2);
             if(setNumber == -1){
@@ -119,7 +119,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }else if(setNumber == exercise.size()-2){
                 exercise.set(0, setNumber); //decrement the set number by 1
                 System.out.println("HERE");
-                LinearLayout checkboxLinearLayout = ((View) v.getParent().getParent()).findViewById(R.id.checkbox_linear_layout);
+                LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 for(int i=exercise.size()-2; i>=setNumber; i--) {
                     checkboxLinearLayout.getChildAt(i);
                     checkboxLinearLayout.removeViewAt(i);
@@ -141,7 +141,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }else {
                 exercise.set(0, setNumber); //decrement the set number by 1
                 System.out.println("HERE1");
-                LinearLayout checkboxLinearLayout = ((View) v.getParent().getParent()).findViewById(R.id.checkbox_linear_layout);
+                LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 for(int i=exercise.size()-2; i>=setNumber; i--) {
                     checkboxLinearLayout.getChildAt(i);
                     checkboxLinearLayout.removeViewAt(i);

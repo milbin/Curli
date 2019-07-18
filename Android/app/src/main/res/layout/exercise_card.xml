@@ -142,20 +142,44 @@
         <Button
             android:id="@+id/done_button"
             android:layout_marginTop="0dp"
-            android:layout_width="300dp"
+            android:layout_width="150dp"
             android:layout_height="35dp"
+            android:layout_marginEnd="20dp"
             android:layout_below="@+id/exercise_sets_RL"
-            android:layout_centerHorizontal="true"
-            android:text="Done"
+            android:layout_alignParentEnd="true"
+            android:text="Finish Set"
             android:layout_marginBottom="10dp"
             android:textColor="@android:color/white"
             android:background="@drawable/done_button_background"
             />
 
+        <Button
+            android:id="@+id/exercise_sets_back_button"
+            android:layout_marginTop="0dp"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_below="@+id/exercise_sets_RL"
+            android:layout_alignParentStart="true"
+            android:text="Back"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/back_button_background"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/weight_relative_layout"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            />
+
 
         <RelativeLayout
             android:id="@+id/exercise_sets_RL"
-            android:layout_marginTop="-25dp"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/weight_relative_layout"
@@ -170,16 +194,6 @@
                 android:textSize="16sp"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
-                />
-            <ImageButton
-                android:id="@+id/exercise_sets_back_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="-5dp"
-                android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
-                android:background="@android:color/transparent"
-                android:layout_toStartOf="@+id/set_number"
-                android:scaleType="fitCenter"
                 />
 
             <LinearLayout
