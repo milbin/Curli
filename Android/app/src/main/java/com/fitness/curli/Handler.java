@@ -88,6 +88,7 @@ public class Handler{
         public myDbHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_Version);
             this.context=context;
+
         }
 
     @Override

@@ -8,13 +8,15 @@ public class ExerciseDb {
     private String[] PrimaryMuscles;
 
     //constructors
-    ExerciseDb() {}
     ExerciseDb(String name, String group, String[] muscles){
         this.ExerciseName = name;
         this.Group = group;
         this.PrimaryMuscles = muscles;
     }
 
+    ExerciseDb(){
+
+    }
     //properties
     public String getName(){
         return ExerciseName;

@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
         Handler helper = new Handler(this);
 
+        String name = "Bicep Curl";
+        String group = "Arms";
+        String muscles = "Bicep";
+
+        helper.insertData(name, group, muscles);
     }
 
 
