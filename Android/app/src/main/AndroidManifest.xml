@@ -18,9 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupsView"/>
-        <activity android:name=".MuscleView"/>
-        <activity android:name=".ExerciseView"/>
-        <activity android:name=".Info_View"/>
+        <activity android:name=".MuscleView" android:parentActivityName=".GroupsView"/>
+        <activity android:name=".ExerciseView" android:parentActivityName=".MuscleView"/>
+        <activity android:name=".Info_View" android:parentActivityName=".ExerciseView"/>
     </application>
 
 </manifest>

@@ -96,19 +96,6 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
                 }
             });
 
-            ImageView info = card.findViewById(R.id.info);
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView t = v.findViewById(R.id.title);
-                    String title = t.getText().toString();
-
-                    Intent intent = new Intent(GroupsView.this, Info_View.class);
-                    intent.putExtra("title", title);
-                    startActivity(intent);
-                }
-            });
-
             linearLayout.addView(card);
         }
 

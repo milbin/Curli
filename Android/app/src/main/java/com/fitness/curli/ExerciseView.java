@@ -7,7 +7,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,11 +30,14 @@ public class ExerciseView extends AppCompatActivity {
     LinearLayout linearLayout;
     Integer defaultHeight = -1;
     ArrayList<View> cardsList = new ArrayList<>();
+    Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         dialog = ProgressDialog.show(ExerciseView.this, "", "Loading...", true);
 
@@ -55,6 +62,13 @@ public class ExerciseView extends AppCompatActivity {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    TextView t = v.findViewById(R.id.title);
+                    String title = t.getText().toString();
+                    Intent intent = new Intent(ExerciseView.this, Info_View.class);
+                    intent.putExtra("title", title);
+                    startActivity(intent);
+
+                    /*
                     RelativeLayout rlNested = v.findViewById(R.id.group);
                     RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rlNested.getLayoutParams();
                     ImageView img = v.findViewById(R.id.group_image);
@@ -74,8 +88,6 @@ public class ExerciseView extends AppCompatActivity {
                                 System.out.println("HERE -----> " + c);
                                 int height = c.findViewById(R.id.group).getHeight();
                                 if (height > defaultHeight && defaultHeight != -1){
-                                    System.out.println("HEIGH ------> " + height);
-                                    System.out.println("D-----------> " + defaultHeight);
                                     c.performClick();
                                 }
                             }
@@ -107,19 +119,7 @@ public class ExerciseView extends AppCompatActivity {
                         imgParams.height /= 2;
                         imgParams.width /= 2;
                     }
-                }
-            });
-
-            ImageView info = card.findViewById(R.id.info);
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView t = v.findViewById(R.id.title);
-                    String title = t.getText().toString();
-
-                    Intent intent = new Intent(ExerciseView.this, Info_View.class);
-                    intent.putExtra("title", title);
-                    startActivity(intent);
+                    */
                 }
             });
 
@@ -128,5 +128,26 @@ public class ExerciseView extends AppCompatActivity {
         }
 
         dialog.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.back_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.back:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 
 public class SQLData {
     public HashMap<String, ArrayList<String>> MUSCLE_TO_EXCERCISE = new LinkedHashMap<>();
-    public LinkedHashMap<String, ArrayList<String>> GROUP_TO_MUSCLE = new LinkedHashMap<>();
+    public HashMap<String, ArrayList<String>> GROUP_TO_MUSCLE = new LinkedHashMap<>();
+
     public SQLData(){
         MUSCLE_TO_EXCERCISE.put("biceps",  new ArrayList<String>(Arrays.asList("dumbbell curl", "barbell curl")));
         MUSCLE_TO_EXCERCISE.put("triceps", new ArrayList<String>(Arrays.asList("skull crushers", "rope extension")));

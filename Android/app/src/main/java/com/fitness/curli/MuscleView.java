@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,11 +28,14 @@ public class MuscleView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
+    Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.muscles_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         dialog = ProgressDialog.show(MuscleView.this, "", "Loading...", true);
 
@@ -61,24 +68,30 @@ public class MuscleView extends AppCompatActivity {
                 }
             });
 
-            ImageView info = card.findViewById(R.id.info);
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView t = card.findViewById(R.id.title);
-                    System.out.println(t);
-                    String title = t.getText().toString();
-
-                    Intent intent = new Intent(MuscleView.this, Info_View.class);
-                    intent.putExtra("title", title);
-                    startActivity(intent);
-                }
-            });
-
             linearLayout.addView(card);
         }
 
     dialog.dismiss();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.back_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.back:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
 
