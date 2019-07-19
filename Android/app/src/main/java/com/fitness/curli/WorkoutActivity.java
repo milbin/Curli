@@ -33,7 +33,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     ArrayList<ArrayList> exercises;
     Context context;
-    int checkmark_size = 70;
+    int checkmark_size = 50;
 
 
     @Override
@@ -90,8 +90,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 );
                 if (i != 1) {
                     params.setMarginStart(10);
-                    checkbox.setLayoutParams(params);
                 }
+                checkbox.setLayoutParams(params);
                 exerciseSets.addView(checkbox);
             }
 
@@ -316,10 +316,10 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                 exerciseSets.setText("Set: "+(setNumber+1)+"/"+(exercise.size()-1));
-                }
             }
-
         }
+
+    }
     public class onAddOrSubtractClick implements View.OnClickListener {
 
         @Override
@@ -389,26 +389,26 @@ public class WorkoutActivity extends AppCompatActivity {
             popupMenu.inflate(R.menu.workout_overflow_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.workout_overflow_info:
-                            System.out.println("INFO");
-                            return true;
+                                                     @Override
+                                                     public boolean onMenuItemClick(MenuItem item) {
+                                                         switch (item.getItemId()) {
+                                                             case R.id.workout_overflow_info:
+                                                                 System.out.println("INFO");
+                                                                 return true;
 
-                        case R.id.workout_overflow_replace:
-                            System.out.println("REPLACE");
-                            return true;
+                                                             case R.id.workout_overflow_replace:
+                                                                 System.out.println("REPLACE");
+                                                                 return true;
 
-                        case R.id.workout_overflow_delete:
-                            System.out.println("DELETE");
-                            return true;
+                                                             case R.id.workout_overflow_delete:
+                                                                 System.out.println("DELETE");
+                                                                 return true;
 
-                        default:
-                            return true;
-                    }
-                }
-            }
+                                                             default:
+                                                                 return true;
+                                                         }
+                                                     }
+                                                 }
             );
 
 

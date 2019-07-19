@@ -17,21 +17,22 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="10dp"
 
         >
+
         <TextView
             android:id="@+id/exercise_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:textColor="@android:color/black"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
             android:paddingTop="@dimen/workout_card_top_padding"
             android:text="Bicep Curl"
-            android:textSize="25sp"
-            />
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
 
         <ImageButton
             android:id="@+id/overflowButton"
@@ -40,6 +41,7 @@
             android:src="@drawable/ic_three_dots_24dp"
             android:background="@null"
             android:padding="5dp"
+            android:layout_marginTop="15dp"
             android:clickable="true"
             android:focusable="true"
             android:layout_alignParentEnd="true"
@@ -49,16 +51,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="35dp">
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="65dp">
             <TextView
                 android:id="@+id/exercise_weight_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight:"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@android:color/black"
                 android:layout_centerHorizontal="true"
-                android:textSize="22sp"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
                 />
 
             <EditText
@@ -96,15 +99,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="35dp">
+            android:layout_marginEnd="45dp"
+            android:layout_marginTop="65dp">
             <TextView
                 android:id="@+id/exercise_reps_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reps:"
-                android:textColor="@color/colorPrimary"
-                android:textSize="22sp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
                 android:layout_centerHorizontal="true"
                 />
             <EditText
@@ -141,28 +145,29 @@
 
         <Button
             android:id="@+id/done_button"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             android:layout_width="150dp"
             android:layout_height="35dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="30dp"
             android:layout_below="@+id/exercise_sets_RL"
             android:layout_alignParentEnd="true"
             android:text="Finish Set"
-            android:layout_marginBottom="10dp"
+            android:elevation="0dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@android:color/white"
             android:background="@drawable/done_button_background"
             />
 
         <Button
             android:id="@+id/exercise_sets_back_button"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             android:layout_width="150dp"
             android:layout_height="35dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="30dp"
             android:layout_below="@+id/exercise_sets_RL"
             android:layout_alignParentStart="true"
             android:text="Back"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/colorPrimary"
             android:background="@drawable/back_button_background"
             />
@@ -170,19 +175,27 @@
 
         <RelativeLayout
             android:id="@+id/exercise_sets_RL"
-            android:layout_marginTop="-25dp"
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/weight_relative_layout"
             android:layout_centerHorizontal="true"
             >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#ededed"/>
+
             <TextView
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/set_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set 0/3"
-                android:textSize="16sp"
+                android:layout_marginBottom="10dp"
+                android:text="Sets Completed: 0 of 3"
+                android:textSize="17sp"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
                 />
@@ -190,12 +203,14 @@
             <LinearLayout
                 android:id="@+id/checkbox_linear_layout"
                 android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_below="@+id/set_number"
                 >
+
 
             </LinearLayout>
 
