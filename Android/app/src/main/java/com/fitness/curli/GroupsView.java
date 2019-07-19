@@ -45,6 +45,8 @@ public class GroupsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groups);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("MUSCLE GROUPS");
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         // Locate the ListView in listview_main.xml

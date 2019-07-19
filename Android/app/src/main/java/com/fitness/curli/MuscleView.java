@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,8 @@ public class MuscleView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.muscles_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("MUSCLES");
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         dialog = ProgressDialog.show(MuscleView.this, "", "Loading...", true);

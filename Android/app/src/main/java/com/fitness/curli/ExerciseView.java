@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +38,10 @@ public class ExerciseView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("EXERCISES");
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+
 
         dialog = ProgressDialog.show(ExerciseView.this, "", "Loading...", true);
 

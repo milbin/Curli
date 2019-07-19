@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class Info_View extends AppCompatActivity {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.information_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("EXERCISE INFO");
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
         // Get a support ActionBar corresponding to this toolbar
