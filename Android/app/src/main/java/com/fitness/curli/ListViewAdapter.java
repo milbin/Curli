@@ -1,6 +1,7 @@
 package com.fitness.curli;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class ListViewAdapter extends BaseAdapter {
             // Locate the TextViews in listview_item.xml
             holder.name = (TextView) view.findViewById(R.id.name);
             view.setTag(holder);
+
         } else {
             holder = (ViewHolder) view.getTag();
         }

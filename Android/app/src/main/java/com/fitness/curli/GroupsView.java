@@ -5,10 +5,12 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +18,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-public class GroupsView extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class GroupsView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -36,24 +38,20 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
     ArrayList<SearchResult> arraylist = new ArrayList<>();
     ListViewAdapter adapter;
     SearchView editsearch;
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groups);
-
-        dialog = ProgressDialog.show(GroupsView.this, "", "Loading...", true);
-
-        context = getApplicationContext();
-
-        linearLayout = findViewById(R.id.GroupsViewLinearLayout);
-
-        // Generate sample data
-        nameList = data.MUSCLE_TO_EXCERCISE.keySet().toArray(new String[0]);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
-        list.setVisibility(View.INVISIBLE);
+
+        // Generate sample data
+        nameList = data.MUSCLE_TO_EXCERCISE.keySet().toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -67,9 +65,11 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
-        // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        dialog = ProgressDialog.show(GroupsView.this, "", "Loading...", true);
+
+        context = getApplicationContext();
+
+        linearLayout = findViewById(R.id.GroupsViewLinearLayout);
 
         getGroups();
     }
@@ -103,16 +103,69 @@ public class GroupsView extends AppCompatActivity implements SearchView.OnQueryT
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        list.setVisibility(View.INVISIBLE);
 
-        return false;
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        // Define the listener
+        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when action item collapses
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                System.out.println("HERE");
+                return true;  // Return true to expand action view
+            }
+        };
+
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    list.setVisibility(View.INVISIBLE);
+                }
+                else if (hasFocus) {
+                    list.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                list.setVisibility(View.VISIBLE);
+                String text = newText;
+                adapter.filter(text);
+                return false;
+            }
+        });
+
+        // Configure the search info and add any event listeners...
+
+        return super.onCreateOptionsMenu(menu);
     }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        list.setVisibility(View.VISIBLE);
-        String text = newText;
-        adapter.filter(text);
-        return false;
+    public void select(View v){
+        TextView text = v.findViewById(R.id.name);
+        String muscle = text.getText().toString();
+        ArrayList<String> exercises = data.MUSCLE_TO_EXCERCISE.get(muscle);
+        Intent intent = new Intent(GroupsView.this, ExerciseView.class);
+        intent.putExtra("exercises", exercises);
+        startActivity(intent);
     }
 }
