@@ -77,7 +77,7 @@ public class WorkoutActivity extends AppCompatActivity {
             exerciseName.setText((String) exercise.get(1).get("title"));
             exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
             exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
-            excerciseSets.setText("Set: " + 1 + "/" + (exercise.size() - 1));
+            excerciseSets.setText("Sets Completed: " + 1 + " of " + (exercise.size() - 1));
 
             LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
@@ -156,7 +156,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Set: "+(setNumber)+"/"+(exercise.size()-1));
+                    exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                 }
             }else {
                 exercise.set(0, setNumber); //decrement the set number by 1
@@ -189,7 +189,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 1)).get("weight")));
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Set: "+(setNumber +1)+"/"+(exercise.size()-1));
+                exerciseSets.setText("Sets Completed: "+(setNumber +1)+" of "+(exercise.size()-1));
             }
 
         }
@@ -235,7 +235,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Set: "+(setNumber+1)+"/"+(exercise.size()-1));
+                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 }
                 ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
                 overflowButton.setVisibility(View.GONE);
@@ -315,7 +315,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 2)).get("weight")));
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Set: "+(setNumber+1)+"/"+(exercise.size()-1));
+                exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
             }
         }
 
