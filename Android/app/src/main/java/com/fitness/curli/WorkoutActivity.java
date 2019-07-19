@@ -72,12 +72,12 @@ public class WorkoutActivity extends AppCompatActivity {
             EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
             EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
             TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
-
+            View dividerLine = relativeLayout.findViewById(R.id.divider_line);
 
             exerciseName.setText((String) exercise.get(1).get("title"));
             exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
             exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
-            excerciseSets.setText("Set: " + 1 + "/" + (exercise.size() - 1));
+            excerciseSets.setText("Sets Completed: " + 1 + " of " + (exercise.size() - 1));
 
             LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
@@ -96,7 +96,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
 
             if(counter != 0){
-                overflowButton.setVisibility(View.GONE);
+                dividerLine.setVisibility(View.GONE);
                 weightAddButton.setVisibility(View.GONE);
                 weightSubtractButton.setVisibility(View.GONE);
                 repsAddButton.setVisibility(View.GONE);
@@ -156,7 +156,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Set: "+(setNumber)+"/"+(exercise.size()-1));
+                    exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                 }
             }else {
                 exercise.set(0, setNumber); //decrement the set number by 1
@@ -189,7 +189,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 1)).get("weight")));
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Set: "+(setNumber +1)+"/"+(exercise.size()-1));
+                exerciseSets.setText("Sets Completed: "+(setNumber +1)+" of "+(exercise.size()-1));
             }
 
         }
@@ -235,10 +235,10 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Set: "+(setNumber+1)+"/"+(exercise.size()-1));
+                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 }
-                ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
-                overflowButton.setVisibility(View.GONE);
+                View dividerLine = relativeLayout.findViewById(R.id.divider_line);
+                dividerLine.setVisibility(View.GONE);
                 ImageButton weightAddButton = relativeLayout.findViewById(R.id.weight_add_button);
                 weightAddButton.setVisibility(View.GONE);
                 ImageButton weightSubtractButton = relativeLayout.findViewById(R.id.weight_subtract_button);
@@ -260,8 +260,8 @@ public class WorkoutActivity extends AppCompatActivity {
                 System.out.println(linearLayout.getChildCount());
                 if(exerciseNumber+1 < linearLayout.getChildCount()) {
                     RelativeLayout relativeLayoutNext = (RelativeLayout) linearLayout.getChildAt(exerciseNumber + 1);
-                    ImageButton overflowButtonNext = relativeLayoutNext.findViewById(R.id.overflowButton);
-                    overflowButtonNext.setVisibility(View.VISIBLE);
+                    View dividerLineNext = relativeLayoutNext.findViewById(R.id.divider_line);
+                    dividerLineNext.setVisibility(View.VISIBLE);
                     ImageButton weightAddButtonNext = relativeLayoutNext.findViewById(R.id.weight_add_button);
                     weightAddButtonNext.setVisibility(View.VISIBLE);
                     ImageButton weightSubtractButtonNext = relativeLayoutNext.findViewById(R.id.weight_subtract_button);
@@ -277,7 +277,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     RelativeLayout exerciseSetsRLNext = relativeLayoutNext.findViewById(R.id.exercise_sets_RL);
                     RelativeLayout.LayoutParams paramsNext = (RelativeLayout.LayoutParams) exerciseSetsRLNext.getLayoutParams();
                     paramsNext.addRule(RelativeLayout.BELOW, R.id.weight_relative_layout);
-                    paramsNext.setMargins(0, -25, 0, 0);
+                    paramsNext.setMargins(0, 20, 0, 0);
                     exerciseSetsRLNext.setLayoutParams(paramsNext);
                 }
 
@@ -315,7 +315,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 2)).get("weight")));
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Set: "+(setNumber+1)+"/"+(exercise.size()-1));
+                exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
             }
         }
 
@@ -389,26 +389,26 @@ public class WorkoutActivity extends AppCompatActivity {
             popupMenu.inflate(R.menu.workout_overflow_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-                                                     @Override
-                                                     public boolean onMenuItemClick(MenuItem item) {
-                                                         switch (item.getItemId()) {
-                                                             case R.id.workout_overflow_info:
-                                                                 System.out.println("INFO");
-                                                                 return true;
+                 @Override
+                 public boolean onMenuItemClick(MenuItem item) {
+                     switch (item.getItemId()) {
+                         case R.id.workout_overflow_info:
+                             System.out.println("INFO");
+                             return true;
 
-                                                             case R.id.workout_overflow_replace:
-                                                                 System.out.println("REPLACE");
-                                                                 return true;
+                         case R.id.workout_overflow_replace:
+                             System.out.println("REPLACE");
+                             return true;
 
-                                                             case R.id.workout_overflow_delete:
-                                                                 System.out.println("DELETE");
-                                                                 return true;
+                         case R.id.workout_overflow_delete:
+                             System.out.println("DELETE");
+                             return true;
 
-                                                             default:
-                                                                 return true;
-                                                         }
-                                                     }
-                                                 }
+                         default:
+                             return true;
+                     }
+                 }
+             }
             );
 
 
