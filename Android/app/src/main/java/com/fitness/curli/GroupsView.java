@@ -6,6 +6,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -23,9 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrInterface;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class GroupsView extends AppCompatActivity {
-    private SlidrInterface slidr;
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -51,6 +49,11 @@ public class GroupsView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("MUSCLE GROUPS");
         toolbar.setTitleTextColor(Color.WHITE);
+
+        //final Drawable upArrow = getResources().getDrawable(R.drawable.left_white);
+        //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
+        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         setSupportActionBar(toolbar);
 
 
@@ -120,6 +123,11 @@ public class GroupsView extends AppCompatActivity {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
+        searchAutoComplete.setTextColor(getResources().getColor(android.R.color.white));
+        ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        icon.setColorFilter(Color.WHITE);
 
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

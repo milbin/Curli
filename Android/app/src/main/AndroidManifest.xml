@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.SlidrActivityTheme" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupsView"/>
-        <activity android:name=".MuscleView" android:parentActivityName=".GroupsView"/>
-        <activity android:name=".ExerciseView" android:parentActivityName=".MuscleView"/>
-        <activity android:name=".Info_View" android:parentActivityName=".ExerciseView"/>
+        <activity android:name=".MuscleView"/>
+        <activity android:name=".ExerciseView"/>
+        <activity android:name=".Info_View"/>
     </application>
 
 </manifest>
