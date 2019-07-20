@@ -19,8 +19,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 import org.json.JSONObject;
 
@@ -29,6 +33,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class GroupsView extends AppCompatActivity {
+    private SlidrInterface slidr;
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -37,7 +42,6 @@ public class GroupsView extends AppCompatActivity {
     ListView list;
     ArrayList<SearchResult> arraylist = new ArrayList<>();
     ListViewAdapter adapter;
-    SearchView editsearch;
     Menu menu;
 
     @Override
@@ -49,11 +53,15 @@ public class GroupsView extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
+
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
 
         // Generate sample data
-        nameList = data.MUSCLE_TO_EXCERCISE.keySet().toArray(new String[0]);
+        ArrayList<String> tempList = data.GROUPS;
+        tempList.addAll(data.MUSCLES);
+        tempList.addAll(data.EXERCISES);
+        nameList = tempList.toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -91,9 +99,8 @@ public class GroupsView extends AppCompatActivity {
                 public void onClick(View v) {
                     TextView rl = v.findViewById(R.id.title);
                     String group = rl.getText().toString();
-                    ArrayList<String> muscles = data.GROUP_TO_MUSCLE.get(group);
                     Intent intent = new Intent(GroupsView.this, MuscleView.class);
-                    intent.putExtra("muscles", muscles);
+                    intent.putExtra("group", group);
                     startActivity(intent);
                 }
             });
@@ -110,23 +117,6 @@ public class GroupsView extends AppCompatActivity {
         list.setVisibility(View.INVISIBLE);
 
         getMenuInflater().inflate(R.menu.search_menu, menu);
-
-        // Define the listener
-        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                // Do something when action item collapses
-                return true;  // Return true to collapse action view
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                // Do something when expanded
-                System.out.println("HERE");
-                return true;  // Return true to expand action view
-            }
-        };
-
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -162,12 +152,27 @@ public class GroupsView extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-    public void select(View v){
+    public void onListItemSelect(View v){
+        TextView label = v.findViewById(R.id.nameLabel);
+        String nameLabel = label.getText().toString().replace(" : ", "");
+
         TextView text = v.findViewById(R.id.name);
-        String muscle = text.getText().toString();
-        ArrayList<String> exercises = data.MUSCLE_TO_EXCERCISE.get(muscle);
-        Intent intent = new Intent(GroupsView.this, ExerciseView.class);
-        intent.putExtra("exercises", exercises);
-        startActivity(intent);
+        String name = text.getText().toString();
+
+        if (nameLabel.equals("Group")) {
+            Intent intent = new Intent(GroupsView.this, MuscleView.class);
+            intent.putExtra("group", name);
+            startActivity(intent);
+        }
+        else if (nameLabel.equals("Muscle")){
+            Intent intent = new Intent(GroupsView.this, ExerciseView.class);
+            intent.putExtra("muscle", name);
+            startActivity(intent);
+        }
+        else if (nameLabel.equals("Exercise")){
+            Intent intent = new Intent(GroupsView.this, Info_View.class);
+            intent.putExtra("exercise", name);
+            startActivity(intent);
+        }
     }
 }

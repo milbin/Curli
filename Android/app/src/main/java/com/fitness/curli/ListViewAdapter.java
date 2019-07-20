@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -20,12 +22,12 @@ public class ListViewAdapter extends BaseAdapter {
     private List<SearchResult> namesList = null;
     private ArrayList<SearchResult> arraylist;
 
-    public ListViewAdapter(Context context, List<SearchResult> animalNamesList) {
+    public ListViewAdapter(Context context, List<SearchResult> namesList) {
         mContext = context;
-        this.namesList = animalNamesList;
+        this.namesList = namesList;
         inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<SearchResult>();
-        this.arraylist.addAll(animalNamesList);
+        this.arraylist.addAll(namesList);
     }
 
     public class ViewHolder {
@@ -48,19 +50,42 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View view, ViewGroup parent) {
+        SQLData data = new SQLData();
         final ViewHolder holder;
+        final ViewHolder holder2;
         if (view == null) {
             holder = new ViewHolder();
+            holder2 = new ViewHolder();
             view = inflater.inflate(R.layout.list_view_items, null);
             // Locate the TextViews in listview_item.xml
             holder.name = (TextView) view.findViewById(R.id.name);
-            view.setTag(holder);
+
+            holder2.name = (TextView) view.findViewById(R.id.nameLabel);
+
+            view.setTag(R.id.name, holder);
+            view.setTag(R.id.nameLabel, holder2);
 
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) view.getTag(R.id.name);
+            holder2 = (ViewHolder) view.getTag(R.id.nameLabel);
         }
         // Set the results into TextViews
         holder.name.setText(namesList.get(position).getName());
+        String name = namesList.get(position).getName();
+
+        if (data.GROUPS.contains(name)){
+            holder2.name.setText("Group : ");
+            System.out.println("GROUP -----> "+name);
+        }
+        else if (data.MUSCLES.contains(name)){
+            holder2.name.setText("Muscle : ");
+            System.out.println("MUSCLE -----> "+name);
+        }
+        else if (data.EXERCISES.contains(name)){
+            holder2.name.setText("Exercise : ");
+            System.out.println("EXERCISE --> "+name);
+        }
+
         return view;
     }
 

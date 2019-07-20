@@ -52,7 +52,7 @@ public class Info_View extends AppCompatActivity {
         Intent intent = getIntent();
 
         TextView title = relativeLayout.findViewById(R.id.title);
-        String text = intent.getStringExtra("title");
+        String text = intent.getStringExtra("exercise");
         title.setText(text);
 
         dialog.dismiss();

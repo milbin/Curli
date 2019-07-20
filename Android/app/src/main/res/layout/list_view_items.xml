@@ -4,14 +4,14 @@
     android:layout_height="fill_parent"
     android:padding="10dp"
     android:background="@color/light"
-    android:onClick="select"
+    android:onClick="onListItemSelect"
     >
 
     <TextView
         android:id="@+id/nameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Muscle : " />
+        android:text="uh oh!" />
 
     <TextView
         android:id="@+id/name"
