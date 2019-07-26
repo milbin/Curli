@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/light">
+    android:background="@android:color/white">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:title="INFO"
@@ -21,12 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:background="@android:color/white"
         >
     </LinearLayout>
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"></ListView>
 
 </android.support.constraint.ConstraintLayout>

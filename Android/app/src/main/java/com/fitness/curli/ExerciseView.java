@@ -81,6 +81,7 @@ public class ExerciseView extends AppCompatActivity {
         context = getApplicationContext();
 
         linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
+        //setBackgroundColor(getResources().getColor(android.R.color.white));
 
         getExcercises();
     }
