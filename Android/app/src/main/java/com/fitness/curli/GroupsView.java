@@ -135,15 +135,19 @@ public class GroupsView extends AppCompatActivity {
                 subll1.addView(card4);
             }
             TextView tv = new TextView(this);
-            tv.setText("Biceps");
+            if(i==0) {
+                tv.setText("A");
+            }else{
+                tv.setText("B");
+            }
             RelativeLayout.LayoutParams tvLp = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            tvLp.setMargins(30, 10, 0, 10);
+            tvLp.setMargins(40, 10, 0, 10);
             tv.setLayoutParams(tvLp);
             tv.setTextColor(getResources().getColor(R.color.colorPrimary));
-            tv.setTextSize(18);
+            tv.setTextSize(22);
             linearLayout.addView(tv);
             linearLayout.addView(subll);
             linearLayout.addView(subll1);

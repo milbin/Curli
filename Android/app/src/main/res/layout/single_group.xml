@@ -2,17 +2,14 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@android:color/white"
-    android:layout_width="130dp"
-    android:layout_height="130dp"
+    android:layout_width="125dp"
+    android:layout_height="125dp"
     >
     <RelativeLayout
         android:id="@+id/group"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="2.5dp"
         android:elevation="3dp"
         android:background="@drawable/white_card_rounded"
         android:animateLayoutChanges="true">
@@ -23,32 +20,15 @@
             android:layout_centerHorizontal="true"
             android:text="title"
             android:paddingTop="10dp"
-            android:textSize="20sp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Primary:"
-            android:layout_marginStart="10dp"
-            android:layout_below="@+id/title"
-            android:layout_alignParentStart="true"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Secondary:"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_below="@+id/title"
-            android:layout_alignParentStart="true"
+            android:textSize="22sp"
             />
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_rowing_black_24dp"
+            android:src="@drawable/placeholder_icon"
             android:layout_below="@+id/title"
-            android:layout_marginTop="0dp"
-            android:layout_marginStart="60dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="25dp"
             android:layout_alignParentStart="true"
             />
         <ImageView
@@ -57,9 +37,18 @@
             android:src="@drawable/ic_rowing_black_24dp"
             android:layout_below="@+id/title"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="50dp"
             android:layout_alignParentStart="true"
             android:id="@+id/group_image"
+            />
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Barbell"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:textSize="16sp"
             />
 
     </RelativeLayout>

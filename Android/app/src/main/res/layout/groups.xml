@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,14 +19,128 @@
         >
 
     </android.support.v7.widget.Toolbar>
+    <Spinner
+        android:id="@+id/muscleGroupSpinner"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/MuscleGroups"
+        android:layout_below="@+id/toolbar"
+         />
+    <Spinner
+        android:id="@+id/equipmentSpinner"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/equipment"
+        android:layout_below="@+id/toolbar"
+        android:layout_toEndOf="@+id/muscleGroupSpinner"
+         />
     <LinearLayout
         android:id="@+id/GroupsViewLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_below="@id/muscleGroupSpinner"
+        android:paddingEnd="30dp"
         android:background="@android:color/white"
         >
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/test"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/muscleGroupSpinner"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="C"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="D"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="F"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="G"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="H"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="J"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="K"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="L"
+            android:textSize="18sp"
+            android:layout_marginTop="15dp"
+            />
+
+
 
     </LinearLayout>
 
@@ -33,6 +148,6 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"></ListView>
+        android:layout_below="@id/muscleGroupSpinner"></ListView>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

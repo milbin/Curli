@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Curli</string>
+
+    <string-array name="MuscleGroups">
+        <item>Any Muscle Group</item>
+        <item>Quadriceps</item>
+        <item>Hamstrings</item>
+        <item>Calves</item>
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Shoulders</item>
+        <item>Triceps</item>
+        <item>Biceps</item>
+        <item>Forearms</item>
+        <item>Trapezius</item>
+        <item>Abs</item>
+    </string-array>
+
+    <string-array name="equipment">
+        <item>Any Equipment</item>
+        <item>Barbell</item>
+        <item>Bodyweight</item>
+        <item>Cables</item>
+        <item>Dumbbell</item>
+    </string-array>
 </resources>
+
+
+
