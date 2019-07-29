@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,6 +98,22 @@ public class GroupsView extends AppCompatActivity {
             TextView title = card.findViewById(R.id.title);
             title.setText(muscleGroups.get(i));
 
+            View card1 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            TextView title1 = card.findViewById(R.id.title);
+            title1.setText(muscleGroups.get(i));
+
+            View card2 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            TextView title2 = card.findViewById(R.id.title);
+            title2.setText(muscleGroups.get(i));
+
+            View card3 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            TextView title3 = card.findViewById(R.id.title);
+            title3.setText(muscleGroups.get(i));
+
+            View card4 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            TextView title4 = card.findViewById(R.id.title);
+            title4.setText(muscleGroups.get(i));
+
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,8 +124,30 @@ public class GroupsView extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            LinearLayout subll = new LinearLayout(this);
+            subll.addView(card);
+            subll.addView(card1);
+            subll.addView(card2);
+            LinearLayout subll1 = new LinearLayout(this);
+            if(i ==1){
 
-            linearLayout.addView(card);
+                subll1.addView(card3);
+                subll1.addView(card4);
+            }
+            TextView tv = new TextView(this);
+            tv.setText("Biceps");
+            RelativeLayout.LayoutParams tvLp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            tvLp.setMargins(30, 10, 0, 10);
+            tv.setLayoutParams(tvLp);
+            tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+            tv.setTextSize(18);
+            linearLayout.addView(tv);
+            linearLayout.addView(subll);
+            linearLayout.addView(subll1);
+
         }
 
         dialog.dismiss();
