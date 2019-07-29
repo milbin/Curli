@@ -56,7 +56,7 @@ public class MuscleView extends AppCompatActivity {
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
 
-        // Generate sample data
+        // Generate sample sqlData
         ArrayList<String> tempList = data.GROUPS;
         tempList.addAll(data.MUSCLES);
         tempList.addAll(data.EXERCISES);

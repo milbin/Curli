@@ -1,16 +1,10 @@
 package com.fitness.curli;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -23,20 +17,18 @@ import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GroupsView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
-    SQLData data = new SQLData();
+    SQLData sqlData = new SQLData();
     String[] nameList;
     ListView list;
     ArrayList<SearchResult> arraylist = new ArrayList<>();
@@ -61,11 +53,10 @@ public class GroupsView extends AppCompatActivity {
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
 
-        // Generate sample data
-        ArrayList<String> tempList = data.GROUPS;
-        tempList.addAll(data.MUSCLES);
-        tempList.addAll(data.EXERCISES);
-        System.out.println(tempList+"HERE");
+        // Generate sample sqlData
+        ArrayList<String> tempList = sqlData.GROUPS;
+        tempList.addAll(sqlData.MUSCLES);
+        tempList.addAll(sqlData.EXERCISES);
         nameList = tempList.toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
@@ -86,15 +77,64 @@ public class GroupsView extends AppCompatActivity {
 
         linearLayout = findViewById(R.id.GroupsViewLinearLayout);
 
-        getGroups();
+        displayExercises();
     }
 
-    private void getGroups(){
-        ArrayList<String> muscleGroups = new ArrayList<>(data.GROUP_TO_MUSCLE.keySet());
+    private void displayExercises(){
+        HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises();
 
-        int length = muscleGroups.size();
+        int length = 0;
+        for (HashMap.Entry<String, ArrayList<LinkedHashMap<String,String>>> entryLetter : exercises.entrySet()) {
+            //each itteration of this loop is equal to one letter of the sqldata data structure
+            //seperates the exercises by their first letter
+            TextView letterSeparator = new TextView(this);
+            letterSeparator.setText(entryLetter.getKey());
+            RelativeLayout.LayoutParams letterSeparatorLp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            letterSeparatorLp.setMargins(40, 10, 0, 10);
+            letterSeparator.setLayoutParams(letterSeparatorLp);
+            letterSeparator.setTextColor(getResources().getColor(R.color.colorPrimary));
+            letterSeparator.setTextSize(22);
+            linearLayout.addView(letterSeparator);
 
-        for (int i = 0; i < length; i++){
+            //here 3 of the exercise cards are added to each horizontal linear layout created below
+            int numberOfViewsAdded = 0;
+            LinearLayout subll = new LinearLayout(this);
+            for (LinkedHashMap<String, String> exercise : entryLetter.getValue()) {
+                System.out.println("HERE");
+                View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+                if(numberOfViewsAdded%3 == 0 && numberOfViewsAdded != 0){
+                    linearLayout.addView(subll);
+                    subll = new LinearLayout(this);
+                    numberOfViewsAdded = 0;
+                }
+                card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView rl = v.findViewById(R.id.title);
+                        String group = rl.getText().toString();
+                        Intent intent = new Intent(GroupsView.this, MuscleView.class);
+                        intent.putExtra("group", group);
+                        startActivity(intent);
+                    }
+                });
+                TextView title = card.findViewById(R.id.title);
+                TextView equipment = card.findViewById(R.id.equipment);
+                title.setText(exercise.get("name"));
+                System.out.println(exercises);
+                equipment.setText(exercise.get("equipment"));
+                subll.addView(card);
+                numberOfViewsAdded++;
+            }
+            if(numberOfViewsAdded != 2){
+                linearLayout.addView(subll);
+            }
+        }
+
+
+        /*for (int i = 0; i < length; i++){
             View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
             TextView title = card.findViewById(R.id.title);
             title.setText(muscleGroups.get(i));
@@ -115,16 +155,7 @@ public class GroupsView extends AppCompatActivity {
             TextView title4 = card.findViewById(R.id.title);
             title4.setText(muscleGroups.get(i));
 
-            card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TextView rl = v.findViewById(R.id.title);
-                    String group = rl.getText().toString();
-                    Intent intent = new Intent(GroupsView.this, MuscleView.class);
-                    intent.putExtra("group", group);
-                    startActivity(intent);
-                }
-            });
+
             LinearLayout subll = new LinearLayout(this);
             subll.addView(card);
             subll.addView(card1);
@@ -153,7 +184,7 @@ public class GroupsView extends AppCompatActivity {
             linearLayout.addView(subll);
             linearLayout.addView(subll1);
 
-        }
+        }*/
 
         dialog.dismiss();
     }

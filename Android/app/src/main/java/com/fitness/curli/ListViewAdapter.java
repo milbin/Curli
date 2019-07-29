@@ -75,15 +75,15 @@ public class ListViewAdapter extends BaseAdapter {
 
         if (data.GROUPS.contains(name)){
             holder2.name.setText("Group : ");
-            System.out.println("GROUP -----> "+name);
+            //System.out.println("GROUP -----> "+name);
         }
         else if (data.MUSCLES.contains(name)){
             holder2.name.setText("Muscle : ");
-            System.out.println("MUSCLE -----> "+name);
+            //System.out.println("MUSCLE -----> "+name);
         }
         else if (data.EXERCISES.contains(name)){
             holder2.name.setText("Exercise : ");
-            System.out.println("EXERCISE --> "+name);
+            //System.out.println("EXERCISE --> "+name);
         }
 
         return view;

@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:entries="@array/MuscleGroups"
         android:layout_below="@+id/toolbar"
+        android:elevation="3dp"
          />
     <Spinner
         android:id="@+id/equipmentSpinner"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:entries="@array/equipment"
         android:layout_below="@+id/toolbar"
+        android:elevation="3dp"
         android:layout_toEndOf="@+id/muscleGroupSpinner"
          />
     <LinearLayout
@@ -149,6 +151,8 @@
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/muscleGroupSpinner"></ListView>
+        android:layout_below="@id/muscleGroupSpinner"
+        android:background="@android:color/white"
+        ></ListView>
 
 </RelativeLayout>
