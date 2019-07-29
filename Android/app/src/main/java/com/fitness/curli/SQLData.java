@@ -12,6 +12,12 @@ public class SQLData {
     public ArrayList<String> MUSCLES = new ArrayList<>(Arrays.asList("biceps", "triceps", "quads", "hams", "abs", "lats"));
     public ArrayList<String> EXERCISES = new ArrayList<>(Arrays.asList("dumbbel curl", "barbell curl", "skull crusher", "rope extension","leg extension", "squat", "leg curl", "deadlift", "crunches", "sit ups", "pull up"));
 
+    /*INFO VIEW DATA STRUCTURE: The methods within this class should parse the raw sql data into the data structure outlined in the example below
+
+    {"a":{"name":"Ab Crunch (Machine)", "equipment":"machine", "primary muscle group":"abs", "secondary muscle group":"obliques", "instructions":"placeholder"},
+    "b":{"name":"Bicep Curl (Dumbbell)", "equipment":"dumbbell", "primary muscle group":"biceps", "secondary muscle group":"NA", "instructions":"placeholder"}}
+     */
+
     public SQLData(){
         MUSCLE_TO_EXCERCISE.put("biceps",  new ArrayList<String>(Arrays.asList("dumbbell curl", "barbell curl")));
         MUSCLE_TO_EXCERCISE.put("triceps", new ArrayList<String>(Arrays.asList("skull crushers", "rope extension")));

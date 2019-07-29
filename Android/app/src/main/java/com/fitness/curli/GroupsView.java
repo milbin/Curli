@@ -65,6 +65,7 @@ public class GroupsView extends AppCompatActivity {
         ArrayList<String> tempList = data.GROUPS;
         tempList.addAll(data.MUSCLES);
         tempList.addAll(data.EXERCISES);
+        System.out.println(tempList+"HERE");
         nameList = tempList.toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
