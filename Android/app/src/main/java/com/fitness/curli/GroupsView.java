@@ -108,7 +108,7 @@ public class GroupsView extends AppCompatActivity {
                 if(numberOfViewsAdded%3 == 0 && numberOfViewsAdded != 0){
                     linearLayout.addView(subll);
                     subll = new LinearLayout(this);
-                    numberOfViewsAdded = 0;
+                    numberOfViewsAdded = -1;
                 }
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override

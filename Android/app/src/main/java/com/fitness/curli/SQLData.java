@@ -68,7 +68,16 @@ public class SQLData {
         exerciseList.add(exercise1);
         exerciseList.add(exercise2);
         exerciseList.add(exercise3);
+
+        ArrayList exerciseList1 = new ArrayList<>();
+        exerciseList1.add(exercise);
+        exerciseList1.add(exercise1);
+        exerciseList1.add(exercise2);
+        exerciseList1.add(exercise3);
+        exerciseList1.add(exercise);
         exercises.put("A", exerciseList);
+        exercises.put("B", exerciseList1);
+        exercises.put("C", exerciseList);
         return exercises;
 
 
