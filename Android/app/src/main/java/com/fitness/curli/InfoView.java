@@ -18,13 +18,12 @@ import android.support.v7.widget.SearchView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-public class GroupsView extends AppCompatActivity {
+public class InfoView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -38,10 +37,8 @@ public class GroupsView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.groups);
+        setContentView(R.layout.info_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("MUSCLE GROUPS");
-        toolbar.setTitleTextColor(Color.WHITE);
 
         //final Drawable upArrow = getResources().getDrawable(R.drawable.left_white);
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
@@ -71,7 +68,7 @@ public class GroupsView extends AppCompatActivity {
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
-        dialog = ProgressDialog.show(GroupsView.this, "", "Loading...", true);
+        dialog = ProgressDialog.show(InfoView.this, "", "Loading...", true);
 
         context = getApplicationContext();
 
@@ -104,7 +101,7 @@ public class GroupsView extends AppCompatActivity {
             LinearLayout subll = new LinearLayout(this);
             for (LinkedHashMap<String, String> exercise : entryLetter.getValue()) {
                 System.out.println("HERE");
-                View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+                View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
                 if(numberOfViewsAdded%3 == 0 && numberOfViewsAdded != 0){
                     linearLayout.addView(subll);
                     subll = new LinearLayout(this);
@@ -115,7 +112,7 @@ public class GroupsView extends AppCompatActivity {
                     public void onClick(View v) {
                         TextView rl = v.findViewById(R.id.title);
                         String group = rl.getText().toString();
-                        Intent intent = new Intent(GroupsView.this, MuscleView.class);
+                        Intent intent = new Intent(InfoView.this, InfoViewExercise.class);
                         intent.putExtra("group", group);
                         startActivity(intent);
                     }
@@ -135,23 +132,23 @@ public class GroupsView extends AppCompatActivity {
 
 
         /*for (int i = 0; i < length; i++){
-            View card = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
             TextView title = card.findViewById(R.id.title);
             title.setText(muscleGroups.get(i));
 
-            View card1 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            View card1 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
             TextView title1 = card.findViewById(R.id.title);
             title1.setText(muscleGroups.get(i));
 
-            View card2 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            View card2 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
             TextView title2 = card.findViewById(R.id.title);
             title2.setText(muscleGroups.get(i));
 
-            View card3 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            View card3 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
             TextView title3 = card.findViewById(R.id.title);
             title3.setText(muscleGroups.get(i));
 
-            View card4 = LayoutInflater.from(context).inflate(R.layout.single_group, null);
+            View card4 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
             TextView title4 = card.findViewById(R.id.title);
             title4.setText(muscleGroups.get(i));
 
@@ -242,18 +239,9 @@ public class GroupsView extends AppCompatActivity {
         TextView text = v.findViewById(R.id.name);
         String name = text.getText().toString();
 
-        if (nameLabel.equals("Group")) {
-            Intent intent = new Intent(GroupsView.this, MuscleView.class);
-            intent.putExtra("group", name);
-            startActivity(intent);
-        }
-        else if (nameLabel.equals("Muscle")){
-            Intent intent = new Intent(GroupsView.this, ExerciseView.class);
-            intent.putExtra("muscle", name);
-            startActivity(intent);
-        }
-        else if (nameLabel.equals("Exercise")){
-            Intent intent = new Intent(GroupsView.this, Info_View.class);
+
+        if (nameLabel.equals("Exercise")){
+            Intent intent = new Intent(InfoView.this, InfoViewExercise.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
         }

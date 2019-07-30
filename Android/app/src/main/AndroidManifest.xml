@@ -17,10 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupsView"/>
-        <activity android:name=".MuscleView"/>
-        <activity android:name=".ExerciseView"/>
-        <activity android:name=".Info_View"/>
+        <activity android:name=".InfoView"/>
+        <activity android:name=".InfoViewExercise"/>
     </application>
 
 </manifest>

@@ -6,19 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-    <android.support.v7.widget.Toolbar
+    <include
+        layout="@layout/toolbar"
         android:id="@+id/toolbar"
-        android:title="INFO"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:animateLayoutChanges="true"
         >
+        <TextView
+            android:id="@+id/title"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:text="Curli"
+            />
 
-    </android.support.v7.widget.Toolbar>
+    </include>
+
     <Spinner
         android:id="@+id/muscleGroupSpinner"
         android:layout_width="195dp"
@@ -58,7 +58,7 @@
 
     <LinearLayout
         android:id="@+id/test"
-        android:layout_width="20dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_below="@id/muscleGroupSpinner"
@@ -68,83 +68,84 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:text="A"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="B"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="C"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="D"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="E"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="F"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="G"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="H"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="I"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="J"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="K"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="L"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             />
 
