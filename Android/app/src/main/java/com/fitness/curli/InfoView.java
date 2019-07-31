@@ -39,6 +39,12 @@ public class InfoView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*ImageView logo = new ImageView(this);
+        logo.setImageDrawable(getDrawable(R.drawable.final_logo));
+        toolbar.addView(logo);
+        logo.requestLayout();
+        logo.getLayoutParams().height = 150;
+        logo.getLayoutParams().width = 263;*/
 
         //final Drawable upArrow = getResources().getDrawable(R.drawable.left_white);
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);

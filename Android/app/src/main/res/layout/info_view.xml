@@ -10,13 +10,6 @@
         layout="@layout/toolbar"
         android:id="@+id/toolbar"
         >
-        <TextView
-            android:id="@+id/title"
-            android:gravity="center"
-            android:textColor="@android:color/black"
-            android:text="Curli"
-            />
-
     </include>
 
     <Spinner
