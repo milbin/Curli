@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:padding="10dp"
-    android:background="@color/light"
+    android:background="@android:color/white"
     android:onClick="onListItemSelect"
     >
 

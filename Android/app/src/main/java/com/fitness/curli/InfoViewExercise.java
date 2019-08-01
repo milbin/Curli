@@ -5,20 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-public class Info_View extends AppCompatActivity {
+public class InfoViewExercise extends AppCompatActivity {
     RelativeLayout relativeLayout;
     ProgressDialog dialog;
     Context context;
@@ -27,7 +23,7 @@ public class Info_View extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceBundle){
         super.onCreate(savedInstanceBundle);
-        setContentView(R.layout.information_page);
+        setContentView(R.layout.info_view_exercise);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("EXERCISE INFO");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -40,7 +36,7 @@ public class Info_View extends AppCompatActivity {
         //ab.setDisplayHomeAsUpEnabled(true);
 
 
-        dialog = ProgressDialog.show(Info_View.this, "", "Loading...", true);
+        dialog = ProgressDialog.show(InfoViewExercise.this, "", "Loading...", true);
 
         context = getApplicationContext();
         relativeLayout = findViewById(R.id.relativeLayout);
