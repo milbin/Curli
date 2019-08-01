@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,12 +40,18 @@ public class InfoView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        /*ImageView logo = new ImageView(this);
-        logo.setImageDrawable(getDrawable(R.drawable.final_logo));
-        toolbar.addView(logo);
-        logo.requestLayout();
-        logo.getLayoutParams().height = 150;
-        logo.getLayoutParams().width = 263;*/
+        setTitle("");
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        LinearLayout alphabetScroll = findViewById(R.id.alphabetScroll);
+        for (int i = 0; i < alphabet.length(); i++){
+            char letter = alphabet.charAt(i);
+            TextView letterTV = new TextView(this);
+            letterTV.setText(Character.toString(letter));
+            letterTV.setTypeface(letterTV.getTypeface(), Typeface.BOLD);
+            letterTV.setTextSize(13);
+            alphabetScroll.addView(letterTV);
+
+        }
 
         //final Drawable upArrow = getResources().getDrawable(R.drawable.left_white);
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
