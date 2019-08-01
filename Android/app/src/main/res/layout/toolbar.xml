@@ -10,6 +10,7 @@
     android:layout_marginBottom="10dp"
     android:elevation="5dp"
     android:animateLayoutChanges="true"
+    android:gravity="start"
     >
         <ImageView
             android:layout_width="105dp"
@@ -18,5 +19,9 @@
             android:src="@mipmap/final_logo"
             android:layout_gravity="center"
             />
+        <android.support.v7.widget.ActionMenuView
+            android:id="@+id/avmMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"/>
 
 </android.support.v7.widget.Toolbar>

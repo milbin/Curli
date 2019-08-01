@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ public class InfoView extends AppCompatActivity {
     SQLData sqlData = new SQLData();
     String[] nameList;
     ListView list;
+    Toolbar toolbar;
     ArrayList<SearchResult> arraylist = new ArrayList<>();
     ListViewAdapter adapter;
     Menu menu;
@@ -39,8 +41,11 @@ public class InfoView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
+
+
+        //create alphabet scroller linear layout
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         LinearLayout alphabetScroll = findViewById(R.id.alphabetScroll);
         for (int i = 0; i < alphabet.length(); i++){
@@ -53,7 +58,7 @@ public class InfoView extends AppCompatActivity {
 
         }
 
-        //final Drawable upArrow = getResources().getDrawable(R.drawable.left_white);
+        //final Drawable upArrow = getResources().getDrawable(R.drawable.back_button);
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
         //getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -201,18 +206,34 @@ public class InfoView extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
         list.setVisibility(View.INVISIBLE);
 
-        getMenuInflater().inflate(R.menu.search_menu, menu);
+        //getMenuInflater().inflate(R.menu.search_menu, menu);
+        ActionMenuView avmMenu = toolbar.findViewById(R.id.avmMenu);
+        getMenuInflater().inflate(R.menu.search_menu, avmMenu.getMenu());
+        this.menu = avmMenu.getMenu();
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
-        searchAutoComplete.setTextColor(getResources().getColor(android.R.color.white));
-        ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        icon.setColorFilter(Color.WHITE);
+        MenuItem searchItem = avmMenu.getMenu().findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+
+
+        avmMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
+                   @Override
+                   public boolean onMenuItemClick(MenuItem menuItem) {
+                       if(menuItem.getItemId() == R.id.action_search){
+                           searchView.setIconified(false);
+                           SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+                           searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
+                           searchAutoComplete.setTextColor(getResources().getColor(android.R.color.white));
+                           ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+                           icon.setColorFilter(Color.WHITE);
+                       }
+                       return false;
+                   }
+               }
+
+
+        );
 
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -241,10 +262,12 @@ public class InfoView extends AppCompatActivity {
             }
         });
 
+
         // Configure the search info and add any event listeners...
 
         return super.onCreateOptionsMenu(menu);
     }
+
     public void onListItemSelect(View v){
         TextView label = v.findViewById(R.id.nameLabel);
         String nameLabel = label.getText().toString().replace(" : ", "");
