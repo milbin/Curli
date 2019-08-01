@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fitness.curli" >
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -9,20 +10,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- TODO change this after to a website url we actually own -->
+                <data android:host="curli.com"/>
+                <data android:host="www.curli.com"/>
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".WorkoutActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fitness.curli.MainActivity" />
+
+
+        </activity>
+
         <activity android:name=".InfoView">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fitness.curli.MainActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fitness.curli.MainActivity" />
         </activity>
         <activity android:name=".InfoViewExercise"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
