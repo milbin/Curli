@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity{
         //TextView text = findViewById(R.id.text);
         Intent intent = new Intent(MainActivity.this, InfoView.class);
         startActivity(intent);
+
     }
 
 }
