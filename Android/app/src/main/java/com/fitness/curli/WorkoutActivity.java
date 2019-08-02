@@ -235,7 +235,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                    exerciseSets.setText("Sets Completed: \n"+(setNumber+1)+" of "+(exercise.size()-1));
                 }
                 View dividerLine = relativeLayout.findViewById(R.id.divider_line);
                 dividerLine.setVisibility(View.GONE);
