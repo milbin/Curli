@@ -34,6 +34,7 @@ public class WorkoutActivity extends AppCompatActivity {
     ArrayList<ArrayList> exercises;
     Context context;
     int checkmark_size = 50;
+    RelativeLayout currentlyExpandedCard;
 
 
     @Override
@@ -52,6 +53,7 @@ public class WorkoutActivity extends AppCompatActivity {
         for(ArrayList<HashMap> exercise:exercises) {
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
             linearLayout.addView(relativeLayout);
+            relativeLayout.setOnClickListener(new onExpandClick());
 
             ImageButton overflowButton = relativeLayout.findViewById(R.id.overflowButton);
             overflowButton.setOnClickListener(new onOverflowClick(context));
@@ -77,7 +79,7 @@ public class WorkoutActivity extends AppCompatActivity {
             exerciseName.setText((String) exercise.get(1).get("title"));
             exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
             exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
-            excerciseSets.setText("Sets Completed: " + 1 + " of " + (exercise.size() - 1));
+            excerciseSets.setText("Sets Completed: " + 0 + " of " + (exercise.size() - 1));
 
             LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
@@ -95,19 +97,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseSets.addView(checkbox);
             }
 
-            if(counter != 0){
-                dividerLine.setVisibility(View.GONE);
-                weightAddButton.setVisibility(View.GONE);
-                weightSubtractButton.setVisibility(View.GONE);
-                repsAddButton.setVisibility(View.GONE);
-                repsSubtractButton.setVisibility(View.GONE);
-                setBackButton.setVisibility(View.GONE);
-                doneButton.setVisibility(View.GONE);
-                RelativeLayout exerciseSetsRL = relativeLayout.findViewById(R.id.exercise_sets_RL);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseSetsRL.getLayoutParams();
-                params.addRule(RelativeLayout.BELOW, R.id.exercise_name);
-                params.setMargins(0, 10, 0, 0);
-                exerciseSetsRL.setLayoutParams(params);
+            if(counter != 0){ //
+                collapseCard((RelativeLayout) relativeLayout);
+            }else{ //initlize the current expanded card with the first exercise
+                currentlyExpandedCard = (RelativeLayout) relativeLayout;
             }
             counter++;
         }
@@ -133,12 +126,11 @@ public class WorkoutActivity extends AppCompatActivity {
             int setNumber = (int) exercise.get(0)-1;
             RelativeLayout relativeLayout = (RelativeLayout) v.getParent();
             System.out.println(setNumber);
-            System.out.println(exercise.size()-2);
-            if(setNumber == -1){
+            System.out.println(exercise);
+            if(setNumber == -1){ //this is so that the set number does not go below zero
                 return;
-            }else if(setNumber == exercise.size()-2){
+            }else{
                 exercise.set(0, setNumber); //decrement the set number by 1
-                System.out.println("HERE");
                 LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 for(int i=exercise.size()-2; i>=setNumber; i--) {
                     checkboxLinearLayout.getChildAt(i);
@@ -155,41 +147,19 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setLayoutParams(params);
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
+
+                    TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
+                    exerciseName.setText((String) ((HashMap) exercise.get(setNumber + 1)).get("title"));
+
+                    TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+                    exerciseReps.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 1)).get("reps")));
+
+                    TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+                    exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 1)).get("weight")));
+
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                     exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                 }
-            }else {
-                exercise.set(0, setNumber); //decrement the set number by 1
-                System.out.println("HERE1");
-                LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
-                for(int i=exercise.size()-2; i>=setNumber; i--) {
-                    checkboxLinearLayout.getChildAt(i);
-                    checkboxLinearLayout.removeViewAt(i);
-
-                    ImageView checkbox = new ImageView(context);
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                            checkmark_size,
-                            checkmark_size
-                    );
-                    if (i != 0) {
-                        params.setMarginStart(10);
-                    }
-                    checkbox.setLayoutParams(params);
-                    checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
-                    checkboxLinearLayout.addView(checkbox, i);
-                }
-
-                TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
-                exerciseName.setText((String) ((HashMap) exercise.get(setNumber + 1)).get("title"));
-
-                TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-                exerciseReps.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 1)).get("reps")));
-
-                TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-                exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 1)).get("weight")));
-
-                TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Sets Completed: "+(setNumber +1)+" of "+(exercise.size()-1));
             }
 
         }
@@ -235,54 +205,18 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Sets Completed: \n"+(setNumber+1)+" of "+(exercise.size()-1));
+                    //this text will get set twice, once here and once in the colapse card since the colapse card does not have the set number param
+                    //the settext in the collpase card is meant only to add a newline
+                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 }
-                View dividerLine = relativeLayout.findViewById(R.id.divider_line);
-                dividerLine.setVisibility(View.GONE);
-                ImageButton weightAddButton = relativeLayout.findViewById(R.id.weight_add_button);
-                weightAddButton.setVisibility(View.GONE);
-                ImageButton weightSubtractButton = relativeLayout.findViewById(R.id.weight_subtract_button);
-                weightSubtractButton.setVisibility(View.GONE);
-                ImageButton repsAddButton = relativeLayout.findViewById(R.id.reps_add_button);
-                repsAddButton.setVisibility(View.GONE);
-                ImageButton repsSubtractButton = relativeLayout.findViewById(R.id.reps_subtract_button);
-                repsSubtractButton.setVisibility(View.GONE);
-                Button setBackButton = relativeLayout.findViewById(R.id.exercise_sets_back_button);
-                setBackButton.setVisibility(View.GONE);
-                Button doneButton = relativeLayout.findViewById(R.id.done_button);
-                doneButton.setVisibility(View.GONE);
-                RelativeLayout exerciseSetsRL = relativeLayout.findViewById(R.id.exercise_sets_RL);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseSetsRL.getLayoutParams();
-                params.addRule(RelativeLayout.BELOW, R.id.exercise_name);
-                params.setMargins(0, 10, 0, 0);
-                exerciseSetsRL.setLayoutParams(params);
-                System.out.println(exerciseNumber+1);
-                System.out.println(linearLayout.getChildCount());
-                if(exerciseNumber+1 < linearLayout.getChildCount()) {
+                collapseCard(relativeLayout);
+                if(exerciseNumber+1 < linearLayout.getChildCount()) { //this expands the next view
                     RelativeLayout relativeLayoutNext = (RelativeLayout) linearLayout.getChildAt(exerciseNumber + 1);
-                    View dividerLineNext = relativeLayoutNext.findViewById(R.id.divider_line);
-                    dividerLineNext.setVisibility(View.VISIBLE);
-                    ImageButton weightAddButtonNext = relativeLayoutNext.findViewById(R.id.weight_add_button);
-                    weightAddButtonNext.setVisibility(View.VISIBLE);
-                    ImageButton weightSubtractButtonNext = relativeLayoutNext.findViewById(R.id.weight_subtract_button);
-                    weightSubtractButtonNext.setVisibility(View.VISIBLE);
-                    ImageButton repsAddButtonNext = relativeLayoutNext.findViewById(R.id.reps_add_button);
-                    repsAddButtonNext.setVisibility(View.VISIBLE);
-                    ImageButton repsSubtractButtonNext = relativeLayoutNext.findViewById(R.id.reps_subtract_button);
-                    repsSubtractButtonNext.setVisibility(View.VISIBLE);
-                    Button setBackButtonNext = relativeLayoutNext.findViewById(R.id.exercise_sets_back_button);
-                    setBackButtonNext.setVisibility(View.VISIBLE);
-                    Button doneButtonNext = relativeLayoutNext.findViewById(R.id.done_button);
-                    doneButtonNext.setVisibility(View.VISIBLE);
-                    RelativeLayout exerciseSetsRLNext = relativeLayoutNext.findViewById(R.id.exercise_sets_RL);
-                    RelativeLayout.LayoutParams paramsNext = (RelativeLayout.LayoutParams) exerciseSetsRLNext.getLayoutParams();
-                    paramsNext.addRule(RelativeLayout.BELOW, R.id.weight_relative_layout);
-                    paramsNext.setMargins(0, 20, 0, 0);
-                    exerciseSetsRLNext.setLayoutParams(paramsNext);
+                    expandCard(relativeLayoutNext);
                 }
 
 
-            } else{
+            } else{ //increment set by 1
                 //TODO add setting that disables this vibration
                 Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vibe.vibrate(100);
@@ -318,6 +252,55 @@ public class WorkoutActivity extends AppCompatActivity {
                 exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
             }
         }
+
+    }
+
+    private void expandCard(RelativeLayout relativeLayout){
+        View dividerLineNext = relativeLayout.findViewById(R.id.divider_line);
+        dividerLineNext.setVisibility(View.VISIBLE);
+        ImageButton weightAddButtonNext = relativeLayout.findViewById(R.id.weight_add_button);
+        weightAddButtonNext.setVisibility(View.VISIBLE);
+        ImageButton weightSubtractButtonNext = relativeLayout.findViewById(R.id.weight_subtract_button);
+        weightSubtractButtonNext.setVisibility(View.VISIBLE);
+        ImageButton repsAddButtonNext = relativeLayout.findViewById(R.id.reps_add_button);
+        repsAddButtonNext.setVisibility(View.VISIBLE);
+        ImageButton repsSubtractButtonNext = relativeLayout.findViewById(R.id.reps_subtract_button);
+        repsSubtractButtonNext.setVisibility(View.VISIBLE);
+        Button setBackButtonNext = relativeLayout.findViewById(R.id.exercise_sets_back_button);
+        setBackButtonNext.setVisibility(View.VISIBLE);
+        Button doneButtonNext = relativeLayout.findViewById(R.id.done_button);
+        doneButtonNext.setVisibility(View.VISIBLE);
+        RelativeLayout exerciseSetsRLNext = relativeLayout.findViewById(R.id.exercise_sets_RL);
+        RelativeLayout.LayoutParams paramsNext = (RelativeLayout.LayoutParams) exerciseSetsRLNext.getLayoutParams();
+        paramsNext.addRule(RelativeLayout.BELOW, R.id.weight_relative_layout);
+        paramsNext.setMargins(0, 20, 0, 0);
+        exerciseSetsRLNext.setLayoutParams(paramsNext);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        currentlyExpandedCard = relativeLayout;
+    }
+    private void collapseCard(RelativeLayout relativeLayout){
+        View dividerLine = relativeLayout.findViewById(R.id.divider_line);
+        dividerLine.setVisibility(View.GONE);
+        ImageButton weightAddButton = relativeLayout.findViewById(R.id.weight_add_button);
+        weightAddButton.setVisibility(View.GONE);
+        ImageButton weightSubtractButton = relativeLayout.findViewById(R.id.weight_subtract_button);
+        weightSubtractButton.setVisibility(View.GONE);
+        ImageButton repsAddButton = relativeLayout.findViewById(R.id.reps_add_button);
+        repsAddButton.setVisibility(View.GONE);
+        ImageButton repsSubtractButton = relativeLayout.findViewById(R.id.reps_subtract_button);
+        repsSubtractButton.setVisibility(View.GONE);
+        Button setBackButton = relativeLayout.findViewById(R.id.exercise_sets_back_button);
+        setBackButton.setVisibility(View.GONE);
+        Button doneButton = relativeLayout.findViewById(R.id.done_button);
+        doneButton.setVisibility(View.GONE);
+        RelativeLayout exerciseSetsRL = relativeLayout.findViewById(R.id.exercise_sets_RL);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseSetsRL.getLayoutParams();
+        params.addRule(RelativeLayout.BELOW, R.id.exercise_name);
+        params.setMargins(0, 10, 0, 0);
+        exerciseSetsRL.setLayoutParams(params);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
 
     }
     public class onAddOrSubtractClick implements View.OnClickListener {
@@ -374,9 +357,18 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
+    public class onExpandClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            System.out.println("HERE");
+            //expand the card that was clicked
+            collapseCard(currentlyExpandedCard);
+            expandCard((RelativeLayout)v);
+        }
+    }
 
 
-    public class onOverflowClick implements View.OnClickListener {
+    private class onOverflowClick implements View.OnClickListener {
         private Context mContext;
 
         private onOverflowClick(Context context){
