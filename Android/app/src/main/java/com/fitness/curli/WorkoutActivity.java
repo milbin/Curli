@@ -1,7 +1,9 @@
 package com.fitness.curli;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -111,7 +115,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent())).getParent().getParent();
+            LinearLayout linearLayout = (LinearLayout)(v.getParent()).getParent().getParent();
             int exerciseNumber = 0;
             for (int i = 0; i < linearLayout.getChildCount(); i++) {
                 if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent()){
@@ -151,11 +155,32 @@ public class WorkoutActivity extends AppCompatActivity {
                     TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
                     exerciseName.setText((String) ((HashMap) exercise.get(setNumber + 1)).get("title"));
 
-                    TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-                    exerciseReps.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 1)).get("reps")));
+                    //animate the change in edittext value
+                    final TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+                    final TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+                    final ArrayList finalExercise = exercise;
+                    final int finalSetNumber = setNumber;
+                    final Animation in = new AlphaAnimation(0.0f, 1.0f);
+                    in.setDuration(75);
+                    final Animation out = new AlphaAnimation(1.0f, 0.0f);
+                    out.setDuration(75);
 
-                    TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-                    exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 1)).get("weight")));
+                    exerciseReps.setText("");
+                    exerciseReps.startAnimation(out);
+                    exerciseWeight.setText("");
+                    exerciseWeight.startAnimation(out);
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable()
+                    {
+                        @Override public void run()
+                        {
+                            exerciseReps.setText(Integer.toString((Integer) ((HashMap) finalExercise.get(finalSetNumber + 1)).get("reps")));
+                            exerciseReps.startAnimation(in);
+                            exerciseWeight.setText(Double.toString((Double) ((HashMap) finalExercise.get(finalSetNumber + 1)).get("weight")));
+                            exerciseWeight.startAnimation(in);
+                        }
+                    }, 75);
 
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                     exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
@@ -209,6 +234,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     //the settext in the collpase card is meant only to add a newline
                     exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 }
+
                 collapseCard(relativeLayout);
                 if(exerciseNumber+1 < linearLayout.getChildCount()) { //this expands the next view
                     RelativeLayout relativeLayoutNext = (RelativeLayout) linearLayout.getChildAt(exerciseNumber + 1);
@@ -242,15 +268,38 @@ public class WorkoutActivity extends AppCompatActivity {
                 TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
                 exerciseName.setText((String) ((HashMap) exercise.get(setNumber + 2)).get("title"));
 
-                TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
-                exerciseReps.setText(Integer.toString((Integer) ((HashMap) exercise.get(setNumber + 2)).get("reps")));
+                //animate the change in edittext value
+                final TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+                final TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+                final ArrayList finalExercise = exercise;
+                final int finalSetNumber = setNumber;
+                final Animation in = new AlphaAnimation(0.0f, 1.0f);
+                in.setDuration(75);
+                final Animation out = new AlphaAnimation(1.0f, 0.0f);
+                out.setDuration(75);
 
-                TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-                exerciseWeight.setText(Double.toString((Double) ((HashMap) exercise.get(setNumber + 2)).get("weight")));
+                exerciseReps.setText("");
+                exerciseReps.startAnimation(out);
+                exerciseWeight.setText("");
+                exerciseWeight.startAnimation(out);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable()
+                {
+                    @Override public void run()
+                    {
+                        exerciseReps.setText(Integer.toString((Integer) ((HashMap) finalExercise.get(finalSetNumber + 2)).get("reps")));
+                        exerciseReps.startAnimation(in);
+                        exerciseWeight.setText(Double.toString((Double) ((HashMap) finalExercise.get(finalSetNumber + 2)).get("weight")));
+                        exerciseWeight.startAnimation(in);
+                    }
+                }, 75);
 
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                 exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
             }
+
+
         }
 
     }
@@ -277,6 +326,10 @@ public class WorkoutActivity extends AppCompatActivity {
         exerciseSetsRLNext.setLayoutParams(paramsNext);
         TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
         exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+        TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+        exerciseReps.setEnabled(true);
+        exerciseWeight.setEnabled(true);
         currentlyExpandedCard = relativeLayout;
     }
     private void collapseCard(RelativeLayout relativeLayout){
@@ -301,6 +354,11 @@ public class WorkoutActivity extends AppCompatActivity {
         exerciseSetsRL.setLayoutParams(params);
         TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
         exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
+        TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+        TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+        exerciseReps.setEnabled(false);
+        exerciseWeight.setEnabled(false);
+
 
     }
     public class onAddOrSubtractClick implements View.OnClickListener {
@@ -360,7 +418,18 @@ public class WorkoutActivity extends AppCompatActivity {
     public class onExpandClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("HERE");
+            LinearLayout linearLayout = (LinearLayout)v.getParent();
+            int exerciseNumber = 0;
+            for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                if(linearLayout.getChildAt(i) == v){
+                    exerciseNumber = i;
+                    break;
+                }
+            }
+            if((int)exercises.get(exerciseNumber).get(0) == exercises.get(exerciseNumber).size()-1){
+                v.findViewById(R.id.exercise_sets_back_button).performClick();
+            }
+            System.out.println(exercises);
             //expand the card that was clicked
             collapseCard(currentlyExpandedCard);
             expandCard((RelativeLayout)v);

@@ -18,6 +18,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
+        android:animateLayoutChanges="true"
 
         >
 
@@ -141,7 +142,7 @@
                 android:background="@android:color/transparent"
                 android:layout_alignBottom="@+id/exercise_reps"
                 />
-        </RelativeLayout>
+        </RelativeLayout>>
 
         <Button
             android:id="@+id/done_button"
