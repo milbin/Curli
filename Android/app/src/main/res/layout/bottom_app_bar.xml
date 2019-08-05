@@ -4,7 +4,7 @@
     android:id="@+id/actionbarT"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/white"
     android:minHeight="?attr/actionBarSize"
     android:layout_alignParentBottom="true"
     app:theme="@style/Base.Theme.AppCompat.CompactMenu" >
@@ -20,44 +20,51 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
+
             >
             <ImageButton
                 android:id="@+id/history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ic_access_time_black_24dp" />
             <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="History"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
+                android:textColor="#5f6267"
                 android:layout_below="@+id/history"
                 />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
             >
             <ImageButton
                 android:id="@+id/schedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ic_calendar_black_24dp" />
             <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Schedule"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
+                android:textColor="#5f6267"
                 android:layout_below="@+id/schedule"
                 />
         </RelativeLayout>
@@ -66,21 +73,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
+
             >
             <ImageButton
                 android:id="@+id/workout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ic_dumbell" />
             <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Workout"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
+                android:textColor="#5f6267"
                 android:layout_below="@+id/workout"
                 />
         </RelativeLayout>
@@ -89,21 +100,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
+
             >
             <ImageButton
                 android:id="@+id/exercises"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_exercises_black_24dp" />
+                android:scaleType="fitCenter"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_info_blue_24dp" />
             <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Exercises"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
+                android:textColor="#5f6267"
                 android:layout_below="@+id/exercises"
                 />
         </RelativeLayout>
@@ -112,21 +127,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="10dp"
+
             >
             <ImageButton
                 android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="15dp"
                 android:src="@drawable/ic_trending_up_black_24dp" />
             <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Progress"
                 android:layout_centerHorizontal="true"
-                android:textColor="@android:color/white"
+                android:textColor="#5f6267"
                 android:layout_below="@+id/progress"
                 />
         </RelativeLayout>

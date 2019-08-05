@@ -1,10 +1,15 @@
 package com.fitness.curli;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +27,17 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
-        RelativeLayout workoutPlaceholder1 = findViewById(R.id.workout_card1);
-        workoutPlaceholder1.setOnClickListener(new onWorkoutClick1());
+        //set on click listener for the bottom bar buttons
+        findViewById(R.id.history).setOnClickListener(new onNavbarClick());
+        findViewById(R.id.schedule).setOnClickListener(new onNavbarClick());
+        findViewById(R.id.workout).setOnClickListener(new onNavbarClick());
+        findViewById(R.id.exercises).setOnClickListener(new onNavbarClick());
+        findViewById(R.id.progress).setOnClickListener(new onNavbarClick());
 
 
 
     }
 
-    public class onWorkoutClick1 implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, InfoView.class);
-            startActivity(intent);
-        }
-    }
 
 
     public class onWorkoutClick implements View.OnClickListener {
@@ -87,6 +90,41 @@ public class MainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
             myIntent.putExtra("workout", workout);
             startActivity(myIntent);
+        }
+    }
+
+    public class onNavbarClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //grey out all other icons and textviews
+            LinearLayout linearLayout = (LinearLayout)v.getParent().getParent();
+            ((ImageView)findViewById(R.id.history)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.schedule)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.workout)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.exercises)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.progress)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            int numberOfChildren = linearLayout.getChildCount();
+            for(int i=0; i<numberOfChildren; i++){
+                ((TextView)linearLayout.getChildAt(i).findViewById(R.id.bottom_icon_TV)).setTextColor(Color.parseColor("#5f6267"));
+            }
+            //set current view as selected (color primary)
+            ((ImageView)v).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((TextView)((RelativeLayout) v.getParent()).findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+            if(v.getId() == R.id.history){
+
+            }else if(v.getId() == R.id.schedule){
+
+            }else if(v.getId() == R.id.workout){
+
+            }else if(v.getId() == R.id.exercises){
+                Intent intent = new Intent(MainActivity.this, InfoView.class);
+                startActivity(intent);
+
+
+            }else if(v.getId() == R.id.progress){
+
+            }
+
         }
     }
 }
