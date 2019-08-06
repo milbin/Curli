@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.text.IDNA;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class InfoView extends AppCompatActivity {
-    private Context context;
+    private Context context = this;
     LinearLayout linearLayout;
     ProgressDialog dialog;
     SQLData sqlData = new SQLData();
@@ -43,6 +45,14 @@ public class InfoView extends AppCompatActivity {
         setContentView(R.layout.info_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
+
+        //set on click listener for the bottom bar buttons
+        ((View)findViewById(R.id.history).getParent()).setOnClickListener(new onNavbarClick());
+        ((View)findViewById(R.id.schedule).getParent()).setOnClickListener(new onNavbarClick());
+        ((View)findViewById(R.id.workout).getParent()).setOnClickListener(new onNavbarClick());
+        ((View)findViewById(R.id.exercises).getParent()).setOnClickListener(new onNavbarClick());
+        ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
+        ((View)findViewById(R.id.exercises).getParent()).performClick();
 
 
         //create alphabet scroller linear layout
@@ -118,7 +128,6 @@ public class InfoView extends AppCompatActivity {
             int numberOfViewsAdded = 0;
             LinearLayout subll = new LinearLayout(this);
             for (LinkedHashMap<String, String> exercise : entryLetter.getValue()) {
-                System.out.println("HERE");
                 View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
                 if(numberOfViewsAdded%3 == 0 && numberOfViewsAdded != 0){
                     linearLayout.addView(subll);
@@ -138,7 +147,6 @@ public class InfoView extends AppCompatActivity {
                 TextView title = card.findViewById(R.id.title);
                 TextView equipment = card.findViewById(R.id.equipment);
                 title.setText(exercise.get("name"));
-                System.out.println(exercises);
                 equipment.setText(exercise.get("equipment"));
                 subll.addView(card);
                 numberOfViewsAdded++;
@@ -280,6 +288,55 @@ public class InfoView extends AppCompatActivity {
             Intent intent = new Intent(InfoView.this, InfoViewExercise.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
+        }
+    }
+
+    public class onNavbarClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //grey out all other icons and textviews
+            LinearLayout linearLayout = (LinearLayout)v.getParent();
+            ((ImageView)findViewById(R.id.history)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.schedule)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.workout)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.exercises)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            ((ImageView)findViewById(R.id.progress)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
+            int numberOfChildren = linearLayout.getChildCount();
+            for(int i=0; i<numberOfChildren; i++){
+                ((TextView)linearLayout.getChildAt(i).findViewById(R.id.bottom_icon_TV)).setTextColor(Color.parseColor("#5f6267"));
+            }
+
+            if(v.findViewById(R.id.history) != null){
+                //set current view as selected (color primary)
+                ((ImageView)v.findViewById(R.id.history)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+
+            }else if(v.findViewById(R.id.schedule) != null){
+                //set current view as selected (color primary)
+                ((ImageView)v.findViewById(R.id.schedule)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+
+            }else if(v.findViewById(R.id.workout)!= null){
+                //set current view as selected (color primary)
+                ((ImageView)v.findViewById(R.id.workout)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                Intent intent = new Intent(InfoView.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0); //this disables animations
+
+            }else if(v.findViewById(R.id.exercises)!= null){
+                //set current view as selected (color primary)
+                ((ImageView)v.findViewById(R.id.exercises)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+            }else if(v.findViewById(R.id.progress)!= null){
+                //set current view as selected (color primary)
+                ((ImageView)v.findViewById(R.id.progress)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
+                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+
+            }
+
         }
     }
 }

@@ -97,5 +97,9 @@
         android:layout_below="@id/spinner_rl"
         android:background="@android:color/white"
         ></ListView>
+    <include
+        layout="@layout/bottom_app_bar"
+        android:id="@+id/bottom_app_bar"
+        />
 
 </RelativeLayout>

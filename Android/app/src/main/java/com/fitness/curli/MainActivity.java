@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
                 Intent intent = new Intent(MainActivity.this, InfoView.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0); //this disables animations
 
 
             }else if(v.findViewById(R.id.progress)!= null){
