@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import java.util.jar.Attributes;
 
+import java.sql.*;
+
 public class MainActivity extends AppCompatActivity {
-    Handler helper;
+    //Handler helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +23,26 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
-        Handler helper = new Handler(this);
+        System.out.println("HEEEEEEEYYYYYYY");
+
+        ExerciseDb exerciseDb = ExerciseDb.getInstance(getApplicationContext());
+        exerciseDb.open();
+
+        System.out.println(exerciseDb.getGroup("Bicep Curl"));
+
+
+
+        /*Handler helper = new Handler(this);
 
         String name = "Bicep Curl";
         String group = "Arms";
         String muscles = "Bicep";
 
-        helper.insertData(name, group, muscles);
+        ExerciseDb exercise = new ExerciseDb();
+
+        System.out.println(exercise.getTable());
+
+        //helper.insertData(name, group, muscles);*/
     }
 
 

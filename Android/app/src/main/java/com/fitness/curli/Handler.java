@@ -12,14 +12,14 @@ public class Handler{
 
     myDbHelper myHelper;
 
-    //information of database
+    //information of databases
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "ExerciseDb.db";
     public static final String TABLE_NAME = "";
     public static final String COLUMN_ID = "ExerciseID";
     public static final String COLUMN_NAME = "ExerciseName";
 
-    //initialize the database
+    //initialize the databases
     public Handler(Context context) {
 
         myHelper = new myDbHelper(context);
@@ -30,7 +30,7 @@ public class Handler{
         ContentValues contentValues = new ContentValues();
         contentValues.put(myDbHelper.NAME, name);
         contentValues.put(myDbHelper.GROUP, group);
-        contentValues.put(myDbHelper.MUSCLES, muscles);
+        //contentValues.put(myDbHelper.MUSCLES, muscles);
         long id = dbb.insert(myDbHelper.TABLE_NAME, null, contentValues);
         return id;
     }
