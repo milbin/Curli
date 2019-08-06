@@ -339,4 +339,11 @@ public class InfoView extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        InfoView.this.overridePendingTransition(0,0);
+    }
 }
