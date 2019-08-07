@@ -7,8 +7,10 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,7 @@ public class WorkoutActivity extends AppCompatActivity {
     //This is what the activity takes as input parameters, the reason that every set has a the name of the
     //exercise associated with it is so that we can create supersets easily later on
     //TODO create superset
-    //{"name": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
     //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
@@ -39,6 +41,8 @@ public class WorkoutActivity extends AppCompatActivity {
     Context context;
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;
+    WorkoutTimer timer;
+
 
 
     @Override
@@ -49,7 +53,22 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
-        setTitle((String)workout.get("title"));
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        findViewById(R.id.logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(null);
+        ((TextView)findViewById(R.id.title)).setText((String)workout.get("title"));
+        timer = new WorkoutTimer();
+        timer.setTextView((TextView)findViewById(R.id.timer));
+        timer.startTimer();
+
+
+
+
 
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
@@ -471,10 +490,19 @@ public class WorkoutActivity extends AppCompatActivity {
                  }
              }
             );
-
-
-
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.finish_menu, menu);
+        return true;
     }
 
 
