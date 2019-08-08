@@ -113,9 +113,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         protected JSONObject doInBackground(String... params) {
             JSONObject response = null;
             try {
+                //here we initialize the Send request class which is simply a wrapper for the OKHTTP3 request library
+                //this class and the method within it greatly simplified the process of sending a request so that one only needs to use 4 lines
                 SendRequest sr = new SendRequest();
+                //here we initialize the json object that we will be sending to the server in the request body
+                //the server is currently setup to look for a 'token' key with the corresponding value being the actual token received when a google sign in completes
                 JSONObject json = new JSONObject();
                 json.put("token", "test token");
+                //this call is simply to send the above data to the given url
+                //the return type of this method is a JSONObject, if the request is successful the JSONObject should be {"result":"success"}, otherwise the method will return null
                 response = sr.sendJson("http://34.74.139.218/api/", json.toString());
                 System.out.println(response);
 
