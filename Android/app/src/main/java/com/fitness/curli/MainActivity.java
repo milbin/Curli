@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
-        System.out.println("HEEEEEEEYYYYYYY");
+        System.out.println("HEY");
 
         ExerciseDb exerciseDb = ExerciseDb.getInstance(getApplicationContext());
         exerciseDb.open();
