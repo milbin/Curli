@@ -19,6 +19,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -98,7 +101,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
     }
 
-    private class postData extends AsyncTask<String, Integer, StringBuffer> {
+    private class postData extends AsyncTask<String, Integer, JSONObject> {
         final String POST_PARAMS = "{token:" + idToken + "}";
 
         @Override
@@ -107,77 +110,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         }
 
         @Override
-        protected StringBuffer doInBackground(String... params) {
-            StringBuffer response = new StringBuffer();
+        protected JSONObject doInBackground(String... params) {
+            JSONObject response = null;
             try {
-                URL obj = new URL("http://34.74.139.218/api/");
+                SendRequest sr = new SendRequest();
+                JSONObject json = new JSONObject();
+                json.put("token", "test token");
+                response = sr.sendJson("http://34.74.139.218/api/", json.toString());
+                System.out.println(response);
 
-                System.out.println(obj);
-
-                HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-
-                System.out.println(postConnection);
-
-                String cookiesHeader = postConnection.getHeaderField("Set-Cookie");
-                postConnection.disconnect();
-                postConnection = (HttpURLConnection) obj.openConnection();
-
-                postConnection.setRequestMethod("POST");
-
-                postConnection.setRequestProperty("Cookie", cookiesHeader);
-
-                //postConnection.setRequestProperty("userId", "a1bcdefgh");
-
-                postConnection.setRequestProperty("Content-Type", "application/json");
-
-                postConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion");
-
-                postConnection.setDoOutput(true);
-
-                System.out.println("POST CONNECTION = " + postConnection);
-
-                OutputStream os = postConnection.getOutputStream();
-
-                System.out.println("OS = ");
-
-                os.write(POST_PARAMS.getBytes());
-
-                System.out.println("OS.WRITE");
-
-                os.flush();
-
-                os.close();
-
-                int responseCode = postConnection.getResponseCode();
-
-                System.out.println("POST Response Code :  " + responseCode);
-
-                System.out.println("POST Response Message : " + postConnection.getResponseMessage());
-
-                if (responseCode == HttpURLConnection.HTTP_CREATED) { //success
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(
-
-                            postConnection.getInputStream()));
-
-                    String inputLine;
-
-                    while ((inputLine = in.readLine()) != null) {
-
-                        response.append(inputLine);
-
-                    }
-                    in.close();
-
-                    // print result
-
-                    System.out.println(response.toString());
-
-                }
-            } catch (IOException e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
-
             return response;
         }
 
@@ -185,7 +129,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         protected void onProgressUpdate(Integer... progress){}
 
         @Override
-        protected void onPostExecute(StringBuffer response){
+        protected void onPostExecute(JSONObject response){
             System.out.println("H - > " + response);
         }
     }
