@@ -12,7 +12,7 @@
         <ImageView
             android:id="@+id/logo"
             android:layout_width="105dp"
-            android:layout_height="45dp"
+            android:layout_height="35dp"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/final_logo"
             android:layout_gravity="center"
