@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        >
+    </include>
+    <RelativeLayout
+        android:id="@+id/spinner_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        >
+    <Spinner
+        android:id="@+id/muscleGroupSpinner"
+        android:layout_width="195dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/MuscleGroups"
+        android:padding="3dp"
+        android:background="@drawable/spinner_background"
+        android:layout_marginEnd="15dp"
+        android:textAlignment="center"
+         />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="2dp"
+            android:layout_alignEnd="@+id/muscleGroupSpinner"
+            />
+    <Spinner
+        android:id="@+id/equipmentSpinner"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/equipment"
+        android:padding="3dp"
+        android:background="@drawable/spinner_background"
+        android:layout_toEndOf="@+id/muscleGroupSpinner"
+        android:textAlignment="center"
+         />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="2dp"
+            android:layout_alignEnd="@+id/equipmentSpinner"
+            />
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_rl"
+        >
+    <LinearLayout
+        android:id="@+id/GroupsViewLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingEnd="15dp"
+        android:paddingStart="10dp"
+        android:background="@android:color/white"
+        >
+
+
+
+    </LinearLayout>
+   </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/alphabetScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_marginEnd="3.5dp"
+        android:paddingTop="20dp"
+        >
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_rl"
+        android:background="@android:color/white"
+        ></ListView>
+
+</RelativeLayout>
