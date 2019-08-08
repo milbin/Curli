@@ -5,7 +5,7 @@
     android:background="@drawable/toolbar_background"
     android:minHeight="?attr/actionBarSize"
     android:layout_margin="7dp"
-    android:elevation="5dp"
+    android:elevation="0dp"
     android:animateLayoutChanges="true"
     android:gravity="start"
     >
