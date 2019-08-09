@@ -55,7 +55,7 @@ public class ExerciseDb {
     public String getGroup(String name) {
 
 
-        c=db.rawQuery("Select [MainGroup] From Table1 Where Name = '"+name+"'", new String[]{});
+        c=db.rawQuery("Select [Ab Crunch Machine] From ExerciseTable Where Name = '"+name+"'", new String[]{});
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
             GroupStr = c.getString(0);
@@ -64,7 +64,7 @@ public class ExerciseDb {
         return buffer.toString();
     }
     public String getMuscles(String name){
-        c = db.rawQuery("Select Muscles From Table1 Where Name = '"+name+"'", new String[]{});
+        c = db.rawQuery("Select Muscles From ExerciseTable Where Name = '"+name+"'", new String[]{});
 
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
