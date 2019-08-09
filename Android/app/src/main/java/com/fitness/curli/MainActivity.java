@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("workout", null);
                     editor.apply();
                     ((Curli) getApplication()).setWorkoutTimer(null);
+                    currentWorkout = null;
                     ((Toolbar)view.getParent().getParent()).setVisibility(View.GONE);
                 }
             });
