@@ -1,11 +1,13 @@
 package com.fitness.curli;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -56,33 +58,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(((Curli) this.getApplication()).getWorkoutTimer() != null){
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setElevation(7);
-            setSupportActionBar(toolbar);
-            findViewById(R.id.logo).setVisibility(View.GONE);
-            getSupportActionBar().setTitle(null);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
             String workoutString = pref.getString("workout", "FAIL");
-            System.out.println(workoutString);
-            System.out.println("HERE"+workoutString);
             Gson gson = new Gson();
             java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
             currentWorkout = gson.fromJson(workoutString, type);
-            System.out.println(currentWorkout);
-            ((TextView)findViewById(R.id.title)).setText((String) currentWorkout.get("title"));
+            findViewById(R.id.ongoing_workout_toolbar).setVisibility(View.VISIBLE);
+            findViewById(R.id.down_arrow).setVisibility(View.GONE);
+            findViewById(R.id.finish).setVisibility(View.GONE);
+            findViewById(R.id.up_arrow).setVisibility(View.VISIBLE);
+            findViewById(R.id.delete).setVisibility(View.VISIBLE);
+            findViewById(R.id.delete).setOnClickListener(new onCancelWorkout());
+            ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String) currentWorkout.get("title"));
             WorkoutTimer timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
-            toolbar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
-                    myIntent.putExtra("workout", currentWorkout);
-                    startActivity(myIntent);
-                }
-            });
+            findViewById(R.id.up_arrow).setOnClickListener(new onResumeWorkout());
+            findViewById(R.id.ongoing_workout_toolbar).setOnClickListener(new onResumeWorkout());
         }
 
 
+    }
+
+    public class onResumeWorkout implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+            myIntent.putExtra("workout", currentWorkout);
+            startActivity(myIntent);
+        }
+    }
+    public class onCancelWorkout implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            final View view  = v;
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            builder.setTitle("Delete Workout?").setMessage("This action cannot be undone.");
+            // Add the buttons
+            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("workout", null);
+                    editor.apply();
+                    ((Curli) getApplication()).setWorkoutTimer(null);
+                    ((Toolbar)view.getParent().getParent()).setVisibility(View.GONE);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
     }
 
 

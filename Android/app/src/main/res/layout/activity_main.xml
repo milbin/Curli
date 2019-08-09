@@ -51,6 +51,14 @@
 
 </LinearLayout>
     <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/ongoing_workout"
+        android:visibility="gone"
+        android:id="@+id/ongoing_workout_toolbar"
+        android:layout_above="@+id/bottom_app_bar"
+        />
+    <include
         layout="@layout/bottom_app_bar"
         android:id="@+id/bottom_app_bar"
         />

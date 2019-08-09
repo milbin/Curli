@@ -7,7 +7,8 @@
     android:id="@+id/parentRL"
     >
     <include
-        layout="@layout/toolbar"
+
+        layout="@layout/ongoing_workout"
         android:id="@+id/toolbar"
         >
     </include>

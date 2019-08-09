@@ -2,11 +2,13 @@ package com.fitness.curli;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +32,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class WorkoutActivity extends AppCompatActivity {
     //WORKOUT DATA STRUCTURE EXAMPLE:
@@ -62,13 +65,15 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setElevation(7);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)toolbar.getLayoutParams();
+        params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        toolbar.setLayoutParams(params);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        findViewById(R.id.logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(null);
-        ((TextView)findViewById(R.id.title)).setText((String)workout.get("title"));
+        toolbar.findViewById(R.id.finish).setOnClickListener(new onWorkoutFinished());
+        ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
+        toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
+        toolbar.setOnClickListener(new onDownPressed());
 
         try {
             int test = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
@@ -80,11 +85,6 @@ public class WorkoutActivity extends AppCompatActivity {
             timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
         }
-
-
-
-
-
 
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
@@ -129,14 +129,14 @@ public class WorkoutActivity extends AppCompatActivity {
                 ImageView checkbox = new ImageView(this);
                 checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
 
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams checkmarkParams = new RelativeLayout.LayoutParams(
                         checkmark_size,
                         checkmark_size
                 );
                 if (i != 1) {
-                    params.setMarginStart(10);
+                    checkmarkParams.setMarginStart(10);
                 }
-                checkbox.setLayoutParams(params);
+                checkbox.setLayoutParams(checkmarkParams);
                 exerciseSets.addView(checkbox);
             }
 
@@ -513,10 +513,12 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+
+    private class onDownPressed implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
     }
     @Override
     public void onBackPressed(){
@@ -530,10 +532,33 @@ public class WorkoutActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.finish_menu, menu);
-        return true;
+    private class onWorkoutFinished implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            System.out.println("HERE");
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
+            // Add the buttons
+            builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("workout", null);
+                    editor.apply();
+                    ((Curli) getApplication()).setWorkoutTimer(null);
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
 }
