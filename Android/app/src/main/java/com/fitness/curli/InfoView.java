@@ -31,7 +31,7 @@ public class InfoView extends AppCompatActivity {
     ProgressDialog dialog;
     SQLData sqlData = new SQLData();
     String[] nameList;
-    ListView list;git che
+    ListView list;
     Toolbar toolbar;
     ArrayList<SearchResult> arraylist = new ArrayList<>();
     ListViewAdapter adapter;
