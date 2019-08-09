@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,6 +46,7 @@ public class WorkoutActivity extends AppCompatActivity {
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;
     WorkoutTimer timer;
+    HashMap workout;
 
 
 
@@ -54,7 +57,8 @@ public class WorkoutActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.linearLayoutWorkout);
         context = this;
 
-        HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
+        workout = (HashMap) getIntent().getSerializableExtra("workout");
+        System.out.println(workout);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -66,16 +70,17 @@ public class WorkoutActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(null);
         ((TextView)findViewById(R.id.title)).setText((String)workout.get("title"));
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("title", (String)workout.get("title"));
-        editor.apply();
+        try {
+            int test = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
+            timer = new WorkoutTimer();
+            timer.setTextView((TextView)findViewById(R.id.timer));
+            timer.startTimer();
+            ((Curli) this.getApplication()).setWorkoutTimer(timer);
+        }catch (ClassCastException e){
+            timer = ((Curli) this.getApplication()).getWorkoutTimer();
+            timer.setTextView((TextView)findViewById(R.id.timer));
+        }
 
-
-        timer = new WorkoutTimer();
-        timer.setTextView((TextView)findViewById(R.id.timer));
-        timer.startTimer();
-        ((Curli) this.getApplication()).setWorkoutTimer(timer);
 
 
 
@@ -111,7 +116,11 @@ public class WorkoutActivity extends AppCompatActivity {
             View dividerLine = relativeLayout.findViewById(R.id.divider_line);
 
             exerciseName.setText((String) exercise.get(1).get("title"));
-            exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
+            try {
+                exerciseReps.setText(Integer.toString((int) exercise.get(1).get("reps")));
+            }catch (ClassCastException e){
+                exerciseReps.setText(Integer.toString((int) Math.round((double)exercise.get(1).get("reps"))));
+            }
             exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
             excerciseSets.setText("Sets Completed: " + 0 + " of " + (exercise.size() - 1));
 
@@ -509,12 +518,22 @@ public class WorkoutActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+    @Override
+    public void onBackPressed(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        Gson gson = new Gson();
+        String hashMapString = gson.toJson(workout);
+        System.out.println(hashMapString +"HERE1");
+        editor.putString("workout", hashMapString);
+        editor.apply();
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.finish_menu, menu);
         return true;
     }
-
 
 }

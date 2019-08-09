@@ -16,13 +16,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
     Context context = this;
     private Menu optionsMenu;
+    HashMap currentWorkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +62,27 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.logo).setVisibility(View.GONE);
             getSupportActionBar().setTitle(null);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-            String title = pref.getString("title", "");
-            ((TextView)findViewById(R.id.title)).setText(title);
+            String workoutString = pref.getString("workout", "FAIL");
+            System.out.println(workoutString);
+            System.out.println("HERE"+workoutString);
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+            currentWorkout = gson.fromJson(workoutString, type);
+            System.out.println(currentWorkout);
+            ((TextView)findViewById(R.id.title)).setText((String) currentWorkout.get("title"));
             WorkoutTimer timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
-            System.out.println(optionsMenu);
-            getMenuInflater().inflate(R.menu.finish_menu, optionsMenu);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(),"your icon was clicked",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        optionsMenu = menu;
-        System.out.println(optionsMenu +"HERE1");
-        return true;
-    }
+
 
 
 
@@ -79,52 +90,56 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            if(currentWorkout != null){
+                Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+                myIntent.putExtra("workout", currentWorkout);
+                startActivity(myIntent);
+            }else {
 
-            LinkedHashMap BP = new LinkedHashMap<>();
-            BP.put("title", "Bench Press");
-            BP.put("weight", 135.0);
-            BP.put("reps", 8);
+                LinkedHashMap BP = new LinkedHashMap<>();
+                BP.put("title", "Bench Press");
+                BP.put("weight", 135.0);
+                BP.put("reps", 8);
 
-            LinkedHashMap BC = new LinkedHashMap<>();
-            BC.put("title", "Bicep Curl");
-            BC.put("weight", 75.0);
-            BC.put("reps", 8);
-            LinkedHashMap BC1 = new LinkedHashMap<>();
-            BC1.put("title", "Bicep Curl");
-            BC1.put("weight", 80.0);
-            BC1.put("reps", 9);
-            LinkedHashMap BC2 = new LinkedHashMap<>();
-            BC2.put("title", "Bicep Curl");
-            BC2.put("weight", 90.0);
-            BC2.put("reps", 10);
+                LinkedHashMap BC = new LinkedHashMap<>();
+                BC.put("title", "Bicep Curl");
+                BC.put("weight", 75.0);
+                BC.put("reps", 8);
+                LinkedHashMap BC1 = new LinkedHashMap<>();
+                BC1.put("title", "Bicep Curl");
+                BC1.put("weight", 80.0);
+                BC1.put("reps", 9);
+                LinkedHashMap BC2 = new LinkedHashMap<>();
+                BC2.put("title", "Bicep Curl");
+                BC2.put("weight", 90.0);
+                BC2.put("reps", 10);
 
-            ArrayList BCList = new ArrayList();
-            ArrayList BPList = new ArrayList();
+                ArrayList BCList = new ArrayList();
+                ArrayList BPList = new ArrayList();
 
-            BCList.add(0);
-            BPList.add(0);
+                BCList.add(0);
+                BPList.add(0);
 
-            for (int i = 0; i < 3; i++) {
-                BPList.add(BP);
+                for (int i = 0; i < 3; i++) {
+                    BPList.add(BP);
+                }
+                BCList.add(BC);
+                BCList.add(BC1);
+                BCList.add(BC2);
+
+                ArrayList exercises = new ArrayList();
+                exercises.add(BPList);
+                exercises.add(BCList);
+                LinkedHashMap workout = new LinkedHashMap();
+                workout.put("title", "Arms and Chest");
+                workout.put("exercises", exercises);
+                Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+                myIntent.putExtra("workout", workout);
+                startActivity(myIntent);
+
+                System.out.println(workout);
             }
-            BCList.add(BC);
-            BCList.add(BC1);
-            BCList.add(BC2);
 
-            ArrayList exercises = new ArrayList();
-            exercises.add(BPList);
-            exercises.add(BCList);
-            LinkedHashMap workout = new LinkedHashMap();
-            workout.put("title", "Arms and Chest");
-            workout.put("exercises", exercises);
-
-            System.out.println(workout);
-
-
-
-            Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
-            myIntent.putExtra("workout", workout);
-            startActivity(myIntent);
         }
     }
 
