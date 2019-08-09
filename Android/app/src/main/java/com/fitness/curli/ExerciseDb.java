@@ -8,6 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExerciseDb {
 
@@ -25,7 +29,7 @@ public class ExerciseDb {
     Cursor c = null;
 
     //private constructor
-    private ExerciseDb(Context context){
+    public ExerciseDb(Context context){
         this.openHelper = new DatabaseOpenHelper(context);
 
     }
@@ -56,6 +60,30 @@ public class ExerciseDb {
     public String getName(){
         return ExerciseName;
     }
+
+    public ArrayList getGroups(){
+        c=db.rawQuery("Select MainGroup From ExerciseTable", new String[]{});
+        //StringBuffer buffer = new StringBuffer();
+        ArrayList groups = new ArrayList();
+        while(c.moveToNext()){
+            groups.add(""+c.getString(0));
+        }
+
+        //remove duplicates
+        LinkedHashSet set = new LinkedHashSet<>();
+
+        // Add the elements to set
+        set.addAll(groups);
+
+        groups.clear();
+
+        groups.addAll(set);
+
+        //String Groups = buffer.toString();//.split(",");
+
+        return groups;
+    }
+
     public String getGroup(String name) {
 
         c=db.rawQuery("Select MainGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
