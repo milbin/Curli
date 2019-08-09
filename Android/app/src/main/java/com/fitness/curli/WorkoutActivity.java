@@ -56,6 +56,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setElevation(7);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
