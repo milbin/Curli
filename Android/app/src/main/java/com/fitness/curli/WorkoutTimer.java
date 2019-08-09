@@ -22,10 +22,14 @@ public class WorkoutTimer{
             long millis = System.currentTimeMillis() - startTime;
             int seconds = (int) (millis / 1000);
             int hours = seconds / 3600;
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-            textView.setText(String.format("%d:%02d:%03d", hours, minutes, seconds));
-            System.out.println(String.format("%d:%02d:%03d", hours, minutes, seconds));
+            int minutes = (seconds % 3600)/60;
+            seconds = (seconds % 3600)% 60;
+
+            if(hours >= 1) {
+                textView.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+            }else{
+                textView.setText(String.format("%02d:%02d", minutes, seconds));
+            }
             timerHandler.postDelayed(this, 500);
         }
     };

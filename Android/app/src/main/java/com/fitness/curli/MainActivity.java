@@ -2,12 +2,15 @@ package com.fitness.curli;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +22,7 @@ import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
     Context context = this;
+    private Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,38 @@ public class MainActivity extends AppCompatActivity {
         ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
         ((View)findViewById(R.id.workout).getParent()).performClick();
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(((Curli) this.getApplication()).getWorkoutTimer() != null){
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setElevation(7);
+            setSupportActionBar(toolbar);
+            findViewById(R.id.logo).setVisibility(View.GONE);
+            getSupportActionBar().setTitle(null);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+            String title = pref.getString("title", "");
+            ((TextView)findViewById(R.id.title)).setText(title);
+            WorkoutTimer timer = ((Curli) this.getApplication()).getWorkoutTimer();
+            timer.setTextView((TextView)findViewById(R.id.timer));
+            System.out.println(optionsMenu);
+            getMenuInflater().inflate(R.menu.finish_menu, optionsMenu);
+        }
+
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        optionsMenu = menu;
+        System.out.println(optionsMenu +"HERE1");
+        return true;
     }
 
 

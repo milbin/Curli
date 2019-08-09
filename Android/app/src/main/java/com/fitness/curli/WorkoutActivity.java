@@ -1,6 +1,8 @@
 package com.fitness.curli;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -63,9 +65,17 @@ public class WorkoutActivity extends AppCompatActivity {
         findViewById(R.id.logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(null);
         ((TextView)findViewById(R.id.title)).setText((String)workout.get("title"));
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("title", (String)workout.get("title"));
+        editor.apply();
+
+
         timer = new WorkoutTimer();
         timer.setTextView((TextView)findViewById(R.id.timer));
         timer.startTimer();
+        ((Curli) this.getApplication()).setWorkoutTimer(timer);
 
 
 
