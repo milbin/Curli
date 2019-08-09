@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //TextView text = findViewById(R.id.text);
-        Intent intent = new Intent(MainActivity.this, InfoView.class);
+        Intent intent = new Intent(MainActivity.this, MuscleView.class);
         startActivity(intent);
     }
 
