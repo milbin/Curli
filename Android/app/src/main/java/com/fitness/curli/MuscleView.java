@@ -1,16 +1,23 @@
 package com.fitness.curli;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Dimension;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static java.security.AccessController.getContext;
 
 public class MuscleView extends AppCompatActivity {
 
@@ -44,14 +51,26 @@ public class MuscleView extends AppCompatActivity {
 
         int groupNumber = groups.size();
         int groupNameIndex = 0;
-        int cardsPerRow = 2;
+        int cardsPerRow = 3;
         boolean adding = true;
 
         LinearLayout linearLayout = findViewById(R.id.MuscleViewLinearLayout);
+
+        Display display = getWindowManager().getDefaultDisplay();
+
+        int layoutWidth = display.getWidth();
+
+        System.out.println(layoutWidth);
         while (adding){
             LinearLayout rowLayout = new LinearLayout(this);
             for (int x = 0; x < cardsPerRow; x++){
                 View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
+                RelativeLayout rel = card.findViewById(R.id.group);
+
+                ViewGroup.LayoutParams params = rel.getLayoutParams();
+                params.width = layoutWidth/cardsPerRow;
+                rel.setLayoutParams(params);
+
                 TextView title = card.findViewById(R.id.title);
                 title.setText(groups.get(groupNameIndex));
 
