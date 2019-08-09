@@ -7,7 +7,9 @@ import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         ((View)findViewById(R.id.exercises).getParent()).setOnClickListener(new onNavbarClick());
         ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
         ((View)findViewById(R.id.workout).getParent()).performClick();
+
+
+
 
         ExerciseDb exerciseDb = ExerciseDb.getInstance(getApplicationContext());
         exerciseDb.open();
@@ -149,5 +155,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.profile, menu);
+
+        return true;
     }
 }
