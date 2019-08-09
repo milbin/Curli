@@ -58,7 +58,6 @@ public class ExerciseDb {
     }
     public String getGroup(String name) {
 
-
         c=db.rawQuery("Select MainGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
@@ -88,14 +87,11 @@ public class ExerciseDb {
             buffer2.append(""+PrimaryMuscles);
         }
 
-        System.out.println(buffer.toString().split(",").toString());
-
         String[] Muscles = new String[(buffer.toString()).split(",").length + (buffer2.toString()).split(",").length];
         System.arraycopy((buffer.toString()).split(","), 0, Muscles, 0, (buffer.toString()).split(",").length);
         System.arraycopy((buffer2.toString()).split(","), 0, Muscles, (buffer.toString()).split(",").length, (buffer2.toString()).split(",").length);
 
         return Muscles;
-
 
     }
 
