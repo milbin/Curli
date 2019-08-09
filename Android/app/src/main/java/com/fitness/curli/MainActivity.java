@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
         ExerciseDb exerciseDb = ExerciseDb.getInstance(getApplicationContext());
         exerciseDb.open();
-        System.out.println(exerciseDb.getGroup("Bicep Curl"));
+
+        System.out.println(exerciseDb.getGroup("Ab Crunch Machine"));
+
+        String[] muscleArray = exerciseDb.getMuscles("Alternate Leg Diagonal Bound");
 
 
 
