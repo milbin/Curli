@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.jar.Attributes;
+import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
     Context context = this;
@@ -35,10 +37,13 @@ public class MainActivity extends AppCompatActivity {
         ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
         ((View)findViewById(R.id.workout).getParent()).performClick();
 
+        ExerciseDb exerciseDb = ExerciseDb.getInstance(getApplicationContext());
+        exerciseDb.open();
+        System.out.println(exerciseDb.getGroup("Bicep Curl"));
+
 
 
     }
-
 
 
     public class onWorkoutClick implements View.OnClickListener {
