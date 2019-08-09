@@ -72,10 +72,12 @@ public class MainActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.title)).setText((String) currentWorkout.get("title"));
             WorkoutTimer timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            toolbar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(),"your icon was clicked",Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+                    myIntent.putExtra("workout", currentWorkout);
+                    startActivity(myIntent);
                 }
             });
         }
