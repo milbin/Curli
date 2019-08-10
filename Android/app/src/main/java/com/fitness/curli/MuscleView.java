@@ -72,13 +72,15 @@ public class MuscleView extends AppCompatActivity {
                 params.width = layoutWidth/cardsPerRow;
                 rel.setLayoutParams(params);
 
+                final String titleText = groups.get(groupNameIndex);
                 TextView title = card.findViewById(R.id.title);
-                title.setText(groups.get(groupNameIndex));
+                title.setText(titleText);
 
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(MuscleView.this, InfoView.class);
+                        Intent intent = new Intent(MuscleView.this, ExerciseView.class);
+                        intent.putExtra("group", titleText);
                         startActivity(intent);
                     }
                 });

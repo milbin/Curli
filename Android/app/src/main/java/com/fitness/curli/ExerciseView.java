@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class InfoView extends AppCompatActivity {
+public class ExerciseView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
@@ -38,6 +38,7 @@ public class InfoView extends AppCompatActivity {
     ArrayList<SearchResult> arraylist = new ArrayList<>();
     ListViewAdapter adapter;
     Menu menu;
+    String group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -46,6 +47,8 @@ public class InfoView extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
 
+        Intent intent = getIntent();
+        group = intent.getStringExtra("group");
 
         //create alphabet scroller linear layout
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -88,7 +91,7 @@ public class InfoView extends AppCompatActivity {
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
-        dialog = ProgressDialog.show(InfoView.this, "", "Loading...", true);
+        dialog = ProgressDialog.show(ExerciseView.this, "", "Loading...", true);
 
         context = getApplicationContext();
         sqlData = new ExerciseDb(context);
@@ -100,7 +103,7 @@ public class InfoView extends AppCompatActivity {
     }
 
     private void displayExercises(){
-        HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises();
+        HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises(group);
 
         Display display = getWindowManager().getDefaultDisplay();
 
@@ -141,7 +144,7 @@ public class InfoView extends AppCompatActivity {
                     RelativeLayout rel = card.findViewById(R.id.group);
 
                     ViewGroup.LayoutParams params = rel.getLayoutParams();
-                    params.width = layoutWidth/cardsPerRow;
+                    params.width = layoutWidth / cardsPerRow;
                     rel.setLayoutParams(params);
 
                     String titleText = exercise.get("name");
@@ -157,10 +160,6 @@ public class InfoView extends AppCompatActivity {
 
                     rowLayout.addView(card);
 
-                    if (exerciseNameIndex+1 == exerciseSize){
-                        adding = false;
-                        break;
-                    }
                     exerciseNameIndex++;
                 }
                 linearLayout.addView(rowLayout);
@@ -244,7 +243,7 @@ public class InfoView extends AppCompatActivity {
 
 
         if (nameLabel.equals("Exercise")){
-            Intent intent = new Intent(InfoView.this, InfoViewExercise.class);
+            Intent intent = new Intent(ExerciseView.this, InfoViewExercise.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
         }

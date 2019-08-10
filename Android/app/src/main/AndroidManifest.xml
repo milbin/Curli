@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InfoView">
+        <activity android:name=".ExerciseView">
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.fitness.curli.MainActivity" />
