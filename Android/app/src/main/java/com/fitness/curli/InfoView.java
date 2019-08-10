@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -98,108 +100,65 @@ public class InfoView extends AppCompatActivity {
     private void displayExercises(){
         HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises();
 
-        int length = 0;
-        for (HashMap.Entry<String, ArrayList<LinkedHashMap<String,String>>> entryLetter : exercises.entrySet()) {
-            //each itteration of this loop is equal to one letter of the sqldata data structure
-            //seperates the exercises by their first letter
-            TextView letterSeparator = new TextView(this);
-            letterSeparator.setText(entryLetter.getKey());
-            RelativeLayout.LayoutParams letterSeparatorLp = new RelativeLayout.LayoutParams(
+        Display display = getWindowManager().getDefaultDisplay();
+
+        int layoutWidth = display.getWidth();
+        int cardsPerRow = 2;
+
+        for (String letter : exercises.keySet()){
+
+            TextView letterSubtitle = new TextView(this);
+            letterSubtitle.setText(letter);
+            RelativeLayout.LayoutParams letterSubtitleBody = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
-            letterSeparatorLp.setMargins(40, 10, 0, 10);
-            letterSeparator.setLayoutParams(letterSeparatorLp);
-            letterSeparator.setTextColor(getResources().getColor(R.color.colorPrimary));
-            letterSeparator.setTextSize(22);
-            linearLayout.addView(letterSeparator);
 
-            //here 3 of the exercise cards are added to each horizontal linear layout created below
-            int numberOfViewsAdded = 0;
-            LinearLayout subll = new LinearLayout(this);
-            for (LinkedHashMap<String, String> exercise : entryLetter.getValue()) {
-                System.out.println("HERE");
-                View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-                if(numberOfViewsAdded%3 == 0 && numberOfViewsAdded != 0){
-                    linearLayout.addView(subll);
-                    subll = new LinearLayout(this);
-                    numberOfViewsAdded = -1;
-                }
-                card.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TextView rl = v.findViewById(R.id.title);
-                        String group = rl.getText().toString();
-                        Intent intent = new Intent(InfoView.this, InfoViewExercise.class);
-                        intent.putExtra("group", group);
-                        startActivity(intent);
+            letterSubtitleBody.setMargins(40, 10, 0, 10);
+            letterSubtitle.setLayoutParams(letterSubtitleBody);
+            letterSubtitle.setTextColor(getResources().getColor(R.color.colorPrimary));
+            letterSubtitle.setTextSize(22);
+            linearLayout.addView(letterSubtitle);
+
+            int exerciseSize = exercises.size();
+            int exerciseNameIndex = 0;
+            boolean adding = true;
+
+            while (adding){
+                LinearLayout rowLayout = new LinearLayout(this);
+                for (int x = 0; x < cardsPerRow; x++){
+                    LinkedHashMap<String, String> exercise = exercises.get(letter).get(exerciseNameIndex);
+
+                    View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
+                    RelativeLayout rel = card.findViewById(R.id.group);
+
+                    ViewGroup.LayoutParams params = rel.getLayoutParams();
+                    params.width = layoutWidth/cardsPerRow;
+                    rel.setLayoutParams(params);
+
+                    String titleText = exercise.get("name");
+
+                    TextView title = card.findViewById(R.id.title);
+                    title.setText(titleText);
+
+                    card.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+
+                    rowLayout.addView(card);
+
+                    if (exerciseNameIndex+1 == exerciseSize){
+                        adding = false;
+                        break;
                     }
-                });
-                TextView title = card.findViewById(R.id.title);
-                TextView equipment = card.findViewById(R.id.equipment);
-                title.setText(exercise.get("name"));
-                System.out.println(exercises);
-                equipment.setText(exercise.get("equipment"));
-                subll.addView(card);
-                numberOfViewsAdded++;
+                    exerciseNameIndex++;
+                }
+                linearLayout.addView(rowLayout);
             }
-            if(numberOfViewsAdded != 2){
-                linearLayout.addView(subll);
-            }
+
         }
-
-
-        /*for (int i = 0; i < length; i++){
-            View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            TextView title = card.findViewById(R.id.title);
-            title.setText(muscleGroups.get(i));
-
-            View card1 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            TextView title1 = card.findViewById(R.id.title);
-            title1.setText(muscleGroups.get(i));
-
-            View card2 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            TextView title2 = card.findViewById(R.id.title);
-            title2.setText(muscleGroups.get(i));
-
-            View card3 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            TextView title3 = card.findViewById(R.id.title);
-            title3.setText(muscleGroups.get(i));
-
-            View card4 = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            TextView title4 = card.findViewById(R.id.title);
-            title4.setText(muscleGroups.get(i));
-
-
-            LinearLayout subll = new LinearLayout(this);
-            subll.addView(card);
-            subll.addView(card1);
-            subll.addView(card2);
-            LinearLayout subll1 = new LinearLayout(this);
-            if(i ==1){
-
-                subll1.addView(card3);
-                subll1.addView(card4);
-            }
-            TextView tv = new TextView(this);
-            if(i==0) {
-                tv.setText("A");
-            }else{
-                tv.setText("B");
-            }
-            RelativeLayout.LayoutParams tvLp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
-            tvLp.setMargins(40, 10, 0, 10);
-            tv.setLayoutParams(tvLp);
-            tv.setTextColor(getResources().getColor(R.color.colorPrimary));
-            tv.setTextSize(22);
-            linearLayout.addView(tv);
-            linearLayout.addView(subll);
-            linearLayout.addView(subll1);
-
-        }*/
 
         dialog.dismiss();
     }

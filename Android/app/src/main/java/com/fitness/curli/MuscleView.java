@@ -50,7 +50,7 @@ public class MuscleView extends AppCompatActivity {
     public void displayMuscles(){
         ArrayList<String> groups = SQLData.getGroups();
 
-        int groupNumber = groups.size();
+        int groupSize = groups.size();
         int groupNameIndex = 0;
         int cardsPerRow = 2;
         boolean adding = true;
@@ -85,7 +85,7 @@ public class MuscleView extends AppCompatActivity {
 
                 rowLayout.addView(card);
 
-                if (groupNameIndex == groupNumber-1){
+                if (groupNameIndex+1 == groupSize){
                     adding = false;
                     break;
                 }
