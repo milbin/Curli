@@ -7,8 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.nio.charset.Charset;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,6 +85,47 @@ public class ExerciseDb {
         //String Groups = buffer.toString();//.split(",");
 
         return groups;
+    }
+
+    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(){
+        c=db.rawQuery("Select Name From ExerciseTable", new String[]{});
+
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = new HashMap();
+        for (int index = 0; index < alphabet.length(); index++){
+            exercises.put(""+alphabet.charAt(index), new ArrayList<LinkedHashMap<String, String>>());
+        }
+
+        if (c.getCount() >= 1 && c.moveToFirst()) {
+            while (c.moveToNext()) {
+                LinkedHashMap<String, String> currentExercise = new LinkedHashMap<>();
+                String name = c.getString(0);
+                currentExercise.put("name", name);
+
+                Cursor cursor2 = db.rawQuery("Select Equipment From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                cursor2.moveToFirst();
+                String equipment = cursor2.getString(0);
+                //String equipment = c.getString(c.getColumnIndex("Equipment"));
+                currentExercise.put("equipment", equipment);
+                cursor2.close();
+
+                cursor2 = db.rawQuery("Select MainGroup From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                cursor2.moveToFirst();
+                String primaryMuscleGroup = cursor2.getString(0);
+                currentExercise.put("primary muscle group", primaryMuscleGroup);
+                cursor2.close();
+
+                cursor2 = db.rawQuery("Select SecondaryGroup From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                cursor2.moveToFirst();
+                String secondaryMuscleGroup = cursor2.getString(0);
+                currentExercise.put("secondary muscle group", secondaryMuscleGroup);
+                cursor2.close();
+
+                exercises.get("" + name.charAt(0)).add(currentExercise);
+            }
+        }
+
+        return exercises;
     }
 
     public String getGroup(String name) {

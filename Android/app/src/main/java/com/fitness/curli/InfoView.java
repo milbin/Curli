@@ -31,7 +31,7 @@ public class InfoView extends AppCompatActivity {
     private Context context;
     LinearLayout linearLayout;
     ProgressDialog dialog;
-    SQLData sqlData = new SQLData();
+    ExerciseDb sqlData;
     String[] nameList;
     ListView list;
     Toolbar toolbar;
@@ -71,10 +71,10 @@ public class InfoView extends AppCompatActivity {
         list = (ListView) findViewById(R.id.listview);
 
         // Generate sample sqlData
-        ArrayList<String> tempList = sqlData.GROUPS;
-        tempList.addAll(sqlData.MUSCLES);
-        tempList.addAll(sqlData.EXERCISES);
-        nameList = tempList.toArray(new String[0]);
+        //ArrayList<String> tempList = sqlData.GROUPS;
+        //tempList.addAll(sqlData.MUSCLES);
+        //tempList.addAll(sqlData.EXERCISES);
+        nameList = new String[]{};//tempList.toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -91,6 +91,8 @@ public class InfoView extends AppCompatActivity {
         dialog = ProgressDialog.show(InfoView.this, "", "Loading...", true);
 
         context = getApplicationContext();
+        sqlData = new ExerciseDb(context);
+        sqlData.open();
 
         linearLayout = findViewById(R.id.GroupsViewLinearLayout);
 
@@ -120,13 +122,19 @@ public class InfoView extends AppCompatActivity {
             letterSubtitle.setTextSize(22);
             linearLayout.addView(letterSubtitle);
 
-            int exerciseSize = exercises.size();
+            int exerciseSize = exercises.get(letter).size();
+            System.out.println(exercises.get(letter));
             int exerciseNameIndex = 0;
             boolean adding = true;
 
             while (adding){
                 LinearLayout rowLayout = new LinearLayout(this);
                 for (int x = 0; x < cardsPerRow; x++){
+                    if (exerciseNameIndex == exerciseSize){
+                        adding = false;
+                        break;
+                    }
+
                     LinkedHashMap<String, String> exercise = exercises.get(letter).get(exerciseNameIndex);
 
                     View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
