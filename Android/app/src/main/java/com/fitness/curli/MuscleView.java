@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.v7.app.AppCompatActivity;
@@ -51,7 +52,7 @@ public class MuscleView extends AppCompatActivity {
 
         int groupNumber = groups.size();
         int groupNameIndex = 0;
-        int cardsPerRow = 3;
+        int cardsPerRow = 2;
         boolean adding = true;
 
         LinearLayout linearLayout = findViewById(R.id.MuscleViewLinearLayout);
@@ -73,6 +74,14 @@ public class MuscleView extends AppCompatActivity {
 
                 TextView title = card.findViewById(R.id.title);
                 title.setText(groups.get(groupNameIndex));
+
+                card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MuscleView.this, InfoView.class);
+                        startActivity(intent);
+                    }
+                });
 
                 rowLayout.addView(card);
 

@@ -10,10 +10,56 @@
         android:id="@+id/toolbar"
         >
     </include>
+    <RelativeLayout
+        android:id="@+id/spinner_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="20dp"
+        >
+        <Spinner
+            android:id="@+id/muscleGroupSpinner"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/MuscleGroups"
+            android:padding="3dp"
+            android:background="@drawable/spinner_background"
+            android:layout_marginEnd="15dp"
+            android:textAlignment="center"
+            />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:layout_alignEnd="@+id/muscleGroupSpinner"
+                />
+        <Spinner
+            android:id="@+id/equipmentSpinner"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/equipment"
+            android:padding="3dp"
+            android:background="@drawable/spinner_background"
+            android:layout_toEndOf="@+id/muscleGroupSpinner"
+            android:textAlignment="center"
+            />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:layout_alignEnd="@+id/equipmentSpinner"
+                />
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar">
+        android:layout_height="match_parent"
+        android:layout_below="@id/spinner_rl"
+        android:background="@drawable/gradient">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
