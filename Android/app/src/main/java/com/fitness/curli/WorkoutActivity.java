@@ -1,17 +1,18 @@
 package com.fitness.curli;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.text.Layout;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +33,7 @@ public class WorkoutActivity extends AppCompatActivity {
     //This is what the activity takes as input parameters, the reason that every set has a the name of the
     //exercise associated with it is so that we can create supersets easily later on
     //TODO create superset
-    //{"name": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
     //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
@@ -39,6 +42,9 @@ public class WorkoutActivity extends AppCompatActivity {
     Context context;
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;
+    WorkoutTimer timer;
+    HashMap workout;
+
 
 
     @Override
@@ -48,8 +54,31 @@ public class WorkoutActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.linearLayoutWorkout);
         context = this;
 
-        HashMap workout = (HashMap) getIntent().getSerializableExtra("workout");
-        setTitle((String)workout.get("title"));
+        workout = (HashMap) getIntent().getSerializableExtra("workout");
+        System.out.println(workout);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)toolbar.getLayoutParams();
+        params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        toolbar.setLayoutParams(params);
+        setSupportActionBar(toolbar);
+        toolbar.findViewById(R.id.finish).setOnClickListener(new onWorkoutFinished());
+        ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
+        toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
+        toolbar.setOnClickListener(new onDownPressed());
+
+        try {
+            int test = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
+            timer = new WorkoutTimer();
+            timer.setTextView((TextView)findViewById(R.id.timer));
+            timer.startTimer();
+            ((Curli) this.getApplication()).setWorkoutTimer(timer);
+        }catch (ClassCastException e){
+            timer = ((Curli) this.getApplication()).getWorkoutTimer();
+            timer.setTextView((TextView)findViewById(R.id.timer));
+        }
 
 
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
@@ -81,7 +110,11 @@ public class WorkoutActivity extends AppCompatActivity {
             View dividerLine = relativeLayout.findViewById(R.id.divider_line);
 
             exerciseName.setText((String) exercise.get(1).get("title"));
-            exerciseReps.setText(Integer.toString((Integer) exercise.get(1).get("reps")));
+            try {
+                exerciseReps.setText(Integer.toString((int) exercise.get(1).get("reps")));
+            }catch (ClassCastException e){
+                exerciseReps.setText(Integer.toString((int) Math.round((double)exercise.get(1).get("reps"))));
+            }
             exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
             excerciseSets.setText("Sets Completed: " + 0 + " of " + (exercise.size() - 1));
 
@@ -90,14 +123,14 @@ public class WorkoutActivity extends AppCompatActivity {
                 ImageView checkbox = new ImageView(this);
                 checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
 
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams checkmarkParams = new RelativeLayout.LayoutParams(
                         checkmark_size,
                         checkmark_size
                 );
                 if (i != 1) {
-                    params.setMarginStart(10);
+                    checkmarkParams.setMarginStart(10);
                 }
-                checkbox.setLayoutParams(params);
+                checkbox.setLayoutParams(checkmarkParams);
                 exerciseSets.addView(checkbox);
             }
 
@@ -471,11 +504,58 @@ public class WorkoutActivity extends AppCompatActivity {
                  }
              }
             );
-
-
-
         }
     }
 
+
+    private class onDownPressed implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
+    }
+    @Override
+    public void onBackPressed(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        Gson gson = new Gson();
+        String hashMapString = gson.toJson(workout);
+        System.out.println(hashMapString +"HERE1");
+        editor.putString("workout", hashMapString);
+        editor.apply();
+        super.onBackPressed();
+    }
+
+    private class onWorkoutFinished implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            System.out.println("HERE");
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
+            // Add the buttons
+            builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("workout", null);
+                    editor.apply();
+                    ((Curli) getApplication()).setWorkoutTimer(null);
+                    WorkoutHistoryDB workoutHistoryDB = new WorkoutHistoryDB(context);
+                    workoutHistoryDB.saveWorkout(workout);
+
+                    finish();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
 
 }

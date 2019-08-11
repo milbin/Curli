@@ -26,7 +26,7 @@ public class ExerciseDb {
 
     //private constructor
     private ExerciseDb(Context context){
-        this.openHelper = new DatabaseOpenHelper(context);
+        this.openHelper = new DatabaseOpenHelper(context, 1, "ExerciseDB");
 
     }
 
