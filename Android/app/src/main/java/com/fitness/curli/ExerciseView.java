@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -79,18 +80,6 @@ public class ExerciseView extends AppCompatActivity {
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
 
-        // Generate sample sqlData
-        //ArrayList<String> tempList = sqlData.GROUPS;
-        //tempList.addAll(sqlData.MUSCLES);
-        //tempList.addAll(sqlData.EXERCISES);
-        nameList = new String[]{};//tempList.toArray(new String[0]);
-
-        for (int i = 0; i < nameList.length; i++) {
-            SearchResult name = new SearchResult(nameList[i]);
-            // Binds all strings into an array
-            arraylist.add(name);
-        }
-
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist);
 
@@ -103,10 +92,18 @@ public class ExerciseView extends AppCompatActivity {
         sqlData = new ExerciseDb(context);
         sqlData.open();
 
+        nameList = sqlData.getExercises("MainGroup", group).toArray(new String[0]);
+
+        for (int i = 0; i < nameList.length; i++) {
+            SearchResult name = new SearchResult(nameList[i]);
+            // Binds all strings into an array
+            arraylist.add(name);
+        }
+
         linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
 
         displaySpinner();
-        displayExercises(sqlData.getExercises());
+        displayExercises(sqlData.getExercisesAlphabetized());
 
         dialog.dismiss();
     }
@@ -155,10 +152,10 @@ public class ExerciseView extends AppCompatActivity {
         //equipment spinner functionality
         Spinner equipmentSpinner = findViewById(R.id.equipmentSpinner);
 
-        ArrayList<String> allEquipment = sqlData.getEquipment();
-        allGroups.remove(group);
-        allGroups.add(0, group);
-        allGroups.add("Any Muscle Group");
+        ArrayList<String> allEquipment = new ArrayList<>(Arrays.asList("Any Equipment", "Barbell", "Body Only", "Cables", "Dumbell"));
+        //allGroups.remove(group);
+        //allGroups.add(0, group);
+        //allGroups.add("Any Muscle Group");
 
         // Creating adapter for spinner
         dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allEquipment);
@@ -175,8 +172,14 @@ public class ExerciseView extends AppCompatActivity {
                 String selectedEquipment = parent.getSelectedItem().toString();
 
                 if (++equipmentSpinnerSelectedCheck > 1){
-                    linearLayout.removeAllViews();
-                    displayExercises(sqlData.getExercises("Equipment", selectedEquipment));
+                    if (!selectedEquipment.equals("Any Equipment")) {
+                        linearLayout.removeAllViews();
+                        displayExercises(sqlData.getExercisesAlphabetized("Equipment", selectedEquipment));
+                    }
+                    else if (selectedEquipment.equals("Any Equipment")){
+                        linearLayout.removeAllViews();
+                        displayExercises(sqlData.getExercisesAlphabetized());
+                    }
                 }
             }
 
@@ -203,18 +206,20 @@ public class ExerciseView extends AppCompatActivity {
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
 
-            letterSubtitleBody.setMargins(40, 10, 0, 10);
-            letterSubtitle.setLayoutParams(letterSubtitleBody);
-            letterSubtitle.setTextColor(getResources().getColor(R.color.colorPrimary));
-            letterSubtitle.setTextSize(22);
-            linearLayout.addView(letterSubtitle);
-
             int exerciseSize = exercises.get(letter).size();
-            System.out.println(exercises.get(letter));
+
+            if (exerciseSize > 0) {
+                letterSubtitleBody.setMargins(40, 10, 0, 10);
+                letterSubtitle.setLayoutParams(letterSubtitleBody);
+                letterSubtitle.setTextColor(getResources().getColor(R.color.colorPrimary));
+                letterSubtitle.setTextSize(22);
+                linearLayout.addView(letterSubtitle);
+            }
+
             int exerciseNameIndex = 0;
             boolean adding = true;
 
-            while (adding){
+            while (adding ){
                 LinearLayout rowLayout = new LinearLayout(this);
                 for (int x = 0; x < cardsPerRow; x++){
                     if (exerciseNameIndex == exerciseSize){

@@ -91,7 +91,7 @@ public class ExerciseDb {
         return equipment;
     }
 
-    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(){
+    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercisesAlphabetized(){
         c=db.rawQuery("Select Name From ExerciseTable", new String[]{});
 
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -132,7 +132,7 @@ public class ExerciseDb {
         return exercises;
     }
 
-    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(String filterType, String filter){
+    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercisesAlphabetized(String filterType, String filter){
         c=db.rawQuery("Select Name From ExerciseTable Where "+filterType+" = '"+filter+"'", new String[]{});
 
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -168,6 +168,25 @@ public class ExerciseDb {
 
                 exercises.get("" + name.charAt(0)).add(currentExercise);
             }
+        }
+
+        return exercises;
+    }
+
+    public ArrayList<String> getExercises(){
+        c=db.rawQuery("SELECT Name FROM ExerciseTable", new String[]{});
+        ArrayList<String> exercises = new ArrayList<>();
+        while (c.moveToNext()){
+            exercises.add(c.getString(0));
+        }
+
+        return exercises;
+    }
+    public ArrayList<String> getExercises(String filterType, String filter){
+        c=db.rawQuery("SELECT Name FROM ExerciseTable Where "+filterType+" = '"+filter+"'", new String[]{});
+        ArrayList<String> exercises = new ArrayList<>();
+        while (c.moveToNext()){
+            exercises.add(c.getString(0));
         }
 
         return exercises;
