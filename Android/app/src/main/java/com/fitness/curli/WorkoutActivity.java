@@ -1,10 +1,8 @@
 package com.fitness.curli;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -12,12 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
@@ -32,7 +27,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class WorkoutActivity extends AppCompatActivity {
     //WORKOUT DATA STRUCTURE EXAMPLE:
@@ -547,7 +541,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     editor.putString("workout", null);
                     editor.apply();
                     ((Curli) getApplication()).setWorkoutTimer(null);
-                    workoutHistoryDB workoutHistoryDB = new workoutHistoryDB(context);
+                    WorkoutHistoryDB workoutHistoryDB = new WorkoutHistoryDB(context);
+                    workoutHistoryDB.saveWorkout(workout);
 
                     finish();
                 }
