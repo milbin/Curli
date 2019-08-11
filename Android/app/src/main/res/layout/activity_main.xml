@@ -20,37 +20,15 @@
     android:layout_below="@id/toolbar"
     android:id="@+id/linearLayoutMain"
     >
+    <include
+        layout="@layout/workout_card"
+        android:id="@+id/workout_card"
+        />
+    <include
+        layout="@layout/workout_card"
+        />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true">
-        <RelativeLayout
 
-            android:id="@+id/workout_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/cardview_background"
-            android:minHeight="@dimen/min_height_of_workout_card"
-            android:layout_gravity="top"
-            android:elevation="3dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="4dp"
-
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Click HERE for workout_view"
-                android:layout_centerInParent="true"
-                />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>
     <include
