@@ -76,6 +76,9 @@ public class MuscleView extends AppCompatActivity {
                 TextView title = card.findViewById(R.id.title);
                 title.setText(titleText);
 
+                TextView equipment = card.findViewById(R.id.equipment);
+                equipment.setText("");
+
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

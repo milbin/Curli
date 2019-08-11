@@ -15,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -29,16 +33,17 @@ import java.util.LinkedHashMap;
 
 public class ExerciseView extends AppCompatActivity {
     private Context context;
-    LinearLayout linearLayout;
-    ProgressDialog dialog;
-    ExerciseDb sqlData;
-    String[] nameList;
-    ListView list;
-    Toolbar toolbar;
-    ArrayList<SearchResult> arraylist = new ArrayList<>();
-    ListViewAdapter adapter;
-    Menu menu;
-    String group;
+    private LinearLayout linearLayout;
+    private ProgressDialog dialog;
+    private ExerciseDb sqlData;
+    private String[] nameList;
+    private ListView list;
+    private Toolbar toolbar;
+    private ArrayList<SearchResult> arraylist = new ArrayList<>();
+    private ListViewAdapter adapter;
+    private Menu menu;
+    private String group;
+    private int check = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -103,6 +108,47 @@ public class ExerciseView extends AppCompatActivity {
     }
 
     private void displayExercises(){
+
+        final Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
+
+        ArrayList<String> allGroups = sqlData.getGroups();
+        allGroups.remove(group);
+        allGroups.add(0, group);
+        allGroups.add("Any Muscle Group");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allGroups);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        muscleGroupSpinner.setAdapter(dataAdapter);
+
+        System.out.println("EEK " + muscleGroupSpinner.hasFocus());
+
+        muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedGroup = parent.getSelectedItem().toString();
+
+                //Spinner father = findViewById(R.id.muscleGroupSpinner);
+                if (++check > 1) {
+                    if (!selectedGroup.equals("Any Muscle Group")) {
+                        Intent intent = new Intent(ExerciseView.this, ExerciseView.class);
+                        intent.putExtra("group", selectedGroup);
+                        startActivity(intent);
+                    }
+                    else if (selectedGroup.equals("Any Muscle Group")){
+                        Intent intent = new Intent(ExerciseView.this, MuscleView.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent){
+            }
+        });
+
         HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises(group);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -151,6 +197,9 @@ public class ExerciseView extends AppCompatActivity {
 
                     TextView title = card.findViewById(R.id.title);
                     title.setText(titleText);
+
+                    TextView equipment = card.findViewById(R.id.equipment);
+                    equipment.setText(exercise.get("equipment"));
 
                     card.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -227,7 +276,6 @@ public class ExerciseView extends AppCompatActivity {
                 return false;
             }
         });
-
 
         // Configure the search info and add any event listeners...
 
