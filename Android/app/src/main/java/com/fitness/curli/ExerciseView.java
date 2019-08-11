@@ -43,7 +43,8 @@ public class ExerciseView extends AppCompatActivity {
     private ListViewAdapter adapter;
     private Menu menu;
     private String group;
-    private int check = 0;
+    private int muscleSpinnerSelectedCheck = 0;
+    private int equipmentSpinnerSelectedCheck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -102,13 +103,17 @@ public class ExerciseView extends AppCompatActivity {
         sqlData = new ExerciseDb(context);
         sqlData.open();
 
-        linearLayout = findViewById(R.id.GroupsViewLinearLayout);
+        linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
 
-        displayExercises();
+        displaySpinner();
+        displayExercises(sqlData.getExercises());
+
+        dialog.dismiss();
     }
 
-    private void displayExercises(){
+    private void displaySpinner(){
 
+        //muscle group spinner functionality
         final Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
 
         ArrayList<String> allGroups = sqlData.getGroups();
@@ -125,15 +130,13 @@ public class ExerciseView extends AppCompatActivity {
         // attaching data adapter to spinner
         muscleGroupSpinner.setAdapter(dataAdapter);
 
-        System.out.println("EEK " + muscleGroupSpinner.hasFocus());
-
         muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedGroup = parent.getSelectedItem().toString();
 
                 //Spinner father = findViewById(R.id.muscleGroupSpinner);
-                if (++check > 1) {
+                if (++muscleSpinnerSelectedCheck > 1 && !selectedGroup.equals(group)) {
                     if (!selectedGroup.equals("Any Muscle Group")) {
                         Intent intent = new Intent(ExerciseView.this, ExerciseView.class);
                         intent.putExtra("group", selectedGroup);
@@ -149,8 +152,43 @@ public class ExerciseView extends AppCompatActivity {
             }
         });
 
-        HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = sqlData.getExercises(group);
+        //equipment spinner functionality
+        Spinner equipmentSpinner = findViewById(R.id.equipmentSpinner);
 
+        ArrayList<String> allEquipment = sqlData.getEquipment();
+        allGroups.remove(group);
+        allGroups.add(0, group);
+        allGroups.add("Any Muscle Group");
+
+        // Creating adapter for spinner
+        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allEquipment);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        equipmentSpinner.setAdapter(dataAdapter);
+
+        equipmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEquipment = parent.getSelectedItem().toString();
+
+                if (++equipmentSpinnerSelectedCheck > 1){
+                    linearLayout.removeAllViews();
+                    displayExercises(sqlData.getExercises("Equipment", selectedEquipment));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void displayExercises(HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises){
+        //card layout functionality
         Display display = getWindowManager().getDefaultDisplay();
 
         int layoutWidth = display.getWidth();
@@ -215,8 +253,6 @@ public class ExerciseView extends AppCompatActivity {
             }
 
         }
-
-        dialog.dismiss();
     }
 
     @Override

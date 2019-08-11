@@ -64,27 +64,31 @@ public class ExerciseDb {
         return ExerciseName;
     }
 
-    public ArrayList getGroups(){
+    public ArrayList<String> getGroups(){
         c=db.rawQuery("Select MainGroup From ExerciseTable", new String[]{});
-        //StringBuffer buffer = new StringBuffer();
-        ArrayList groups = new ArrayList();
+        ArrayList<String> groups = new ArrayList();
         while(c.moveToNext()){
-            groups.add(""+c.getString(0));
+            String current = c.getString(0);
+            if (!groups.contains(current)) {
+                groups.add(current);
+            }
         }
 
-        //remove duplicates
-        LinkedHashSet set = new LinkedHashSet<>();
-
-        // Add the elements to set
-        set.addAll(groups);
-
-        groups.clear();
-
-        groups.addAll(set);
-
-        //String Groups = buffer.toString();//.split(",");
-
         return groups;
+    }
+
+    public ArrayList<String> getEquipment(){
+        c=db.rawQuery("Select Equipment From ExerciseTable", new String[]{});
+
+        ArrayList<String> equipment = new ArrayList<>();
+        while (c.moveToNext()){
+            String current = c.getString(0);
+            if (!equipment.contains(current)){
+                equipment.add(current);
+            }
+        }
+
+        return equipment;
     }
 
     public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(){
@@ -128,8 +132,8 @@ public class ExerciseDb {
         return exercises;
     }
 
-    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(String filter){
-        c=db.rawQuery("Select Name From ExerciseTable Where MainGroup = '"+filter+"'", new String[]{});
+    public HashMap<String, ArrayList<LinkedHashMap<String,String>>> getExercises(String filterType, String filter){
+        c=db.rawQuery("Select Name From ExerciseTable Where "+filterType+" = '"+filter+"'", new String[]{});
 
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises = new HashMap();

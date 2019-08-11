@@ -12,8 +12,10 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,10 +24,11 @@ import static java.security.AccessController.getContext;
 
 public class MuscleView extends AppCompatActivity {
 
-    Toolbar toolbar;
-    ProgressDialog dialog;
-    Context context;
-    ExerciseDb SQLData;
+    private Toolbar toolbar;
+    private ProgressDialog dialog;
+    private Context context;
+    private ExerciseDb SQLData;
+    private int check = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,25 @@ public class MuscleView extends AppCompatActivity {
     }
 
     public void displayMuscles(){
+        Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
+        muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedGroup = parent.getSelectedItem().toString();
+
+                //Spinner father = findViewById(R.id.muscleGroupSpinner);
+                if (++check > 1) {
+                    if (!selectedGroup.equals("Any Muscle Group")) {
+                        Intent intent = new Intent(MuscleView.this, ExerciseView.class);
+                        intent.putExtra("group", selectedGroup);
+                        startActivity(intent);
+                    }
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent){
+            }
+        });
+
         ArrayList<String> groups = SQLData.getGroups();
 
         int groupSize = groups.size();

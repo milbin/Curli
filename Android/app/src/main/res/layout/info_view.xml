@@ -62,7 +62,7 @@
         android:background="@drawable/gradient"
         >
     <LinearLayout
-        android:id="@+id/GroupsViewLinearLayout"
+        android:id="@+id/ExerciseViewLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
