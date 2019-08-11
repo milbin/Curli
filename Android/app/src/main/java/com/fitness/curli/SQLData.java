@@ -1,7 +1,18 @@
 package com.fitness.curli;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.google.gson.Gson;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -79,7 +90,101 @@ public class SQLData {
         exercises.put("B", exerciseList1);
         exercises.put("C", exerciseList);
         return exercises;
+    }
 
 
+
+
+
+    private SQLiteOpenHelper openHelper;
+    private SQLiteDatabase db;
+    Cursor c = null;
+    public void openWorkoutHistoryDB(Context context){
+        this.openHelper = new DatabaseOpenHelper(context, 1, "WorkoutHistoryDB.sqlite");
+        this.db = openHelper.getWritableDatabase();
+    }
+    public void openExerciseDB(Context context){
+        this.openHelper = new DatabaseOpenHelper(context, 1, "ExerciseDB");
+        this.db = openHelper.getWritableDatabase();
+    }
+
+    public void saveWorkout(HashMap json) {
+        int id = 1;
+        Date calendar = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String date = df.format(calendar);
+        String title = (String) json.get("title");
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(json);
+
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("date", date);
+        values.put("title", title);
+        values.put("json", jsonString);
+
+        db.insert("WorkoutHistory", null, values);
+        c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+        c.moveToFirst();
+        db.close();
+    }
+
+    public String getGroupFromName(String name) {
+
+        c=db.rawQuery("Select MainGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String GroupStr = c.getString(0);
+            buffer.append(""+GroupStr);
+        }
+        db.close();
+        return buffer.toString();
+    }
+    public String[] getMusclesFromName(String name){
+        c = db.rawQuery("Select DetailedGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String PrimaryMuscles = c.getString(0);
+            buffer.append(""+PrimaryMuscles);
+        }
+         //create first part of the list from the first column
+        c = db.rawQuery("Select SecondaryGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
+        StringBuffer buffer2 = new StringBuffer();
+        while(c.moveToNext()){
+            String PrimaryMuscles = c.getString(0);
+            buffer2.append(""+PrimaryMuscles);
+        }
+
+        String[] Muscles = new String[(buffer.toString()).split(",").length + (buffer2.toString()).split(",").length];
+        System.arraycopy((buffer.toString()).split(","), 0, Muscles, 0, (buffer.toString()).split(",").length);
+        System.arraycopy((buffer2.toString()).split(","), 0, Muscles, (buffer.toString()).split(",").length, (buffer2.toString()).split(",").length);
+        db.close();
+        return Muscles;
+
+    }
+
+    public String getEquipmentFromName(String name){
+        c = db.rawQuery("Select Equipment From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String Equipment = c.getString(0);
+            buffer.append(""+Equipment);
+        }
+        db.close();
+        return buffer.toString();
+    }
+
+    public String getExerciseTypeFromName(String name){
+        c = db.rawQuery("Select TypeOfExercise From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String ExerciseType = c.getString(0);
+            buffer.append(""+ExerciseType);
+        }
+        db.close();
+        return buffer.toString();
     }
 }
