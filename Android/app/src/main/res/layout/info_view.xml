@@ -69,13 +69,10 @@
         android:paddingEnd="15dp"
         android:paddingStart="10dp"
         >
-
-
-
     </LinearLayout>
    </ScrollView>
 
-
+<!--
     <LinearLayout
         android:id="@+id/alphabetScroll"
         android:layout_width="wrap_content"
@@ -89,7 +86,7 @@
 
 
     </LinearLayout>
-
+-->
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"

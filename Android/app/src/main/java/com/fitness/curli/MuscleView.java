@@ -127,6 +127,15 @@ public class MuscleView extends AppCompatActivity {
                 TextView title = card.findViewById(R.id.title);
                 title.setText(titleText);
 
+                try{
+                    ImageView icon = card.findViewById(R.id.icon);
+                    int id = context.getResources().getIdentifier(titleText.toLowerCase(), "drawable", context.getPackageName());
+                    icon.setImageResource(id);
+                }
+                catch (Exception e){
+
+                }
+
                 TextView equipment = card.findViewById(R.id.equipment);
                 equipment.setText("");
 

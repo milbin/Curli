@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class ExerciseView extends AppCompatActivity {
         group = intent.getStringExtra("group");
 
         //create alphabet scroller linear layout
+        /*
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         LinearLayout alphabetScroll = findViewById(R.id.alphabetScroll);
         for (int i = 0; i < alphabet.length(); i++){
@@ -69,6 +72,7 @@ public class ExerciseView extends AppCompatActivity {
             alphabetScroll.addView(letterTV);
 
         }
+        */
 
         //final Drawable upArrow = getResources().getDrawable(R.drawable.back_button);
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
@@ -104,6 +108,7 @@ public class ExerciseView extends AppCompatActivity {
 
         displaySpinner();
         displayExercises(sqlData.getExercisesAlphabetized());
+        //displayExercises2();
 
         dialog.dismiss();
     }
@@ -195,13 +200,13 @@ public class ExerciseView extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
 
         int layoutWidth = display.getWidth();
-        int cardsPerRow = 2;
+        int cardsPerRow = 3;
 
         for (String letter : exercises.keySet()){
 
             TextView letterSubtitle = new TextView(this);
             letterSubtitle.setText(letter);
-            RelativeLayout.LayoutParams letterSubtitleBody = new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams letterSubtitleParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
@@ -209,8 +214,8 @@ public class ExerciseView extends AppCompatActivity {
             int exerciseSize = exercises.get(letter).size();
 
             if (exerciseSize > 0) {
-                letterSubtitleBody.setMargins(40, 10, 0, 10);
-                letterSubtitle.setLayoutParams(letterSubtitleBody);
+                letterSubtitleParams.setMargins(40, 10, 0, 10);
+                letterSubtitle.setLayoutParams(letterSubtitleParams);
                 letterSubtitle.setTextColor(getResources().getColor(R.color.colorPrimary));
                 letterSubtitle.setTextSize(22);
                 linearLayout.addView(letterSubtitle);
@@ -259,6 +264,21 @@ public class ExerciseView extends AppCompatActivity {
 
         }
     }
+
+    public void displayExercises2(){
+        ArrayList<String> exercises = sqlData.getExercises();
+        //ListView listview = findViewById(R.id.ExerciseViewListView);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, R.layout.exercise_card_info_view, exercises);
+        //listview.setAdapter(itemsAdapter);
+
+        for (String name : exercises){
+            //View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
+            //TextView title = card.findViewById(R.id.title);
+            //title.setText(name);
+            //listview.addView(card);
+        }
+
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
