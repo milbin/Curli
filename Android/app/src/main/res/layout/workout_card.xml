@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_margin="7dp"
-        android:elevation="3dp"
+        android:elevation="0dp"
         android:background="@drawable/white_card_rounded"
         android:animateLayoutChanges="true">
         <RelativeLayout
@@ -18,17 +18,19 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             >
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textColor="@android:color/black"
                 android:layout_centerHorizontal="false"
-                android:text="Arms and Chest"
+                android:fontFamily="@font/quicksand"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
                 android:paddingTop="10dp"
-                android:textSize="20sp"
-                />
+                android:text="Arms and Chest"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
             <TextView
                 android:id="@+id/equipment"
                 android:layout_width="wrap_content"
@@ -46,6 +48,15 @@
                 android:layout_centerHorizontal="false"
                 android:layout_below="@+id/equipment"
                 android:textSize="14sp"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:scaleType="fitXY"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/divider_line"
                 />
         </RelativeLayout>
         <RelativeLayout
