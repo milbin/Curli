@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new onFabClick());
 
 
     }
@@ -233,5 +237,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public class onFabClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            System.out.println("IT WORKS!");
+        }
+    }
+
+
 
 }
