@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/actionbarT"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:minHeight="?attr/actionBarSize"
     android:layout_alignParentBottom="true"
-    android:elevation="10dp"
-    android:theme="@style/Base.Theme.AppCompat.CompactMenu" >
+    android:elevation="0dp"
+    app:contentInsetStart="0dp">
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/divider_line"
+            />
     <LinearLayout
         android:id="@+id/toolbarll"
         android:layout_width="match_parent"

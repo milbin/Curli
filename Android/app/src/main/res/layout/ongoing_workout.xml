@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar  xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ongoing_workout_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
     android:background="@android:color/white"
-    android:minHeight="?attr/actionBarSize"
     android:layout_alignParentBottom="true"
-    android:elevation="5dp"
-    android:theme="@style/Base.Theme.AppCompat.CompactMenu" >
+    android:layout_marginTop="0dp"
+    android:elevation="0dp"
+    app:contentInsetStart="0dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/divider_line1"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/divider_line"
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"/>
+
         <ImageButton
             android:id="@+id/up_arrow"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
             android:visibility="invisible"
             android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
             android:background="@android:color/transparent"/>
@@ -27,6 +41,7 @@
             android:layout_height="34dp"
             android:layout_centerVertical="true"
             android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
             android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
             android:background="@android:color/transparent"/>
 
@@ -36,6 +51,7 @@
             android:fontFamily="@font/roboto_medium"
             android:textSize="20sp"
             android:textColor="@android:color/black"
+            android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

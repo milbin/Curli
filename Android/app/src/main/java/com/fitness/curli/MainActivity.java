@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             timer.setTextView((TextView)findViewById(R.id.timer));
             findViewById(R.id.up_arrow).setOnClickListener(new onResumeWorkout());
             findViewById(R.id.ongoing_workout_toolbar).setOnClickListener(new onResumeWorkout());
+            findViewById(R.id.divider_line1).setVisibility(View.GONE);//hide the divider line for the ongoing workout
         }
 
 
@@ -233,11 +234,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.profile, menu);
-
-        return true;
-    }
 }

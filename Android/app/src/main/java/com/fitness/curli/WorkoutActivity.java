@@ -68,9 +68,9 @@ public class WorkoutActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
         toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
         toolbar.setOnClickListener(new onDownPressed());
-
+        exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
-            int test = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
+            int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
             timer = new WorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
             timer.startTimer();
@@ -78,10 +78,26 @@ public class WorkoutActivity extends AppCompatActivity {
         }catch (ClassCastException e){
             timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
+            int count = 0;
+            for(ArrayList<Object> exercise:exercises) {
+                int count1 = 0;
+                for(Object set:exercise) {
+                    if (count1 != 0) {
+                        ((HashMap)set).put("reps", (int)Math.round((double)((HashMap)set).get("reps")));
+                        exercise.set(count1, set);
+                    }else{
+                        System.out.println(exercise.get(0));
+                        exercise.set(0, (int)Math.round((double)set));
+                    }
+                    count1++;
+                }
+                exercises.set(count, exercise);
+                count++;
+            }
         }
 
 
-        exercises = (ArrayList<ArrayList>) workout.get("exercises");
+
         int counter = 0;
         for(ArrayList<HashMap> exercise:exercises) {
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);

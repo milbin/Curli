@@ -9,8 +9,8 @@
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="5dp"
-        android:elevation="4dp"
+        android:layout_margin="7dp"
+        android:elevation="3dp"
         android:background="@drawable/white_card_rounded"
         android:animateLayoutChanges="true">
         <RelativeLayout

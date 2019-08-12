@@ -8,16 +8,19 @@
     >
 
     <include
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_divider"
         android:id="@+id/toolbar"
         >
     </include>
-
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/toolbar"
+    android:layout_above="@+id/ongoing_workout_toolbar">
 <LinearLayout
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_below="@id/toolbar"
     android:id="@+id/linearLayoutMain"
     >
     <include
@@ -27,10 +30,24 @@
     <include
         layout="@layout/workout_card"
         />
-
-
+    <include
+        layout="@layout/workout_card"
+        />
+    <include
+        layout="@layout/workout_card"
+        />
+    <include
+        layout="@layout/workout_card"
+        />
+    <include
+        layout="@layout/workout_card"
+        />
+    <include
+        layout="@layout/workout_card"
+        />
 
 </LinearLayout>
+</ScrollView>
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
