@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp"
@@ -52,14 +52,7 @@
                 android:textSize="14sp"
                 />
         </RelativeLayout>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="3px"
-            android:scaleType="fitXY"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/divider_line"
-            />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,26 +61,7 @@
             android:layout_marginEnd="20dp"
             >
         <LinearLayout
-            android:id="@+id/musclesll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_centerHorizontal="false"
-            >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/placeholder_icon"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                />
-        </LinearLayout>
-        <LinearLayout
             android:id="@+id/equipmentll"
-            android:layout_below="@+id/musclesll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="false"

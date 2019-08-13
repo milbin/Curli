@@ -241,7 +241,8 @@ public class MainActivity extends AppCompatActivity {
     public class onFabClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("IT WORKS!");
+            Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
+            startActivity(myIntent);
         }
     }
 

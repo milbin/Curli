@@ -44,6 +44,7 @@
                 android:value="com.fitness.curli.MainActivity" />
         </activity>
         <activity android:name=".InfoViewExercise"/>
+        <activity android:name=".WorkoutBuilder"/>
 
         <meta-data
             android:name="preloaded_fonts"
