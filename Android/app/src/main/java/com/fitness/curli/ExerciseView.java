@@ -39,6 +39,7 @@ import java.util.LinkedHashMap;
 public class ExerciseView extends AppCompatActivity {
     private Context context;
     private LinearLayout linearLayout;
+    private RecyclerView recyclerView;
     private ProgressDialog dialog;
     private ExerciseDb sqlData;
     private String[] nameList;
@@ -118,11 +119,12 @@ public class ExerciseView extends AppCompatActivity {
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
 
+        recyclerView = findViewById(R.id.my_recycler_view);
         //linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
 
         displaySpinner();
         //displayExercises(sqlData.getExercisesAlphabetized());
-        displayExercises2();
+        displayExercises2(sqlData.getExercises());
 
         dialog.dismiss();
     }
@@ -192,12 +194,12 @@ public class ExerciseView extends AppCompatActivity {
 
                 if (++equipmentSpinnerSelectedCheck > 1){
                     if (!selectedEquipment.equals("Any Equipment")) {
-                        linearLayout.removeAllViews();
-                        displayExercises(sqlData.getExercisesAlphabetized("Equipment", selectedEquipment));
+                        recyclerView.removeAllViews();
+                        displayExercises2(sqlData.getExercises("Equipment", selectedEquipment));
                     }
                     else if (selectedEquipment.equals("Any Equipment")){
-                        linearLayout.removeAllViews();
-                        displayExercises(sqlData.getExercisesAlphabetized());
+                        recyclerView.removeAllViews();
+                        displayExercises2(sqlData.getExercises());
                     }
                 }
             }
@@ -279,8 +281,8 @@ public class ExerciseView extends AppCompatActivity {
         }
     }
 
-    public void displayExercises2(){
-        String[] exercises = sqlData.getExercises().toArray(new String[]{});
+    public void displayExercises2(ArrayList<String> exercisesArray){
+        String[] exercises = exercisesArray.toArray(new String[]{});
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
