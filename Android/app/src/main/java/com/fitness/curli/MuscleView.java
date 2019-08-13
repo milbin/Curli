@@ -126,6 +126,10 @@ public class MuscleView extends AppCompatActivity {
                 final String titleText = groups.get(groupNameIndex);
                 TextView title = card.findViewById(R.id.title);
                 title.setText(titleText);
+                title.bringToFront();
+
+                RelativeLayout group = card.findViewById(R.id.group);
+                group.removeView(card.findViewById(R.id.equipment));
 
                 try{
                     ImageView icon = card.findViewById(R.id.icon);
@@ -136,8 +140,8 @@ public class MuscleView extends AppCompatActivity {
 
                 }
 
-                TextView equipment = card.findViewById(R.id.equipment);
-                equipment.setText("");
+                //TextView equipment = card.findViewById(R.id.equipment);
+                //equipment.setText("");
 
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -53,11 +53,14 @@ public class ExerciseView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_view);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.header);
         setTitle("");
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         group = intent.getStringExtra("group");
+
 
         //create alphabet scroller linear layout
         /*
@@ -78,8 +81,17 @@ public class ExerciseView extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
         //getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        setSupportActionBar(toolbar);
+        TextView title = findViewById(R.id.title);
+        title.setText(group);
 
+        ImageView backButton = findViewById(R.id.backbutton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExerciseView.this, MuscleView.class);
+                startActivity(intent);
+            }
+        });
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);

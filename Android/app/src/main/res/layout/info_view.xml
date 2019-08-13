@@ -6,16 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-    <include
-        layout="@layout/toolbar"
-        android:id="@+id/toolbar"
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
         >
-    </include>
+
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:src="@drawable/back_button" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Title"
+            android:textSize="35sp" />
+
+        <android.support.v7.widget.ActionMenuView
+            android:id="@+id/avmMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.Toolbar>
     <RelativeLayout
         android:id="@+id/spinner_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/header"
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         >
