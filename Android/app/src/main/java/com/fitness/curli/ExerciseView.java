@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -116,11 +118,11 @@ public class ExerciseView extends AppCompatActivity {
             arraylist.add(name);
         }
 
-        linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
+        //linearLayout = findViewById(R.id.ExerciseViewLinearLayout);
 
         displaySpinner();
-        displayExercises(sqlData.getExercisesAlphabetized());
-        //displayExercises2();
+        //displayExercises(sqlData.getExercisesAlphabetized());
+        displayExercises2();
 
         dialog.dismiss();
     }
@@ -280,15 +282,22 @@ public class ExerciseView extends AppCompatActivity {
     public void displayExercises2(){
         ArrayList<String> exercises = sqlData.getExercises();
         //ListView listview = findViewById(R.id.ExerciseViewListView);
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, R.layout.exercise_card_info_view, exercises);
+        //ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, R.layout.exercise_card_info_view, exercises);
         //listview.setAdapter(itemsAdapter);
 
-        for (String name : exercises){
-            //View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-            //TextView title = card.findViewById(R.id.title);
-            //title.setText(name);
-            //listview.addView(card);
-        }
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // specify an adapter (see also next example)
+        MyAdapter mAdapter = new MyAdapter(exercises.toArray(new String[]{}));
+        recyclerView.setAdapter(mAdapter);
 
         }
 
