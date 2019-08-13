@@ -239,7 +239,7 @@ public class MuscleView extends AppCompatActivity {
 
 
         if (nameLabel.equals("Exercise")){
-            Intent intent = new Intent(MuscleView.this, InfoViewExercise.class);
+            Intent intent = new Intent(MuscleView.this, ExerciseViewInfo.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
         }

@@ -54,7 +54,7 @@ public class ExerciseView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.info_view);
+        setContentView(R.layout.exercise_view);
 
         toolbar = (Toolbar) findViewById(R.id.header);
         setTitle("");
@@ -280,10 +280,7 @@ public class ExerciseView extends AppCompatActivity {
     }
 
     public void displayExercises2(){
-        ArrayList<String> exercises = sqlData.getExercises();
-        //ListView listview = findViewById(R.id.ExerciseViewListView);
-        //ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, R.layout.exercise_card_info_view, exercises);
-        //listview.setAdapter(itemsAdapter);
+        String[] exercises = sqlData.getExercises().toArray(new String[]{});
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -296,7 +293,7 @@ public class ExerciseView extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        MyAdapter mAdapter = new MyAdapter(exercises.toArray(new String[]{}));
+        ExerciseListAdapter mAdapter = new ExerciseListAdapter(exercises);
         recyclerView.setAdapter(mAdapter);
 
         }
@@ -373,7 +370,7 @@ public class ExerciseView extends AppCompatActivity {
 
 
         if (nameLabel.equals("Exercise")){
-            Intent intent = new Intent(ExerciseView.this, InfoViewExercise.class);
+            Intent intent = new Intent(ExerciseView.this, ExerciseViewInfo.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
         }

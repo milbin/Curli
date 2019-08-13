@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-public class InfoViewExercise extends AppCompatActivity {
+public class ExerciseViewInfo extends AppCompatActivity {
     RelativeLayout relativeLayout;
     ProgressDialog dialog;
     Context context;
@@ -23,7 +23,7 @@ public class InfoViewExercise extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceBundle){
         super.onCreate(savedInstanceBundle);
-        setContentView(R.layout.info_view_exercise);
+        setContentView(R.layout.exercise_view_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("EXERCISE INFO");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -36,7 +36,7 @@ public class InfoViewExercise extends AppCompatActivity {
         //ab.setDisplayHomeAsUpEnabled(true);
 
 
-        dialog = ProgressDialog.show(InfoViewExercise.this, "", "Loading...", true);
+        dialog = ProgressDialog.show(ExerciseViewInfo.this, "", "Loading...", true);
 
         context = getApplicationContext();
         relativeLayout = findViewById(R.id.relativeLayout);

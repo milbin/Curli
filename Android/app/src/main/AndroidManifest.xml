@@ -22,7 +22,7 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.fitness.curli.MainActivity" />
         </activity>
-        <activity android:name=".InfoViewExercise"/>
+        <activity android:name=".ExerciseViewInfo"/>
         <activity android:name=".MuscleView"/>
     </application>
 
