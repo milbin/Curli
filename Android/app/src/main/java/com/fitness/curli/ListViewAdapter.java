@@ -19,7 +19,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater inflater;
-    private List<SearchResult> namesList = null;
+    private List<SearchResult> namesList;
     private ArrayList<SearchResult> arraylist;
 
     public ListViewAdapter(Context context, List<SearchResult> namesList) {
@@ -72,19 +72,6 @@ public class ListViewAdapter extends BaseAdapter {
         // Set the results into TextViews
         holder.name.setText(namesList.get(position).getName());
         String name = namesList.get(position).getName();
-
-        if (data.GROUPS.contains(name)){
-            holder2.name.setText("Group : ");
-            //System.out.println("GROUP -----> "+name);
-        }
-        else if (data.MUSCLES.contains(name)){
-            holder2.name.setText("Muscle : ");
-            //System.out.println("MUSCLE -----> "+name);
-        }
-        else if (data.EXERCISES.contains(name)){
-            holder2.name.setText("Exercise : ");
-            //System.out.println("EXERCISE --> "+name);
-        }
 
         return view;
     }

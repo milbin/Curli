@@ -55,12 +55,6 @@ public class MuscleView extends AppCompatActivity {
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.listview);
 
-        // Pass results to ListViewAdapter Class
-        adapter = new ListViewAdapter(this, arraylist);
-
-        // Binds the Adapter to the ListView
-        list.setAdapter(adapter);
-
         dialog = ProgressDialog.show(MuscleView.this, "", "Loading...", true);
 
         context = getApplicationContext();
@@ -74,6 +68,12 @@ public class MuscleView extends AppCompatActivity {
             // Binds all strings into an array
             arraylist.add(name);
         }
+
+        // Pass results to ListViewAdapter Class
+        adapter = new ListViewAdapter(this, arraylist);
+
+        // Binds the Adapter to the ListView
+        list.setAdapter(adapter);
 
         displayMuscles();
 
