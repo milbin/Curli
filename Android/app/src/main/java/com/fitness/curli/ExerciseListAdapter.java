@@ -1,13 +1,18 @@
 package com.fitness.curli;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MyViewHolder> {
 private String[] mDataset;
+private Context mContext;
+private ExerciseDb sqlData;
 
 // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -22,8 +27,11 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ExerciseListAdapter(String[] myDataset) {
+    public ExerciseListAdapter(Context context, String[] myDataset) {
         mDataset = myDataset;
+        mContext = context;
+        sqlData = new ExerciseDb(mContext);
+        sqlData.open();
     }
 
     // Create new views (invoked by the layout manager)
@@ -33,6 +41,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         // create a new view
         RelativeLayout card = (RelativeLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.exercises_list_view, parent, false);
+
         MyViewHolder viewholder = new MyViewHolder(card);
         return viewholder;
     }
@@ -42,8 +51,13 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        final String exercise = mDataset[position];
         TextView title = holder.cardView.findViewById(R.id.exercise);
-        title.setText(mDataset[position]);
+        title.setText(exercise);
+
+        String equipmentText = sqlData.getEquipment(exercise);
+        TextView equipment = holder.cardView.findViewById(R.id.equipment);
+        equipment.setText(equipmentText);
 
     }
 

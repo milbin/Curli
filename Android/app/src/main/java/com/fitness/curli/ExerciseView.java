@@ -293,7 +293,7 @@ public class ExerciseView extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        ExerciseListAdapter mAdapter = new ExerciseListAdapter(exercises);
+        ExerciseListAdapter mAdapter = new ExerciseListAdapter(this, exercises);
         recyclerView.setAdapter(mAdapter);
 
         }
@@ -374,5 +374,14 @@ public class ExerciseView extends AppCompatActivity {
             intent.putExtra("exercise", name);
             startActivity(intent);
         }
+    }
+
+    public void onExerciseItemSelect(View v){
+        TextView exercise = v.findViewById(R.id.exercise);
+        String exerciseText = exercise.getText().toString();
+
+        Intent intent = new Intent(ExerciseView.this, ExerciseViewInfo.class);
+        intent.putExtra("exercise", exerciseText);
+        startActivity(intent);
     }
 }
