@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
-        layout="@layout/toolbar_divider"
+        layout="@layout/toolbar_no_logo"
         android:id="@+id/toolbar"
-        />
+        >
+    </include>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/ongoing_workout_toolbar">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@id/bottom_app_bar">
+        android:layout_below="@id/toolbar">
+
 
     <include
         layout="@layout/workout_builder_card"
         />
     </LinearLayout>
-    <include
-        layout="@layout/bottom_app_bar"
-        android:id="@+id/bottom_app_bar"
-        />
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_add_black_24dp"
+        app:fabSize="normal"
+        android:theme="@style/AppTheme"
+        android:layout_margin="16dp" />
 
 
 </RelativeLayout>
