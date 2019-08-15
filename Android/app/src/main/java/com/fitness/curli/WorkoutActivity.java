@@ -545,7 +545,6 @@ public class WorkoutActivity extends AppCompatActivity {
     private class onWorkoutFinished implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("HERE");
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
             builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
             // Add the buttons

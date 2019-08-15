@@ -9,6 +9,7 @@
     android:gravity="start"
     app:contentInsetStart="0dp">
     <RelativeLayout
+        android:id="@+id/toolbar_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
