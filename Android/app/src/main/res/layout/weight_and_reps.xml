@@ -22,7 +22,7 @@
             android:textSize="20sp"
             android:inputType="numberDecimal"
             android:layout_centerHorizontal="true"
-            android:text="0" />
+            android:text="0.0" />
         <ImageButton
             android:id="@+id/weight_subtract_button"
             android:layout_width="50dp"

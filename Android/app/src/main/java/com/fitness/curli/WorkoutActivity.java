@@ -55,7 +55,6 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
-        System.out.println(workout);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -459,7 +458,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
-            System.out.println(exercises);
 
         }
     }

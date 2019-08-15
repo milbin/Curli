@@ -88,7 +88,7 @@
                 android:textSize="20sp"
                 android:inputType="numberDecimal"
                 android:layout_centerHorizontal="true"
-                android:text="115lbs" />
+                android:text="0.0" />
             <ImageButton
                 android:id="@+id/weight_subtract_button"
                 android:layout_width="50dp"
@@ -137,7 +137,7 @@
                 android:textSize="20sp"
                 android:inputType="numberDecimal"
                 android:layout_marginTop="-12dp"
-                android:text="8"/>
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/reps_subtract_button"

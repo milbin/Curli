@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     Context context = this;
     private Menu optionsMenu;
     HashMap currentWorkout;
+    int RESULT_FINISHED_BUILD = 1;
+    int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new onFabClick());
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
+            if(requestCode == RESULT_FINISHED_BUILD){
+                HashMap newWorkout = (HashMap) data.getSerializableExtra("newWorkout");
+            }
+
+        }
     }
 
     @Override

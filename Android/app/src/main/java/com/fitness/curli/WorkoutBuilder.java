@@ -11,18 +11,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 public class WorkoutBuilder extends AppCompatActivity {
     Context context = this;
+    ArrayList<ArrayList> exercises = new ArrayList<>();
+
+    //This is an example of the workout data structure that is created and returned through the intent when this activity is finished by the user
+    //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
+    //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
+    //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workout_builder);
-        System.out.println("HERE");
         findViewById(R.id.back_button).setOnClickListener(new onBackButtonClicked());
         ((TextView)findViewById(R.id.title)).setText("Create Workout");
         findViewById(R.id.fab).setOnClickListener(new onFabClick());
@@ -42,35 +53,43 @@ public class WorkoutBuilder extends AppCompatActivity {
         ((RelativeLayout)findViewById(R.id.toolbar_rl)).addView(finishButton);
 
 
-        //this is currently just placeholder while we wait for theo to finish the info view,
-        //the exercise cards are going to be programatically added instead of hardcoded
 
-        findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
-        findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
+
 
 
     }
     public class onFinishClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Finish Building Workout?").setMessage("Are you sure you want to finish building this workout? It will be added to your workouts list.");
-            // Add the buttons
-            builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                    //TODO add some sort of mechanism that saves newly created workouts
-                    onBackPressed();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            // Create the AlertDialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            if(exercises.isEmpty()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Please Add Exercises").setMessage("You cannot finish building this workout without adding any exercises!");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Finish Building Workout?").setMessage("Are you sure you want to finish building this workout? It will be added to your workouts list.");
+                // Add the buttons
+                builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        //TODO add some sort of mechanism that saves newly created workouts
+                        HashMap workout = new HashMap();
+                        workout.put("title", "");
+                        workout.put("exercises", exercises);
+                        onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
 
 
         }
@@ -79,38 +98,88 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class onBackButtonClicked implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Discard Workout?").setMessage("Are you sure you want to discard this workout? This action is irreversible.");
-            // Add the buttons
-            builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                    onBackPressed();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            // Create the AlertDialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            if(exercises.isEmpty()){
+                onBackPressed();
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Discard Workout?").setMessage("Are you sure you want to discard this workout? This action is irreversible.");
+                // Add the buttons
+                builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
     }
 
     public class onFabClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            System.out.println("HERE");
+            //TODO move the code below to the method that is called when the infoView
+            // activity returns and parse the title from the intent data of said infoView activity
+            String title = "Ab Crunch Machine";
+            LinearLayout ll = findViewById(R.id.workout_builder_ll);
+            View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
+            ((TextView)card.findViewById(R.id.exercise_name)).setText(title);
+            card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
+            card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
+            card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
+            card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
+            card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            ll.addView(card);
+            LinkedHashMap set = new LinkedHashMap<>();
+            set.put("title", title);
+            set.put("weight", 0.0);
+            set.put("reps", 0);
+            ArrayList setList = new ArrayList();
+            setList.add(1);
+            setList.add(set);
+            exercises.add(setList);
+            System.out.println(exercises);
+
 
         }
     }
     public class AddSetButton implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            LinearLayout linearLayout = (LinearLayout)(v.getParent()).getParent().getParent();
+            int exerciseNumber = 0;
+            for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent()){
+                    exerciseNumber = i;
+                    break;
+                }
+            }
             View weightAndReps = LayoutInflater.from(context).inflate(R.layout.weight_and_reps, null);
             LinearLayout ll = ((View)v.getParent()).findViewById(R.id.weight_and_reps_ll);
             ll.addView(weightAndReps);
+            weightAndReps.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
+            weightAndReps.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            weightAndReps.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
+            weightAndReps.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            CharSequence title = ((TextView)((View)v.getParent()).findViewById(R.id.exercise_name)).getText();
+            LinkedHashMap set = new LinkedHashMap<>();
+            //TODO this title needs to be changed in order to support a superset
+            set.put("title", title);
+            set.put("weight", 0.0);
+            set.put("reps", 0);
+            ArrayList setList = exercises.get(exerciseNumber);
+            setList.add(set);
+            setList.set(0, (int)setList.get(0)+1);
+            exercises.set(exerciseNumber, setList);
 
         }
     }
@@ -124,4 +193,72 @@ public class WorkoutBuilder extends AppCompatActivity {
 
         }
     }
+
+    public class onAddOrSubtractClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            RelativeLayout relativeLayout = (RelativeLayout)v.getParent();
+            LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent().getParent().getParent();
+            int exerciseNumber = 0;
+            for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent()){
+                    exerciseNumber = i;
+                    break;
+                }
+            }
+            int setNumber = 0;
+            LinearLayout linearLayoutSets = (LinearLayout)v.getParent().getParent().getParent();
+            for (int i = 0; i < linearLayoutSets.getChildCount(); i++) {
+                if(linearLayoutSets.getChildAt(i) == ((View)v.getParent()).getParent()){
+                    setNumber = i+1;
+                    break;
+                }
+            }
+            if(setNumber > exercises.get(exerciseNumber).size()-1){
+                setNumber = exercises.get(exerciseNumber).size()-1;
+            }
+            if(v.getId() == R.id.weight_add_button) {
+                EditText editText = relativeLayout.findViewById(R.id.exercise_weight);
+                Double currentWeight = Double.parseDouble(editText.getText().toString()) + 2.5;
+                String currentWeightString = String.valueOf(currentWeight);
+                editText.setText(currentWeightString);
+                ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+            }
+            if(v.getId() == R.id.weight_subtract_button) {
+                EditText editText = relativeLayout.findViewById(R.id.exercise_weight);
+                Double currentWeight = Double.parseDouble(editText.getText().toString()) - 2.5;
+                if(currentWeight <= 0){
+                    currentWeight = 0.0;
+                }
+                String currentWeightString = String.valueOf(currentWeight);
+                editText.setText(currentWeightString);
+                ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+
+
+            }
+            if(v.getId() == R.id.reps_add_button) {
+                EditText editText = relativeLayout.findViewById(R.id.exercise_reps);
+                Integer currentReps = Integer.parseInt(editText.getText().toString()) + 1;
+                String currentRepsString = String.valueOf(currentReps);
+                editText.setText(currentRepsString);
+                System.out.println(setNumber);
+                ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+
+            }
+            if(v.getId() == R.id.reps_subtract_button) {
+                EditText editText = relativeLayout.findViewById(R.id.exercise_reps);
+                Integer currentReps = Integer.parseInt(editText.getText().toString()) - 1;
+                if(currentReps <= 0){
+                    currentReps = 0;
+                }
+                String currentRepsString = String.valueOf(currentReps);
+                editText.setText(currentRepsString);
+                ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+
+            }
+            System.out.println(exercises);
+        }
+    }
+
+
 }

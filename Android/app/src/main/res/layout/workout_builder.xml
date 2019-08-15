@@ -14,14 +14,13 @@
         android:layout_below="@id/toolbar"
         android:layout_above="@+id/ongoing_workout_toolbar">
     <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/workout_builder_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar">
 
 
-    <include
-        layout="@layout/workout_builder_card"
-        />
     </LinearLayout>
     </ScrollView>
 
