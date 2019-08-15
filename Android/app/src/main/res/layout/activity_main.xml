@@ -22,6 +22,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:id="@+id/linearLayoutMain"
+    android:paddingBottom="30dp"
     >
     <include
         layout="@layout/workout_card"

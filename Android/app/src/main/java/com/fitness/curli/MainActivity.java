@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private Menu optionsMenu;
     HashMap currentWorkout;
     int RESULT_FINISHED_BUILD = 1;
-    int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
+    public int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
-                HashMap newWorkout = (HashMap) data.getSerializableExtra("newWorkout");
-            }
+                HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
+                RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+                ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
+                LinearLayout ll = findViewById(R.id.linearLayoutMain);
+                ll.addView(card);
 
+            }
         }
     }
 
@@ -254,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
-            startActivity(myIntent);
+            startActivityForResult(myIntent, 1);
         }
     }
 

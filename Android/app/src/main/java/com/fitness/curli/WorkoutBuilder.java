@@ -1,7 +1,9 @@
 package com.fitness.curli;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -78,6 +80,9 @@ public class WorkoutBuilder extends AppCompatActivity {
                         HashMap workout = new HashMap();
                         workout.put("title", "");
                         workout.put("exercises", exercises);
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("workout", workout);
+                        setResult(1, returnIntent);
                         onBackPressed();
                     }
                 });
