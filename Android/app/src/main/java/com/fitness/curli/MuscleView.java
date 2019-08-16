@@ -63,7 +63,7 @@ public class MuscleView extends AppCompatActivity {
 
         nameList = sqlData.getExercises().toArray(new String[0]);
 
-        for (int i = 0; i < nameList.length; i++) {
+        for (int i = 0; i < 6; i++) {
             SearchResult name = new SearchResult(nameList[i]);
             // Binds all strings into an array
             arraylist.add(name);
@@ -91,6 +91,7 @@ public class MuscleView extends AppCompatActivity {
                     if (!selectedGroup.equals("Any Muscle Group")) {
                         Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                         intent.putExtra("group", selectedGroup);
+                        intent.putExtra("source", "schedule_planner");
                         startActivity(intent);
                     }
                 }
@@ -133,8 +134,8 @@ public class MuscleView extends AppCompatActivity {
 
                 try{
                     ImageView icon = card.findViewById(R.id.icon);
-                    int id = context.getResources().getIdentifier(titleText.toLowerCase(), "drawable", context.getPackageName());
-                    icon.setImageResource(id);
+                    int imageId = context.getResources().getIdentifier(titleText.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
+                    icon.setImageResource(imageId);
                 }
                 catch (Exception e){
 
@@ -148,6 +149,7 @@ public class MuscleView extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                         intent.putExtra("group", titleText);
+                        intent.putExtra("source", "muscle_view");
                         startActivity(intent);
                     }
                 });

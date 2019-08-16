@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp"
-            android:layout_below="@+id/equipment"
+            android:layout_below="@+id/title"
             >
             <ImageView
                 android:layout_width="70dp"

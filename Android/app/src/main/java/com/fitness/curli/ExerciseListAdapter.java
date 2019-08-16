@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 private String[] mDataset;
 private Context mContext;
 private ExerciseDb sqlData;
+private String source;
 
 // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -27,9 +30,10 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ExerciseListAdapter(Context context, String[] myDataset) {
+    public ExerciseListAdapter(Context context, String source, String[] myDataset) {
         mDataset = myDataset;
         mContext = context;
+        this.source = source;
         sqlData = new ExerciseDb(mContext);
         sqlData.open();
     }
@@ -58,6 +62,16 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         String equipmentText = sqlData.getEquipment(exercise);
         TextView equipment = holder.cardView.findViewById(R.id.equipment);
         equipment.setText(equipmentText);
+
+        System.out.println("SOURCE = " + source);
+        if (source.equals("muscle_view")){
+            ImageView icon = holder.cardView.findViewById(R.id.icon);
+            icon.setImageResource(R.drawable.back_button);
+        }
+        else if (source.equals("schedule_planner")){
+            ImageView icon = holder.cardView.findViewById(R.id.icon);
+            icon.setImageResource(R.drawable.ic_info_blue_24dp);
+        }
 
     }
 

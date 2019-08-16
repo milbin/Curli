@@ -51,6 +51,7 @@ public class ExerciseView extends AppCompatActivity {
     private String group;
     private int muscleSpinnerSelectedCheck = 0;
     private int equipmentSpinnerSelectedCheck = 0;
+    private String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -63,6 +64,7 @@ public class ExerciseView extends AppCompatActivity {
 
         Intent intent = getIntent();
         group = intent.getStringExtra("group");
+        source = intent.getStringExtra("source");
 
 
         //create alphabet scroller linear layout
@@ -295,7 +297,7 @@ public class ExerciseView extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        ExerciseListAdapter mAdapter = new ExerciseListAdapter(this, exercises);
+        ExerciseListAdapter mAdapter = new ExerciseListAdapter(this, source, exercises);
         recyclerView.setAdapter(mAdapter);
 
         }
@@ -382,8 +384,13 @@ public class ExerciseView extends AppCompatActivity {
         TextView exercise = v.findViewById(R.id.exercise);
         String exerciseText = exercise.getText().toString();
 
-        Intent intent = new Intent(ExerciseView.this, ExerciseViewInfo.class);
-        intent.putExtra("exercise", exerciseText);
-        startActivity(intent);
+        if (source.equals("muscle_view")) {
+            Intent intent = new Intent(ExerciseView.this, ExerciseViewInfo.class);
+            intent.putExtra("exercise", exerciseText);
+            startActivity(intent);
+        }
+        else if (source.equals("schedule_planner")){
+            System.out.println(exerciseText);
+        }
     }
 }
