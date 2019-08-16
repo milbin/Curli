@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -51,6 +52,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         finishButton.setLayoutParams(finishButtonLP);
         finishButton.setBackgroundColor(Color.TRANSPARENT);
         ((RelativeLayout)findViewById(R.id.toolbar_rl)).addView(finishButton);
+
 
 
 
@@ -144,13 +146,19 @@ public class WorkoutBuilder extends AppCompatActivity {
             card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
             card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
             card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            EditText exerciseReps = card.findViewById(R.id.exercise_reps);
+            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
+            EditText exerciseWeight = card.findViewById(R.id.exercise_weight);
+            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
             ll.addView(card);
             LinkedHashMap set = new LinkedHashMap<>();
             set.put("title", title);
             set.put("weight", 0.0);
             set.put("reps", 0);
             ArrayList setList = new ArrayList();
-            setList.add(1);
+            setList.add(0);
             setList.add(set);
             exercises.add(setList);
             System.out.println(exercises);
@@ -176,6 +184,12 @@ public class WorkoutBuilder extends AppCompatActivity {
             weightAndReps.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
             weightAndReps.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
             weightAndReps.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            EditText exerciseReps = weightAndReps.findViewById(R.id.exercise_reps);
+            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
+            EditText exerciseWeight = weightAndReps.findViewById(R.id.exercise_weight);
+            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
             CharSequence title = ((TextView)((View)v.getParent()).findViewById(R.id.exercise_name)).getText();
             LinkedHashMap set = new LinkedHashMap<>();
             //TODO this title needs to be changed in order to support a superset
@@ -184,7 +198,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             set.put("reps", 0);
             ArrayList setList = exercises.get(exerciseNumber);
             setList.add(set);
-            setList.set(0, (int)setList.get(0)+1);
+            //setList.set(0, (int)setList.get(0)+1);
             exercises.set(exerciseNumber, setList);
 
         }
@@ -197,6 +211,56 @@ public class WorkoutBuilder extends AppCompatActivity {
                 ll.removeViewAt(ll.getChildCount() - 1);
             }
 
+        }
+    }
+
+    public class onEditTextDoneButtonPressed implements EditText.OnKeyListener{
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                //this will call onUserFinishedEditing (just below)
+                v.clearFocus();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public class onUserFinishedEditing implements EditText.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            System.out.println(hasFocus);
+            if (!hasFocus) {
+                LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent().getParent().getParent();
+                int exerciseNumber = 0;
+                for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                    if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent()){
+                        exerciseNumber = i;
+                        break;
+                    }
+                }
+                int setNumber = 0;
+                LinearLayout linearLayoutSets = (LinearLayout)v.getParent().getParent().getParent();
+                for (int i = 0; i < linearLayoutSets.getChildCount(); i++) {
+                    if(linearLayoutSets.getChildAt(i) == ((View)v.getParent()).getParent()){
+                        setNumber = i+1;
+                        break;
+                    }
+                }
+                if(setNumber > exercises.get(exerciseNumber).size()-1){
+                    setNumber = exercises.get(exerciseNumber).size()-1;
+                }
+                if (v.getId() == R.id.exercise_reps) {
+                    Integer currentReps = Integer.parseInt(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+                } else if (v.getId() == R.id.exercise_weight) {
+                    Double currentWeight = Double.parseDouble(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+                }
+            }
+            System.out.println(exercises);
         }
     }
 
