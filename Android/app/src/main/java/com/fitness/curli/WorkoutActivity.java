@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -56,7 +58,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
 
-
+        //setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)toolbar.getLayoutParams();
         params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -67,6 +69,8 @@ public class WorkoutActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
         toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
         toolbar.setOnClickListener(new onDownPressed());
+        //check for if the activity resumes from a previous ongoing workout by seeing if the former
+        // integer value of the 'reps' field is now a double since gson converts it to that
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
             int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
@@ -120,7 +124,11 @@ public class WorkoutActivity extends AppCompatActivity {
 
             TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
             EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
             EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
+            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
             TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
             View dividerLine = relativeLayout.findViewById(R.id.divider_line);
 
@@ -182,7 +190,8 @@ public class WorkoutActivity extends AppCompatActivity {
             if(setNumber == -1){ //this is so that the set number does not go below zero
                 return;
             }else{
-                exercise.set(0, setNumber); //decrement the set number by 1
+                //decrement the set number by 1
+                exercise.set(0, setNumber);
                 LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 for(int i=exercise.size()-2; i>=setNumber; i--) {
                     checkboxLinearLayout.getChildAt(i);
@@ -408,6 +417,48 @@ public class WorkoutActivity extends AppCompatActivity {
         exerciseWeight.setEnabled(false);
 
 
+    }
+
+    public class onEditTextDoneButtonPressed implements EditText.OnKeyListener{
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {\
+                //this will call onUserFinishedEditing (just below)
+                v.clearFocus();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public class onUserFinishedEditing implements EditText.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                LinearLayout linearLayout = (LinearLayout) ((View) ((View) v.getParent()).getParent()).getParent().getParent();
+                int exerciseNumber = 0;
+                for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                    if (linearLayout.getChildAt(i) == ((View) v.getParent()).getParent().getParent()) {
+                        exerciseNumber = i;
+                        break;
+                    }
+                }
+                int setNumber = (int) exercises.get(exerciseNumber).get(0) + 1;
+                if (setNumber > exercises.get(exerciseNumber).size() - 1) {
+                    setNumber = exercises.get(exerciseNumber).size() - 1;
+                }
+                if (v.getId() == R.id.exercise_reps) {
+                    Integer currentReps = Integer.parseInt(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+                } else if (v.getId() == R.id.exercise_weight) {
+                    Double currentWeight = Double.parseDouble(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+                }
+            }
+            System.out.println(exercises);
+        }
     }
     public class onAddOrSubtractClick implements View.OnClickListener {
 
