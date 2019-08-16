@@ -423,7 +423,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {\
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 //this will call onUserFinishedEditing (just below)
                 v.clearFocus();
                 return true;
