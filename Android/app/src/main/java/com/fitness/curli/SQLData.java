@@ -99,8 +99,8 @@ public class SQLData {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
     Cursor c = null;
-    public void openWorkoutHistoryDB(Context context){
-        this.openHelper = new DatabaseOpenHelper(context, 1, "WorkoutHistoryDB.sqlite");
+    public void openUserDB(Context context){
+        this.openHelper = new DatabaseOpenHelper(context, 1, "UserDB.sqlite");
         this.db = openHelper.getWritableDatabase();
     }
     public void openExerciseDB(Context context){
@@ -108,7 +108,7 @@ public class SQLData {
         this.db = openHelper.getWritableDatabase();
     }
 
-    public void saveWorkout(HashMap json) {
+    public void saveWorkoutToHistory(HashMap json) {
         int id = 1;
         Date calendar = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -125,6 +125,21 @@ public class SQLData {
 
         db.insert("WorkoutHistory", null, values);
         c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+        c.moveToFirst();
+        db.close();
+    }
+    public void saveWorkout(HashMap json) {
+        String title = (String) json.get("title");
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(json);
+
+        ContentValues values = new ContentValues();
+        values.put("name", title);
+        values.put("workout", jsonString);
+        System.out.println(jsonString);
+
+        db.insert("Workouts", null, values);
+        c = db.rawQuery("SELECT * FROM Workouts;", new String[]{});
         c.moveToFirst();
         db.close();
     }

@@ -555,8 +555,8 @@ public class WorkoutActivity extends AppCompatActivity {
                     editor.apply();
                     ((Curli) getApplication()).setWorkoutTimer(null);
                     SQLData sqlData = new SQLData();
-                    sqlData.openWorkoutHistoryDB(context);
-                    sqlData.saveWorkout(workout);
+                    sqlData.openUserDB(context);
+                    sqlData.saveWorkoutToHistory(workout);
                     finish();
                 }
             });

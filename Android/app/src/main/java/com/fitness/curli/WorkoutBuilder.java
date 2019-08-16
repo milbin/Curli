@@ -1,10 +1,8 @@
 package com.fitness.curli;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -78,11 +76,14 @@ public class WorkoutBuilder extends AppCompatActivity {
                         // User clicked OK button
                         //TODO add some sort of mechanism that saves newly created workouts
                         HashMap workout = new HashMap();
-                        workout.put("title", "");
+                        workout.put("title", "Test Title");
                         workout.put("exercises", exercises);
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("workout", workout);
                         setResult(1, returnIntent);
+                        SQLData sqlData = new SQLData();
+                        sqlData.openUserDB(context);
+                        sqlData.saveWorkout(workout);
                         onBackPressed();
                     }
                 });
