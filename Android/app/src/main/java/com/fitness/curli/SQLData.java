@@ -114,12 +114,14 @@ public class SQLData {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String date = df.format(calendar);
         String title = (String) json.get("title");
+        String time = (String) json.get("time");
         Gson gson = new Gson();
         String jsonString = gson.toJson(json);
 
         ContentValues values = new ContentValues();
         values.put("id", id);
         values.put("date", date);
+        values.put("time", time);
         values.put("title", title);
         values.put("json", jsonString);
 

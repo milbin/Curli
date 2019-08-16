@@ -35,7 +35,7 @@ public class WorkoutActivity extends AppCompatActivity {
     //This is what the activity takes as input parameters, the reason that every set has a the name of the
     //exercise associated with it is so that we can create supersets easily later on
     //TODO create superset
-    //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Arms and Chest", "time":"1:23:34", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
     //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
@@ -527,10 +527,11 @@ public class WorkoutActivity extends AppCompatActivity {
             if((int)exercises.get(exerciseNumber).get(0) == exercises.get(exerciseNumber).size()-1){
                 v.findViewById(R.id.exercise_sets_back_button).performClick();
             }
-            System.out.println(exercises);
-            //expand the card that was clicked
-            collapseCard(currentlyExpandedCard);
-            expandCard((RelativeLayout)v);
+            if(v != currentlyExpandedCard) {
+                System.out.println(exercises);
+                collapseCard(currentlyExpandedCard);
+                expandCard((RelativeLayout) v);
+            }
         }
     }
 
@@ -585,7 +586,6 @@ public class WorkoutActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         Gson gson = new Gson();
         String hashMapString = gson.toJson(workout);
-        System.out.println(hashMapString +"HERE1");
         editor.putString("workout", hashMapString);
         editor.apply();
         super.onBackPressed();
@@ -594,31 +594,50 @@ public class WorkoutActivity extends AppCompatActivity {
     private class onWorkoutFinished implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
-            // Add the buttons
-            builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("workout", null);
-                    editor.apply();
-                    ((Curli) getApplication()).setWorkoutTimer(null);
-                    SQLData sqlData = new SQLData();
-                    sqlData.openUserDB(context);
-                    sqlData.saveWorkoutToHistory(workout);
-                    finish();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            // Create the AlertDialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            int totalSets = 0;
+            for (ArrayList exercise : exercises) {
+                totalSets += (int) exercise.get(0);
+            }
+            if (totalSets <= 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Cant Finish Workout!").setMessage("You need to complete a set before finishing your workout.");
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
+                // Add the buttons
+                builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("workout", null);
+                        editor.apply();
+                        String time = (String) ((TextView) findViewById(R.id.timer)).getText();
+                        workout.put("time", time);
+                        ((Curli) getApplication()).setWorkoutTimer(null);
+                        SQLData sqlData = new SQLData();
+                        sqlData.openUserDB(context);
+                        sqlData.saveWorkoutToHistory(workout);
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
     }
 
