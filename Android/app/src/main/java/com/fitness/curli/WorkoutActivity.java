@@ -78,9 +78,10 @@ public class WorkoutActivity extends AppCompatActivity {
             timer.setTextView((TextView)findViewById(R.id.timer));
             timer.startTimer();
             ((Curli) this.getApplication()).setWorkoutTimer(timer);
-        }catch (ClassCastException e){
+        }catch (ClassCastException e){//this means that the workout is being resumed
             timer = ((Curli) this.getApplication()).getWorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
+            // convert double reps to integer
             int count = 0;
             for(ArrayList<Object> exercise:exercises) {
                 int count1 = 0;

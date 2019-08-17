@@ -152,10 +152,68 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            if(currentWorkout != null){
-                Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
-                myIntent.putExtra("workout", currentWorkout);
-                startActivity(myIntent);
+            if(((Curli) getApplication()).getWorkoutTimer() != null){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Discard Current Workout?").setMessage("Starting a new workout will discard your old one.");
+                // Add the buttons
+                builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((Curli) getApplication()).getWorkoutTimer().stopTimer();
+                        ((Curli) getApplication()).setWorkoutTimer(null);
+
+                        LinkedHashMap BP = new LinkedHashMap<>();
+                        BP.put("title", "Bench Press");
+                        BP.put("weight", 135.0);
+                        BP.put("reps", 8);
+
+                        LinkedHashMap BC = new LinkedHashMap<>();
+                        BC.put("title", "Bicep Curl");
+                        BC.put("weight", 75.0);
+                        BC.put("reps", 8);
+                        LinkedHashMap BC1 = new LinkedHashMap<>();
+                        BC1.put("title", "Bicep Curl");
+                        BC1.put("weight", 80.0);
+                        BC1.put("reps", 9);
+                        LinkedHashMap BC2 = new LinkedHashMap<>();
+                        BC2.put("title", "Bicep Curl");
+                        BC2.put("weight", 90.0);
+                        BC2.put("reps", 10);
+
+                        ArrayList BCList = new ArrayList();
+                        ArrayList BPList = new ArrayList();
+
+                        BCList.add(0);
+                        BPList.add(0);
+
+                        for (int i = 0; i < 3; i++) {
+                            BPList.add(BP);
+                        }
+                        BCList.add(BC);
+                        BCList.add(BC1);
+                        BCList.add(BC2);
+
+                        ArrayList exercises = new ArrayList();
+                        exercises.add(BPList);
+                        exercises.add(BCList);
+                        LinkedHashMap workout = new LinkedHashMap();
+                        workout.put("title", "Arms and Chest");
+                        workout.put("exercises", exercises);
+                        Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+                        myIntent.putExtra("workout", workout);
+                        startActivity(myIntent);
+
+                        System.out.println(workout);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialogs
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }else {
 
                 LinkedHashMap BP = new LinkedHashMap<>();
@@ -201,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
 
                 System.out.println(workout);
             }
+
 
         }
     }
