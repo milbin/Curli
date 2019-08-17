@@ -205,9 +205,11 @@ public class MuscleView extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     list.setVisibility(View.INVISIBLE);
+                    toolbar.findViewById(R.id.title).setVisibility(View.VISIBLE);
                 }
                 else if (hasFocus) {
                     list.setVisibility(View.VISIBLE);
+                    toolbar.findViewById(R.id.title).setVisibility(View.INVISIBLE);
                 }
             }
         });

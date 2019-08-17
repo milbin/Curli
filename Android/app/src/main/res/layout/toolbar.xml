@@ -13,6 +13,7 @@
     android:gravity="start"
     >
         <ImageView
+            android:id="@+id/title"
             android:layout_width="105dp"
             android:layout_height="45dp"
             android:layout_centerHorizontal="true"

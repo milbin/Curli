@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -308,13 +309,15 @@ public class ExerciseView extends AppCompatActivity {
         list.setVisibility(View.INVISIBLE);
 
         //getMenuInflater().inflate(R.menu.search_menu, menu);
-        ActionMenuView avmMenu = toolbar.findViewById(R.id.avmMenu);
+        LinearLayout wrapper = toolbar.findViewById(R.id.toolbarWrapper);
+        RelativeLayout topBar = wrapper.findViewById(R.id.topBar);
+        ActionMenuView avmMenu = topBar.findViewById(R.id.avmMenu);
+
         getMenuInflater().inflate(R.menu.search_menu, avmMenu.getMenu());
         this.menu = avmMenu.getMenu();
 
         MenuItem searchItem = avmMenu.getMenu().findItem(R.id.action_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
-
 
         avmMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
                    @Override
@@ -337,11 +340,19 @@ public class ExerciseView extends AppCompatActivity {
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                RelativeLayout parent = (RelativeLayout) (v.getParent());
+                TextView title = parent.findViewById(R.id.title);
+                ImageView back = parent.findViewById(R.id.backbutton);
+
                 if (!hasFocus) {
                     list.setVisibility(View.INVISIBLE);
+                    title.setVisibility(View.VISIBLE);
+                    back.setVisibility(View.VISIBLE);
                 }
                 else if (hasFocus) {
                     list.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.INVISIBLE);
+                    back.setVisibility(View.INVISIBLE);
                 }
             }
         });
