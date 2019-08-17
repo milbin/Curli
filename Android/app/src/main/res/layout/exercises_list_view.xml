@@ -34,7 +34,7 @@
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:padding="10dp"
-                android:maxWidth="100sp"
+                android:maxWidth="200sp"
                 />
             <TextView
                 android:id="@+id/equipment"

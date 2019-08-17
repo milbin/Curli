@@ -21,13 +21,15 @@ public class ListViewAdapter extends BaseAdapter {
     LayoutInflater inflater;
     private List<SearchResult> namesList;
     private ArrayList<SearchResult> arraylist;
+    private int maxResults;
 
-    public ListViewAdapter(Context context, List<SearchResult> namesList) {
+    public ListViewAdapter(Context context, List<SearchResult> namesList, int maxResults) {
         mContext = context;
         this.namesList = namesList;
         inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<SearchResult>();
-        this.arraylist.addAll(namesList);
+        this.arraylist.addAll(namesList.subList(0, maxResults));
+        this.maxResults = maxResults;
     }
 
     public class ViewHolder {
@@ -81,11 +83,15 @@ public class ListViewAdapter extends BaseAdapter {
         charText = charText.toLowerCase(Locale.getDefault());
         namesList.clear();
         if (charText.length() == 0) {
-            namesList.addAll(arraylist);
+            namesList.addAll(arraylist.subList(0, maxResults));
         } else {
-            for (SearchResult wp : arraylist) {
+            for (int index = 0; index < arraylist.size(); index++) {
+                SearchResult wp = arraylist.get(index);
                 if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     namesList.add(wp);
+                }
+                if (namesList.size() == maxResults){
+                    break;
                 }
             }
         }

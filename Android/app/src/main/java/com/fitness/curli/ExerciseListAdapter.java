@@ -66,11 +66,11 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         System.out.println("SOURCE = " + source);
         if (source.equals("muscle_view")){
             ImageView icon = holder.cardView.findViewById(R.id.icon);
-            icon.setImageResource(R.drawable.back_button);
+            icon.setImageResource(R.drawable.ic_navigate_next_blue_24dp);
         }
         else if (source.equals("schedule_planner")){
             ImageView icon = holder.cardView.findViewById(R.id.icon);
-            icon.setImageResource(R.drawable.ic_info_blue_24dp);
+            icon.setImageResource(R.drawable.ic_add_blue_24dp);
         }
 
     }

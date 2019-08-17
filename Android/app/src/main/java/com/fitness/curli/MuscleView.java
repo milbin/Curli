@@ -63,14 +63,14 @@ public class MuscleView extends AppCompatActivity {
 
         nameList = sqlData.getExercises().toArray(new String[0]);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
             // Binds all strings into an array
             arraylist.add(name);
         }
 
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewAdapter(this, arraylist);
+        adapter = new ListViewAdapter(this, arraylist, 6);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);

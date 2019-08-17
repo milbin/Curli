@@ -116,7 +116,7 @@ public class ExerciseView extends AppCompatActivity {
         }
 
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewAdapter(this, arraylist);
+        adapter = new ListViewAdapter(this, arraylist, 6);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
@@ -160,6 +160,7 @@ public class ExerciseView extends AppCompatActivity {
                     if (!selectedGroup.equals("Any Muscle Group")) {
                         Intent intent = new Intent(ExerciseView.this, ExerciseView.class);
                         intent.putExtra("group", selectedGroup);
+                        intent.putExtra("source", "muscle_view");
                         startActivity(intent);
                     }
                     else if (selectedGroup.equals("Any Muscle Group")){
