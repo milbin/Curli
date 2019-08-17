@@ -308,7 +308,7 @@ public class ExerciseView extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         list.setVisibility(View.INVISIBLE);
 
-        //getMenuInflater().inflate(R.menu.search_menu, menu);
+        /*
         LinearLayout wrapper = toolbar.findViewById(R.id.toolbarWrapper);
         RelativeLayout topBar = wrapper.findViewById(R.id.topBar);
         ActionMenuView avmMenu = topBar.findViewById(R.id.avmMenu);
@@ -337,6 +337,11 @@ public class ExerciseView extends AppCompatActivity {
 
         );
 
+        */
+
+        RelativeLayout topBar = toolbar.findViewById(R.id.topBar);
+        SearchView searchView = topBar.findViewById(R.id.searchView);
+
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -351,6 +356,7 @@ public class ExerciseView extends AppCompatActivity {
                 }
                 else if (hasFocus) {
                     list.setVisibility(View.VISIBLE);
+                    list.bringToFront();
                     title.setVisibility(View.INVISIBLE);
                     back.setVisibility(View.INVISIBLE);
                 }

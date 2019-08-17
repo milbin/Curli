@@ -11,122 +11,134 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/toolbarWrapper"
-            android:orientation="vertical"
+        <RelativeLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/topBar"
-                >
-                <ImageView
-                    android:id="@+id/backbutton"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_centerVertical="true"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:src="@drawable/back_button" />
+            android:layout_height="match_parent"
+            android:id="@+id/topBar"
+            >
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerVertical="true"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:src="@drawable/back_button" />
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="Title"
-                    android:textSize="35sp"
-                    android:layout_centerHorizontal="true"/>
-                <android.support.v7.widget.ActionMenuView
-                    android:id="@+id/avmMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="Title"
+                android:textSize="35sp" />
+            <!--
+            <android.support.v7.widget.ActionMenuView
+                android:id="@+id/avmMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                />
+                -->
+            <android.support.v7.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="0dp"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:id="@+id/toolbarBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        >
+
+        <ImageView
+            android:id="@+id/groupIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/chest" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="170dp"
+            android:layout_toRightOf="@id/groupIcon"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="group"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 >
 
                 <ImageView
-                    android:id="@+id/groupIcon"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/chest" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="170dp"
-                    android:layout_toRightOf="@id/groupIcon"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="group"
-                        android:textSize="20sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        >
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/ic_fitness_center_blue_24dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_fitness_center_blue_24dp" />
+            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/listview"
+        android:layout_below="@id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>
     <RelativeLayout
         android:id="@+id/spinner_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/toolbarBottom"
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         >
-    <Spinner
-        android:id="@+id/muscleGroupSpinner"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        android:background="@drawable/spinner_background"
-        android:layout_marginEnd="15dp"
-        android:textAlignment="center"
-         />
-        <ImageView
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/muscleGroupSpinner"
+            android:layout_width="195dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="2dp"
-            android:layout_alignEnd="@+id/muscleGroupSpinner"
-            />
-    <Spinner
-        android:id="@+id/equipmentSpinner"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:entries="@array/equipment"
-        android:padding="3dp"
-        android:background="@drawable/spinner_background"
-        android:layout_toEndOf="@+id/muscleGroupSpinner"
-        android:textAlignment="center"
-         />
-        <ImageView
-            android:layout_width="wrap_content"
+            android:padding="3dp"
+            android:background="@drawable/spinner_background"
+            android:layout_marginEnd="15dp"
+            android:textAlignment="center"
+             />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:layout_alignEnd="@+id/muscleGroupSpinner"
+                />
+        <Spinner
+            android:id="@+id/equipmentSpinner"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="2dp"
-            android:layout_alignEnd="@+id/equipmentSpinner"
-            />
+            android:entries="@array/equipment"
+            android:padding="3dp"
+            android:background="@drawable/spinner_background"
+            android:layout_toEndOf="@+id/muscleGroupSpinner"
+            android:textAlignment="center"
+             />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:layout_alignEnd="@+id/equipmentSpinner"
+                />
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -167,12 +179,5 @@
 
     </LinearLayout>
 -->
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_rl"
-        android:background="@android:color/white"
-        ></ListView>
 
 </RelativeLayout>
