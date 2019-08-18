@@ -67,29 +67,6 @@ public class ExerciseView extends AppCompatActivity {
         group = intent.getStringExtra("group");
         source = intent.getStringExtra("source");
 
-
-        //create alphabet scroller linear layout
-        /*
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        LinearLayout alphabetScroll = findViewById(R.id.alphabetScroll);
-        for (int i = 0; i < alphabet.length(); i++){
-            char letter = alphabet.charAt(i);
-            TextView letterTV = new TextView(this);
-            letterTV.setText(Character.toString(letter));
-            letterTV.setTypeface(letterTV.getTypeface(), Typeface.BOLD);
-            letterTV.setTextSize(13);
-            alphabetScroll.addView(letterTV);
-
-        }
-        */
-
-        //final Drawable upArrow = getResources().getDrawable(R.drawable.back_button);
-        //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
-        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        //TextView title = findViewById(R.id.title);
-        //title.setText(group);
-
         ImageView backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,10 +111,13 @@ public class ExerciseView extends AppCompatActivity {
 
     private void displaySpinner() {
 
-        //muscle group spinner functionality
-        //final Spinner muscleGroupSpinner = findViewById(R.id.spinner_rl).findViewById(R.id.muscleGroupSpinner);
+        final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
+        final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
 
-        Spinner[] muscleSpinners = {findViewById(R.id.spinner_rl).findViewById(R.id.muscleGroupSpinner), findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll).findViewById(R.id.muscleGroupSpinnerScroll)};
+        //muscle group spinner functionality
+        final Spinner muscleSpinner1 = spinnerRelativeLayout.findViewById(R.id.muscleGroupSpinner);
+        final Spinner muscleSpinner2 = spinnerRelativeLayoutScroll.findViewById(R.id.muscleGroupSpinnerScroll);
+        Spinner[] muscleSpinners = {muscleSpinner1, muscleSpinner2};
 
         ArrayAdapter<String> dataAdapter;
 
@@ -179,8 +159,11 @@ public class ExerciseView extends AppCompatActivity {
                 }
             });
         }
+
         //equipment spinner functionality
-        Spinner[] equipmentSpinners = {findViewById(R.id.spinner_rl).findViewById(R.id.equipmentSpinner), findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll).findViewById(R.id.equipmentSpinnerScroll)};
+        final Spinner equipmentSpinner1 = spinnerRelativeLayout.findViewById(R.id.equipmentSpinner);
+        final Spinner equipmentSpinner2 = spinnerRelativeLayoutScroll.findViewById(R.id.equipmentSpinnerScroll);
+        Spinner[] equipmentSpinners = {equipmentSpinner1, equipmentSpinner2};
 
         for (Spinner equipmentSpinner : equipmentSpinners) {
             ArrayList<String> allEquipment = new ArrayList<>(Arrays.asList("Any Equipment", "Barbell", "Body Only", "Cables", "Dumbell"));
@@ -219,6 +202,26 @@ public class ExerciseView extends AppCompatActivity {
                 }
             });
         }
+        spinnerRelativeLayout.setVisibility(View.GONE);
+
+        final int[] coordinateSpinner = new int[2];
+        final int[] coordinateSpinnerScroll = new int[2];
+        findViewById(R.id.scrollView).setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                muscleSpinner1.getLocationOnScreen(coordinateSpinner);
+                muscleSpinner2.getLocationOnScreen(coordinateSpinnerScroll);
+
+                if (coordinateSpinnerScroll[1] <= coordinateSpinner[1]){
+                    spinnerRelativeLayout.setVisibility(View.VISIBLE);
+                    spinnerRelativeLayoutScroll.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    spinnerRelativeLayout.setVisibility(View.GONE);
+                    spinnerRelativeLayoutScroll.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     public void displayExercises(HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises){
