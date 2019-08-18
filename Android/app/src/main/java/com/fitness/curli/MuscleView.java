@@ -137,9 +137,7 @@ public class MuscleView extends AppCompatActivity {
                     int imageId = context.getResources().getIdentifier(titleText.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
                     icon.setImageResource(imageId);
                 }
-                catch (Exception e){
-
-                }
+                catch (Exception e){}
 
                 //TextView equipment = card.findViewById(R.id.equipment);
                 //equipment.setText("");
@@ -174,31 +172,7 @@ public class MuscleView extends AppCompatActivity {
         list.setVisibility(View.INVISIBLE);
 
         //getMenuInflater().inflate(R.menu.search_menu, menu);
-        ActionMenuView avmMenu = toolbar.findViewById(R.id.avmMenu);
-        getMenuInflater().inflate(R.menu.search_menu, avmMenu.getMenu());
-        this.menu = avmMenu.getMenu();
-
-        MenuItem searchItem = avmMenu.getMenu().findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-
-        avmMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
-                                               @Override
-                                               public boolean onMenuItemClick(MenuItem menuItem) {
-                                                   if(menuItem.getItemId() == R.id.action_search){
-                                                       searchView.setIconified(false);
-                                                       SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-                                                       searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
-                                                       searchAutoComplete.setTextColor(getResources().getColor(android.R.color.white));
-                                                       ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-                                                       icon.setColorFilter(Color.WHITE);
-                                                   }
-                                                   return false;
-                                               }
-                                           }
-
-
-        );
+        SearchView searchView = toolbar.findViewById(R.id.searchView);
 
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -242,7 +216,7 @@ public class MuscleView extends AppCompatActivity {
         String name = text.getText().toString();
 
 
-        if (nameLabel.equals("Exercise")){
+        if (nameLabel.equals("exercise")){
             Intent intent = new Intent(MuscleView.this, ExerciseViewInfo.class);
             intent.putExtra("exercise", name);
             startActivity(intent);

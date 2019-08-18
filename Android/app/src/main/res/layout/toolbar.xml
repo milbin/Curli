@@ -20,8 +20,8 @@
             android:src="@mipmap/final_logo"
             android:layout_gravity="center"
             />
-        <android.support.v7.widget.ActionMenuView
-            android:id="@+id/avmMenu"
+        <android.support.v7.widget.SearchView
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"/>
 

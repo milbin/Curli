@@ -87,8 +87,8 @@ public class ExerciseView extends AppCompatActivity {
         //upArrow.setColorFilter(getResources().getColor(R.color.light), PorterDuff.Mode.SRC_ATOP);
         //getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
-        TextView title = findViewById(R.id.title);
-        title.setText(group);
+        //TextView title = findViewById(R.id.title);
+        //title.setText(group);
 
         ImageView backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -288,6 +288,20 @@ public class ExerciseView extends AppCompatActivity {
     public void displayExercises2(ArrayList<String> exercisesArray){
         String[] exercises = exercisesArray.toArray(new String[]{});
 
+        RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);
+
+        try{
+            ImageView groupIcon = toolbarBottom.findViewById(R.id.groupIcon);
+            int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
+            groupIcon.setImageResource(imageId);
+        }
+        catch (Exception e){}
+
+
+        LinearLayout infoWrapper = toolbarBottom.findViewById(R.id.infoWrapper);
+        TextView groupView = infoWrapper.findViewById(R.id.group);
+        groupView.setText(group);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -391,7 +405,7 @@ public class ExerciseView extends AppCompatActivity {
         String name = text.getText().toString();
 
 
-        if (nameLabel.equals("Exercise")){
+        if (nameLabel.equals("exercise")){
             Intent intent = new Intent(ExerciseView.this, ExerciseViewInfo.class);
             intent.putExtra("exercise", name);
             startActivity(intent);
