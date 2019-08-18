@@ -132,87 +132,93 @@ public class ExerciseView extends AppCompatActivity {
         dialog.dismiss();
     }
 
-    private void displaySpinner(){
+    private void displaySpinner() {
 
         //muscle group spinner functionality
-        final Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
+        //final Spinner muscleGroupSpinner = findViewById(R.id.spinner_rl).findViewById(R.id.muscleGroupSpinner);
 
-        ArrayList<String> allGroups = sqlData.getGroups();
-        allGroups.remove(group);
-        allGroups.add(0, group);
-        allGroups.add("Any Muscle Group");
+        Spinner[] muscleSpinners = {findViewById(R.id.spinner_rl).findViewById(R.id.muscleGroupSpinner), findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll).findViewById(R.id.muscleGroupSpinnerScroll)};
 
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allGroups);
+        ArrayAdapter<String> dataAdapter;
 
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        for (Spinner muscleGroupSpinner : muscleSpinners) {
+            ArrayList<String> allGroups = sqlData.getGroups();
+            allGroups.remove(group);
+            allGroups.add(0, group);
+            allGroups.add("Any Muscle Group");
 
-        // attaching data adapter to spinner
-        muscleGroupSpinner.setAdapter(dataAdapter);
+            // Creating adapter for spinner
+            dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allGroups);
 
-        muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedGroup = parent.getSelectedItem().toString();
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                //Spinner father = findViewById(R.id.muscleGroupSpinner);
-                if (++muscleSpinnerSelectedCheck > 1 && !selectedGroup.equals(group)) {
-                    if (!selectedGroup.equals("Any Muscle Group")) {
-                        Intent intent = new Intent(ExerciseView.this, ExerciseView.class);
-                        intent.putExtra("group", selectedGroup);
-                        intent.putExtra("source", "muscle_view");
-                        startActivity(intent);
-                    }
-                    else if (selectedGroup.equals("Any Muscle Group")){
-                        Intent intent = new Intent(ExerciseView.this, MuscleView.class);
-                        startActivity(intent);
+            // attaching data adapter to spinner
+            muscleGroupSpinner.setAdapter(dataAdapter);
+
+            muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedGroup = parent.getSelectedItem().toString();
+
+                    //Spinner father = findViewById(R.id.muscleGroupSpinner);
+                    if (++muscleSpinnerSelectedCheck > 1 && !selectedGroup.equals(group)) {
+                        if (!selectedGroup.equals("Any Muscle Group")) {
+                            Intent intent = new Intent(ExerciseView.this, ExerciseView.class);
+                            intent.putExtra("group", selectedGroup);
+                            intent.putExtra("source", "muscle_view");
+                            startActivity(intent);
+                        } else if (selectedGroup.equals("Any Muscle Group")) {
+                            Intent intent = new Intent(ExerciseView.this, MuscleView.class);
+                            startActivity(intent);
+                        }
                     }
                 }
-            }
-            public void onNothingSelected(AdapterView<?> parent){
-            }
-        });
 
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
         //equipment spinner functionality
-        Spinner equipmentSpinner = findViewById(R.id.equipmentSpinner);
+        Spinner[] equipmentSpinners = {findViewById(R.id.spinner_rl).findViewById(R.id.equipmentSpinner), findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll).findViewById(R.id.equipmentSpinnerScroll)};
 
-        ArrayList<String> allEquipment = new ArrayList<>(Arrays.asList("Any Equipment", "Barbell", "Body Only", "Cables", "Dumbell"));
-        //allGroups.remove(group);
-        //allGroups.add(0, group);
-        //allGroups.add("Any Muscle Group");
+        for (Spinner equipmentSpinner : equipmentSpinners) {
+            ArrayList<String> allEquipment = new ArrayList<>(Arrays.asList("Any Equipment", "Barbell", "Body Only", "Cables", "Dumbell"));
+            //allGroups.remove(group);
+            //allGroups.add(0, group);
+            //allGroups.add("Any Muscle Group");
 
-        // Creating adapter for spinner
-        dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allEquipment);
+            // Creating adapter for spinner
+            dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allEquipment);
 
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Drop down layout style - list view with radio button
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // attaching data adapter to spinner
-        equipmentSpinner.setAdapter(dataAdapter);
+            // attaching data adapter to spinner
+            equipmentSpinner.setAdapter(dataAdapter);
 
-        equipmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedEquipment = parent.getSelectedItem().toString();
+            equipmentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedEquipment = parent.getSelectedItem().toString();
 
-                if (++equipmentSpinnerSelectedCheck > 1){
-                    if (!selectedEquipment.equals("Any Equipment")) {
-                        recyclerView.removeAllViews();
-                        displayExercises2(sqlData.getExercises("Equipment", selectedEquipment));
-                    }
-                    else if (selectedEquipment.equals("Any Equipment")){
-                        recyclerView.removeAllViews();
-                        displayExercises2(sqlData.getExercises());
+                    if (++equipmentSpinnerSelectedCheck > 1) {
+                        if (!selectedEquipment.equals("Any Equipment")) {
+                            recyclerView.removeAllViews();
+                            displayExercises2(sqlData.getExercises("Equipment", selectedEquipment));
+                        } else if (selectedEquipment.equals("Any Equipment")) {
+                            recyclerView.removeAllViews();
+                            displayExercises2(sqlData.getExercises());
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void displayExercises(HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises){
@@ -360,7 +366,7 @@ public class ExerciseView extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 RelativeLayout parent = (RelativeLayout) (v.getParent());
-                TextView title = parent.findViewById(R.id.title);
+                ImageView title = parent.findViewById(R.id.title);
                 ImageView back = parent.findViewById(R.id.backbutton);
 
                 if (!hasFocus) {

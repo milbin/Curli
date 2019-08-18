@@ -62,46 +62,6 @@
                 android:layout_marginEnd="0dp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
-    <RelativeLayout
-        android:id="@+id/toolbarBottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        >
-
-        <ImageView
-            android:id="@+id/groupIcon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            />
-
-        <LinearLayout
-            android:id="@+id/infoWrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="170dp"
-            android:layout_toRightOf="@id/groupIcon"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="group"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_fitness_center_blue_24dp" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
     <ListView
         android:id="@+id/listview"
         android:layout_below="@id/header"
@@ -109,10 +69,10 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"/>
     <RelativeLayout
-        android:id="@+id/spinner_rl"
+        android:id="@id/spinner_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarBottom"
+        android:layout_below="@id/header"
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         >
@@ -124,17 +84,17 @@
             android:background="@drawable/spinner_background"
             android:layout_marginEnd="15dp"
             android:textAlignment="center"
-             />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="2dp"
-                android:layout_alignEnd="@+id/muscleGroupSpinner"
-                />
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="2dp"
+            android:layout_alignEnd="@+id/muscleGroupSpinner"
+            />
         <Spinner
-            android:id="@+id/equipmentSpinner"
+            android:id="@id/equipmentSpinner"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:entries="@array/equipment"
@@ -142,27 +102,117 @@
             android:background="@drawable/spinner_background"
             android:layout_toEndOf="@+id/muscleGroupSpinner"
             android:textAlignment="center"
-             />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="2dp"
-                android:layout_alignEnd="@+id/equipmentSpinner"
-                />
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="2dp"
+            android:layout_alignEnd="@+id/equipmentSpinner"
+            />
     </RelativeLayout>
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/spinner_rl"
+        android:layout_below="@id/header"
         android:background="@drawable/gradient"
         >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:scrollbars="vertical"
+        <RelativeLayout
+            android:id="@+id/scrollViewWrapper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/toolbarBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:id="@+id/groupIcon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/infoWrapper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="170dp"
+                    android:layout_toRightOf="@id/groupIcon"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="group"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_fitness_center_blue_24dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/spinner_rl_scroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbarBottom"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="20dp"
+                >
+                <Spinner
+                    android:id="@+id/muscleGroupSpinnerScroll"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:background="@drawable/spinner_background"
+                    android:layout_marginEnd="15dp"
+                    android:textAlignment="center"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="2dp"
+                    android:layout_alignEnd="@+id/muscleGroupSpinnerScroll"
+                    />
+                <Spinner
+                    android:id="@+id/equipmentSpinnerScroll"
+                    android:layout_width="175dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/equipment"
+                    android:padding="3dp"
+                    android:background="@drawable/spinner_background"
+                    android:layout_toEndOf="@+id/muscleGroupSpinnerScroll"
+                    android:textAlignment="center"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="2dp"
+                    android:layout_alignEnd="@+id/equipmentSpinnerScroll"
+                    />
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/spinner_rl_scroll"/>
+        </RelativeLayout>
         <!--
     <LinearLayout
         android:id="@+id/ExerciseViewLinearLayout"
