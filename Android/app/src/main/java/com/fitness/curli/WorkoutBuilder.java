@@ -238,11 +238,12 @@ public class WorkoutBuilder extends AppCompatActivity {
                 LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent().getParent().getParent();
                 int exerciseNumber = 0;
                 for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                    if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent()){
+                    if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent().getParent().getParent()){
                         exerciseNumber = i;
                         break;
                     }
                 }
+                System.out.println(exerciseNumber);
                 int setNumber = 0;
                 LinearLayout linearLayoutSets = (LinearLayout)v.getParent().getParent().getParent();
                 for (int i = 0; i < linearLayoutSets.getChildCount(); i++) {
@@ -273,7 +274,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent().getParent().getParent();
             int exerciseNumber = 0;
             for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent()){
+                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent().getParent().getParent().getParent()){
                     exerciseNumber = i;
                     break;
                 }
