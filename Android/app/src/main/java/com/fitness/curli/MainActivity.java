@@ -15,12 +15,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,16 +33,20 @@ import java.util.LinkedHashMap;
 import java.util.jar.Attributes;
 import java.sql.*;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity{
     Context context = this;
     private Menu optionsMenu;
     HashMap currentWorkout;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
         workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
@@ -52,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
         ((View)findViewById(R.id.workout).getParent()).performClick();
 
+        //set toolbar onclick listener
+        ((View)findViewById(R.id.action_profile).getParent()).setOnClickListener(new onProfileClick());
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -59,6 +68,41 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new onFabClick());
 
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.profile, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_profile) {
+            Toast.makeText(MainActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
+            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            myIntent.putExtra("profile", currentWorkout);
+            startActivity(myIntent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public class onProfileClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v){
+            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            myIntent.putExtra("profile", currentWorkout);
+            startActivity(myIntent);
+        }
     }
 
     @Override
@@ -128,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
 
 
 

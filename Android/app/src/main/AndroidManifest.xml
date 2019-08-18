@@ -38,6 +38,15 @@
 
         </activity>
 
+        <activity android:name=".ProfileActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fitness.curli.MainActivity" />
+
+
+        </activity>
+
         <activity android:name=".InfoView">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
