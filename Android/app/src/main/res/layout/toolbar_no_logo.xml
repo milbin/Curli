@@ -13,15 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <EditText
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-condensed"
-            android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/copenhagen_grotesk_light"
+            android:hint="Enter Title"
+            android:singleLine="true"
+            android:text="Arms and Chest"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:layout_toEndOf="@id/title"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:paddingBottom="3dp"
+            />
 
         <ImageButton
             android:id="@+id/back_button"

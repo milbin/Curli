@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,6 +28,7 @@ import java.util.LinkedHashMap;
 public class WorkoutBuilder extends AppCompatActivity {
     Context context = this;
     ArrayList<ArrayList> exercises = new ArrayList<>();
+    EditText title;
 
     //This is an example of the workout data structure that is created and returned through the intent when this activity is finished by the user
     //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
@@ -36,8 +41,23 @@ public class WorkoutBuilder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.workout_builder);
         findViewById(R.id.back_button).setOnClickListener(new onBackButtonClicked());
-        ((TextView)findViewById(R.id.title)).setText("Create Workout");
         findViewById(R.id.fab).setOnClickListener(new onFabClick());
+
+        //setup editable title
+        SQLData sqlData = new SQLData();
+        sqlData.openUserDB(this);
+        title = findViewById(R.id.title);
+        title.setText("Workout " + (sqlData.getWorkoutCount() + 1));
+        title.setOnKeyListener(new onTitleDoneButtonPressed());
+        findViewById(R.id.edit_title).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                title.requestFocus();
+                title.setSelection(title.getText().length()); //places carret at end of edittext
+            }
+
+        });
+
         //create finish button
         Button finishButton = new Button(this);
         finishButton.setText("FINISH");
@@ -51,25 +71,21 @@ public class WorkoutBuilder extends AppCompatActivity {
         finishButtonLP.addRule(RelativeLayout.CENTER_VERTICAL);
         finishButton.setLayoutParams(finishButtonLP);
         finishButton.setBackgroundColor(Color.TRANSPARENT);
-        ((RelativeLayout)findViewById(R.id.toolbar_rl)).addView(finishButton);
-
-
-
-
-
+        ((RelativeLayout) findViewById(R.id.toolbar_rl)).addView(finishButton);
 
 
     }
+
     public class onFinishClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(exercises.isEmpty()){
+            if (exercises.isEmpty()) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Please Add Exercises").setMessage("You cannot finish building this workout without adding any exercises!");
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
-            }else {
+            } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Finish Building Workout?").setMessage("Are you sure you want to finish building this workout? It will be added to your workouts list.");
                 // Add the buttons
@@ -78,7 +94,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                         // User clicked OK button
                         //TODO add some sort of mechanism that saves newly created workouts
                         HashMap workout = new HashMap();
-                        workout.put("title", "Test Title");
+                        workout.put("title", title.getText().toString());
                         System.out.println(exercises);
                         workout.put("exercises", exercises);
                         Intent returnIntent = new Intent();
@@ -109,9 +125,9 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class onBackButtonClicked implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if(exercises.isEmpty()){
+            if (exercises.isEmpty()) {
                 onBackPressed();
-            }else {
+            } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Discard Workout?").setMessage("Are you sure you want to discard this workout? This action is irreversible.");
                 // Add the buttons
@@ -142,7 +158,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             String title = "Ab Crunch Machine";
             LinearLayout ll = findViewById(R.id.workout_builder_ll);
             View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
-            ((TextView)card.findViewById(R.id.exercise_name)).setText(title);
+            ((TextView) card.findViewById(R.id.exercise_name)).setText(title);
             card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
             card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
             card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
@@ -168,19 +184,20 @@ public class WorkoutBuilder extends AppCompatActivity {
 
         }
     }
+
     public class AddSetButton implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LinearLayout linearLayout = (LinearLayout)(v.getParent()).getParent().getParent();
+            LinearLayout linearLayout = (LinearLayout) (v.getParent()).getParent().getParent();
             int exerciseNumber = 0;
             for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                if(linearLayout.getChildAt(i) == ((View)v.getParent()).getParent()){
+                if (linearLayout.getChildAt(i) == ((View) v.getParent()).getParent()) {
                     exerciseNumber = i;
                     break;
                 }
             }
             View weightAndReps = LayoutInflater.from(context).inflate(R.layout.weight_and_reps, null);
-            LinearLayout ll = ((View)v.getParent()).findViewById(R.id.weight_and_reps_ll);
+            LinearLayout ll = ((View) v.getParent()).findViewById(R.id.weight_and_reps_ll);
             ll.addView(weightAndReps);
             weightAndReps.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
             weightAndReps.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
@@ -192,7 +209,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             EditText exerciseWeight = weightAndReps.findViewById(R.id.exercise_weight);
             exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
             exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
-            CharSequence title = ((TextView)((View)v.getParent()).findViewById(R.id.exercise_name)).getText();
+            CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
             LinkedHashMap set = new LinkedHashMap<>();
             //TODO this title needs to be changed in order to support a superset
             set.put("title", title);
@@ -205,23 +222,49 @@ public class WorkoutBuilder extends AppCompatActivity {
 
         }
     }
+
     public class RemoveSetButton implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LinearLayout ll = ((View)v.getParent()).findViewById(R.id.weight_and_reps_ll);
-            if(ll.getChildCount() != 1) {
+            LinearLayout ll = ((View) v.getParent()).findViewById(R.id.weight_and_reps_ll);
+            if (ll.getChildCount() != 1) {
                 ll.removeViewAt(ll.getChildCount() - 1);
             }
 
         }
     }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
 
     public class onEditTextDoneButtonPressed implements EditText.OnKeyListener{
-
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 //this will call onUserFinishedEditing (just below)
+                v.clearFocus();
+                return true;
+            }
+            return false;
+        }
+    }
+    public class onTitleDoneButtonPressed implements EditText.OnKeyListener {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 v.clearFocus();
                 return true;
             }
@@ -263,6 +306,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                     ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
                 }
             }
+
             System.out.println(exercises);
         }
     }
