@@ -73,14 +73,22 @@ public class WorkoutActivity extends AppCompatActivity {
         // integer value of the 'reps' field is now a double since gson converts it to that
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
-            int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
+            System.out.println(workout);
+            int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(0).get(1)).get("reps");
             timer = new WorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
             timer.startTimer();
             ((Curli) this.getApplication()).setWorkoutTimer(timer);
         }catch (ClassCastException e){//this means that the workout is being resumed
             timer = ((Curli) this.getApplication()).getWorkoutTimer();
-            timer.setTextView((TextView)findViewById(R.id.timer));
+            if(timer == null){
+                timer = new WorkoutTimer();
+                timer.setTextView((TextView)findViewById(R.id.timer));
+                timer.startTimer();
+                ((Curli) this.getApplication()).setWorkoutTimer(timer);
+            }else {
+                timer.setTextView((TextView) findViewById(R.id.timer));
+            }
             // convert double reps to integer
             int count = 0;
             for(ArrayList<Object> exercise:exercises) {
@@ -101,7 +109,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
 
 
-
+        System.out.println(exercises +"HERE");
         int counter = 0;
         for(ArrayList<HashMap> exercise:exercises) {
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
@@ -627,6 +635,7 @@ public class WorkoutActivity extends AppCompatActivity {
                         SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
                         sqlData.saveWorkoutToHistory(workout);
+                        sqlData.closeDB();
                         finish();
                     }
                 });

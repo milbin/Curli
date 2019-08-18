@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,6 +109,10 @@ public class SQLData {
         this.db = openHelper.getWritableDatabase();
     }
 
+    public void closeDB(){
+        db.close();
+    }
+
     public void saveWorkoutToHistory(HashMap json) {
         int id = 1;
         Date calendar = Calendar.getInstance().getTime();
@@ -128,22 +133,42 @@ public class SQLData {
         db.insert("WorkoutHistory", null, values);
         c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
         c.moveToFirst();
-        db.close();
     }
     public void saveWorkout(HashMap json) {
         String title = (String) json.get("title");
         Gson gson = new Gson();
         String jsonString = gson.toJson(json);
+        c = db.rawQuery("SELECT * FROM Workouts;", new String[]{});
 
         ContentValues values = new ContentValues();
+        values.put("id", c.getCount());
         values.put("name", title);
         values.put("workout", jsonString);
         System.out.println(jsonString);
 
         db.insert("Workouts", null, values);
-        c = db.rawQuery("SELECT * FROM Workouts;", new String[]{});
         c.moveToFirst();
-        db.close();
+    }
+
+    public int getWorkoutCount(){
+        c=db.rawQuery("Select * From Workouts;", new String[]{});
+        int returnInt = c.getCount();
+        return returnInt;
+    }
+
+    public ArrayList getworkout(int number) {
+
+        c=db.rawQuery("Select id, name, workout From Workouts Where id = "+number, new String[]{});
+        c.moveToFirst();
+        String title = c.getString(1);
+        String jsonString = c.getString(2);
+        Gson gson = new Gson();
+        java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+        HashMap workout = gson.fromJson(jsonString, type);
+        ArrayList returnList = new ArrayList();
+        returnList.add(title);
+        returnList.add(workout);
+        return returnList;
     }
 
     public String getGroupFromName(String name) {
@@ -154,9 +179,9 @@ public class SQLData {
             String GroupStr = c.getString(0);
             buffer.append(""+GroupStr);
         }
-        db.close();
         return buffer.toString();
     }
+
     public String[] getMusclesFromName(String name){
         c = db.rawQuery("Select DetailedGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
         StringBuffer buffer = new StringBuffer();
@@ -176,7 +201,6 @@ public class SQLData {
         String[] Muscles = new String[(buffer.toString()).split(",").length + (buffer2.toString()).split(",").length];
         System.arraycopy((buffer.toString()).split(","), 0, Muscles, 0, (buffer.toString()).split(",").length);
         System.arraycopy((buffer2.toString()).split(","), 0, Muscles, (buffer.toString()).split(",").length, (buffer2.toString()).split(",").length);
-        db.close();
         return Muscles;
 
     }
@@ -189,7 +213,6 @@ public class SQLData {
             String Equipment = c.getString(0);
             buffer.append(""+Equipment);
         }
-        db.close();
         return buffer.toString();
     }
 
@@ -201,7 +224,6 @@ public class SQLData {
             String ExerciseType = c.getString(0);
             buffer.append(""+ExerciseType);
         }
-        db.close();
         return buffer.toString();
     }
 }

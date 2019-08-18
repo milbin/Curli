@@ -79,13 +79,16 @@ public class WorkoutBuilder extends AppCompatActivity {
                         //TODO add some sort of mechanism that saves newly created workouts
                         HashMap workout = new HashMap();
                         workout.put("title", "Test Title");
+                        System.out.println(exercises);
                         workout.put("exercises", exercises);
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("workout", workout);
+                        System.out.println(workout);
                         setResult(1, returnIntent);
                         SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
                         sqlData.saveWorkout(workout);
+                        sqlData.closeDB();
                         onBackPressed();
                     }
                 });
@@ -161,7 +164,6 @@ public class WorkoutBuilder extends AppCompatActivity {
             setList.add(0);
             setList.add(set);
             exercises.add(setList);
-            System.out.println(exercises);
 
 
         }

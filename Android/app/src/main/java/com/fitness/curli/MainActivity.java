@@ -43,8 +43,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
-        RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
-        workoutPlaceholder.setOnClickListener(new onWorkoutClick());
+        SQLData sqlData = new SQLData();
+        sqlData.openUserDB(this);
+        for(int i=0; i<sqlData.getWorkoutCount(); i++){
+            RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+            ArrayList workoutTemp = sqlData.getworkout(i);
+            ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
+            card.setOnClickListener(new onWorkoutClick());
+            LinearLayout ll = findViewById(R.id.linearLayoutMain);
+            ll.addView(card);
+        }
+        sqlData.closeDB();
 
         //set on click listener for the bottom bar buttons
         ((View)findViewById(R.id.history).getParent()).setOnClickListener(new onNavbarClick());
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
                 LinearLayout ll = findViewById(R.id.linearLayoutMain);
                 ll.addView(card);
+                card.setOnClickListener(new onWorkoutClick());
 
             }
         }
@@ -152,6 +162,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            LinearLayout ll = (LinearLayout) v.getParent();
+            int workoutNumber = 0;
+            for(int i=0; i<ll.getChildCount();i++ ){
+                if(v == ll.getChildAt(i)){
+                    workoutNumber = i;
+                }
+            }
+            SQLData sqlData = new SQLData();
+            sqlData.openUserDB(context);
+            ArrayList workoutList = sqlData.getworkout(workoutNumber);
+            sqlData.closeDB();
+            final HashMap workout = (HashMap) workoutList.get(1);
+            System.out.println(workout);
             if(((Curli) getApplication()).getWorkoutTimer() != null){
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Discard Current Workout?").setMessage("Starting a new workout will discard your old one.");
@@ -161,48 +184,9 @@ public class MainActivity extends AppCompatActivity {
                         ((Curli) getApplication()).getWorkoutTimer().stopTimer();
                         ((Curli) getApplication()).setWorkoutTimer(null);
 
-                        LinkedHashMap BP = new LinkedHashMap<>();
-                        BP.put("title", "Bench Press");
-                        BP.put("weight", 135.0);
-                        BP.put("reps", 8);
-
-                        LinkedHashMap BC = new LinkedHashMap<>();
-                        BC.put("title", "Bicep Curl");
-                        BC.put("weight", 75.0);
-                        BC.put("reps", 8);
-                        LinkedHashMap BC1 = new LinkedHashMap<>();
-                        BC1.put("title", "Bicep Curl");
-                        BC1.put("weight", 80.0);
-                        BC1.put("reps", 9);
-                        LinkedHashMap BC2 = new LinkedHashMap<>();
-                        BC2.put("title", "Bicep Curl");
-                        BC2.put("weight", 90.0);
-                        BC2.put("reps", 10);
-
-                        ArrayList BCList = new ArrayList();
-                        ArrayList BPList = new ArrayList();
-
-                        BCList.add(0);
-                        BPList.add(0);
-
-                        for (int i = 0; i < 3; i++) {
-                            BPList.add(BP);
-                        }
-                        BCList.add(BC);
-                        BCList.add(BC1);
-                        BCList.add(BC2);
-
-                        ArrayList exercises = new ArrayList();
-                        exercises.add(BPList);
-                        exercises.add(BCList);
-                        LinkedHashMap workout = new LinkedHashMap();
-                        workout.put("title", "Arms and Chest");
-                        workout.put("exercises", exercises);
                         Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                         myIntent.putExtra("workout", workout);
                         startActivity(myIntent);
-
-                        System.out.println(workout);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -215,49 +199,9 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
 
             }else {
-
-                LinkedHashMap BP = new LinkedHashMap<>();
-                BP.put("title", "Bench Press");
-                BP.put("weight", 135.0);
-                BP.put("reps", 8);
-
-                LinkedHashMap BC = new LinkedHashMap<>();
-                BC.put("title", "Bicep Curl");
-                BC.put("weight", 75.0);
-                BC.put("reps", 8);
-                LinkedHashMap BC1 = new LinkedHashMap<>();
-                BC1.put("title", "Bicep Curl");
-                BC1.put("weight", 80.0);
-                BC1.put("reps", 9);
-                LinkedHashMap BC2 = new LinkedHashMap<>();
-                BC2.put("title", "Bicep Curl");
-                BC2.put("weight", 90.0);
-                BC2.put("reps", 10);
-
-                ArrayList BCList = new ArrayList();
-                ArrayList BPList = new ArrayList();
-
-                BCList.add(0);
-                BPList.add(0);
-
-                for (int i = 0; i < 3; i++) {
-                    BPList.add(BP);
-                }
-                BCList.add(BC);
-                BCList.add(BC1);
-                BCList.add(BC2);
-
-                ArrayList exercises = new ArrayList();
-                exercises.add(BPList);
-                exercises.add(BCList);
-                LinkedHashMap workout = new LinkedHashMap();
-                workout.put("title", "Arms and Chest");
-                workout.put("exercises", exercises);
                 Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                 myIntent.putExtra("workout", workout);
                 startActivity(myIntent);
-
-                System.out.println(workout);
             }
 
 

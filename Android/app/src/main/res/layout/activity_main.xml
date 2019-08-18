@@ -24,28 +24,6 @@
     android:id="@+id/linearLayoutMain"
     android:paddingBottom="30dp"
     >
-    <include
-        layout="@layout/workout_card"
-        android:id="@+id/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
 
 </LinearLayout>
 </ScrollView>
