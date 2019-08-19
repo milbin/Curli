@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity{
         ((View)findViewById(R.id.workout).getParent()).performClick();
 
         //set toolbar onclick listener
-
         findViewById(R.id.profile_button).setOnClickListener(new onProfileClick());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
