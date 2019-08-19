@@ -48,14 +48,19 @@ public class WorkoutBuilder extends AppCompatActivity {
         //setup editable title
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);
+        ((TextView)findViewById(R.id.title_toolbar)).setText("Workout " + (sqlData.getWorkoutCount() + 1));
         title = findViewById(R.id.title);
         title.setText("Workout " + (sqlData.getWorkoutCount() + 1));
         title.setOnKeyListener(new onTitleDoneButtonPressed());
+        title.setOnFocusChangeListener(new onTitleEdit());
         findViewById(R.id.edit_title).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 title.requestFocus();
                 title.setSelection(title.getText().length()); //places carret at end of edittext
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
+
             }
 
         });
@@ -75,6 +80,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         finishButton.setBackgroundColor(Color.TRANSPARENT);
         ((RelativeLayout) findViewById(R.id.toolbar_rl)).addView(finishButton);
 
+        //setup toolbar expanding and collapsing functionality
         AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -83,9 +89,8 @@ public class WorkoutBuilder extends AppCompatActivity {
                 int actionBarSize = (int) styledAttributes.getDimension(0, 0);
                 styledAttributes.recycle();
                 float alpha = (float)1-(Math.abs((float)verticalOffset)/(appBarLayout.getTotalScrollRange()));
-                System.out.println(alpha);
                 findViewById(R.id.edit_title).setAlpha(alpha);
-                findViewById(R.id.title_collapsed).setAlpha((float)1-alpha);
+                findViewById(R.id.title_toolbar).setAlpha((float)1-alpha);
                 findViewById(R.id.expandedRL).setAlpha(alpha);
                 findViewById(R.id.toolbar_divider_collapsible).setAlpha(alpha);
                 findViewById(R.id.toolbar_divider).setAlpha((float)1-alpha);
@@ -199,7 +204,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             setList.add(0);
             setList.add(set);
             exercises.add(setList);
-
+            updateWorkoutStats();
 
         }
     }
@@ -238,7 +243,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             setList.add(set);
             //setList.set(0, (int)setList.get(0)+1);
             exercises.set(exerciseNumber, setList);
-
+            updateWorkoutStats();
         }
     }
 
@@ -249,21 +254,18 @@ public class WorkoutBuilder extends AppCompatActivity {
             if (ll.getChildCount() != 1) {
                 ll.removeViewAt(ll.getChildCount() - 1);
             }
-
+            updateWorkoutStats();
         }
     }
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public boolean dispatchTouchEvent(MotionEvent event) { //hide keyboard and unfocus current edittext if click outside of edittext
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
-                Rect outRect = new Rect();
-                v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
+            System.out.println(v);
+            if(v!=null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                v.clearFocus();
             }
         }
         return super.dispatchTouchEvent( event );
@@ -290,12 +292,16 @@ public class WorkoutBuilder extends AppCompatActivity {
             return false;
         }
     }
-
-    public class onUserFinishedEditing implements EditText.OnFocusChangeListener {
-
+    public class onTitleEdit implements EditText.OnFocusChangeListener {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            System.out.println(hasFocus);
+            ((TextView)findViewById(R.id.title_toolbar)).setText(((EditText)v).getText());
+        }
+    }
+
+    public class onUserFinishedEditing implements EditText.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
             if (!hasFocus) {
                 LinearLayout linearLayout = (LinearLayout)((View)((View)v.getParent()).getParent()).getParent().getParent().getParent().getParent();
                 int exerciseNumber = 0;
@@ -326,7 +332,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 }
             }
 
-            System.out.println(exercises);
+            updateWorkoutStats();
         }
     }
 
@@ -392,8 +398,41 @@ public class WorkoutBuilder extends AppCompatActivity {
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
-            System.out.println(exercises);
+            updateWorkoutStats();
         }
+    }
+
+    private void updateWorkoutStats(){
+        RelativeLayout rl = findViewById(R.id.expandedRL);
+        SQLData sqlDataExercise = new SQLData();
+        sqlDataExercise.openExerciseDB(this);
+        int totalReps = 0;
+        int totalSets = 0;
+        int totalExercises = 0;
+        ArrayList<String> equipmentList = new ArrayList<String>();
+        for(ArrayList exercise:exercises){
+            for(int setNum=1;setNum<exercise.size();setNum++){
+                System.out.println(exercise);
+                HashMap set = (HashMap) exercise.get(setNum);
+                String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                for(String equipment: equipmentString.split(", ")){
+                    if(!equipmentList.contains(equipment)){
+                        equipmentList.add(equipment);
+                    }
+                }
+                totalReps += (int)set.get("reps");
+                totalSets++;
+            }
+            totalExercises++;
+        }
+        String finalEquipmentString = "";
+        for(String equipment: equipmentList){
+            finalEquipmentString += equipment+" · ";
+        }
+        finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
+        ((TextView)rl.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+        ((TextView)rl.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        ((TextView)rl.findViewById(R.id.equipment)).setText(finalEquipmentString);
     }
 
 

@@ -32,16 +32,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/title_collapsed"
+                    <TextView
+                        android:id="@+id/title_toolbar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:background="@android:color/transparent"
                         android:fontFamily="@font/roboto_medium"
-                        android:hint="Enter Title"
-                        android:singleLine="true"
-                        android:text="Arms and Chest"
+                        android:text="Workout 5"
                         android:textColor="#000000"
                         android:textSize="20sp" />
 
@@ -99,6 +96,7 @@
                         android:textStyle="bold"
                         android:gravity="center_horizontal"
                         android:text="Arms and Chest"
+                        android:hint="Enter Title"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
                     <ImageButton
