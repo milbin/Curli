@@ -105,7 +105,7 @@ public class SQLData {
         this.db = openHelper.getWritableDatabase();
     }
     public void openExerciseDB(Context context){
-        this.openHelper = new DatabaseOpenHelper(context, 1, "ExerciseDB");
+        this.openHelper = new DatabaseOpenHelper(context, 1, "ExerciseDB.db");
         this.db = openHelper.getWritableDatabase();
     }
 

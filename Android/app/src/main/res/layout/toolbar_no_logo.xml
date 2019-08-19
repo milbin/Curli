@@ -19,13 +19,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:fontFamily="@font/copenhagen_grotesk_light"
+            android:fontFamily="@font/roboto_medium"
             android:hint="Enter Title"
             android:singleLine="true"
             android:text="Arms and Chest"
             android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
         <ImageButton
             android:id="@+id/edit_title"
             android:layout_width="wrap_content"

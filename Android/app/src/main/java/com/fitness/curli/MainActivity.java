@@ -23,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.sql.*;
 
@@ -43,17 +45,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
+        //add workout cards programatically
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);
-        for(int i=0; i<sqlData.getWorkoutCount(); i++){
+        SQLData sqlDataExercise = new SQLData();
+        sqlDataExercise.openExerciseDB(this);
+        int workoutCount = sqlData.getWorkoutCount();
+        for(int i=0; i<workoutCount; i++){
             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
             ArrayList workoutTemp = sqlData.getworkout(i);
             ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
             card.setOnClickListener(new onWorkoutClick());
+            ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
+            int totalReps = 0;
+            int totalSets = 0;
+            int totalExercises = 0;
+            ArrayList<String> equipmentList = new ArrayList<String>();
+            for(ArrayList exercise:exercises){
+                for(int setNum=1;setNum<exercise.size();setNum++){
+                    LinkedTreeMap set = (LinkedTreeMap) exercise.get(setNum);
+                    String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                    for(String equipment: equipmentString.split(", ")){
+                        if(!equipmentList.contains(equipment)){
+                            equipmentList.add(equipment);
+                        }
+                    }
+                    totalReps += Math.round((double)set.get("reps"));
+                    totalSets++;
+                }
+                totalExercises++;
+            }
+            String finalEquipmentString = "";
+            for(String equipment: equipmentList){
+                finalEquipmentString += equipment+" · ";
+            }
+            finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
+            ((TextView)card.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+            ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+            ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
             LinearLayout ll = findViewById(R.id.linearLayoutMain);
             ll.addView(card);
         }
         sqlData.closeDB();
+
 
         //set on click listener for the bottom bar buttons
         ((View)findViewById(R.id.history).getParent()).setOnClickListener(new onNavbarClick());
