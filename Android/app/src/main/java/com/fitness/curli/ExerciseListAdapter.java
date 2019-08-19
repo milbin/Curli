@@ -63,7 +63,6 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView equipment = holder.cardView.findViewById(R.id.equipment);
         equipment.setText(equipmentText);
 
-        System.out.println("SOURCE = " + source);
         if (source.equals("muscle_view")){
             ImageView icon = holder.cardView.findViewById(R.id.icon);
             icon.setImageResource(R.drawable.ic_navigate_next_blue_24dp);

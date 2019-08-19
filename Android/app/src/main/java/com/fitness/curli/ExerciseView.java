@@ -104,7 +104,7 @@ public class ExerciseView extends AppCompatActivity {
 
         displaySpinner();
         //displayExercises(sqlData.getExercisesAlphabetized());
-        displayExercises2(sqlData.getExercises());
+        displayExercises2(sqlData.getExercises("MainGroup", group));
 
         dialog.dismiss();
     }
@@ -112,11 +112,12 @@ public class ExerciseView extends AppCompatActivity {
     private void displaySpinner() {
 
         final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
-        final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
+        //RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
+        final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.spinner_rl_scroll);
 
         //muscle group spinner functionality
-        final Spinner muscleSpinner1 = spinnerRelativeLayout.findViewById(R.id.muscleGroupSpinner);
-        final Spinner muscleSpinner2 = spinnerRelativeLayoutScroll.findViewById(R.id.muscleGroupSpinnerScroll);
+        final Spinner muscleSpinner1 = findViewById(R.id.muscleGroupSpinner);
+        final Spinner muscleSpinner2 = findViewById(R.id.muscleGroupSpinnerScroll);
         Spinner[] muscleSpinners = {muscleSpinner1, muscleSpinner2};
 
         ArrayAdapter<String> dataAdapter;
@@ -161,8 +162,8 @@ public class ExerciseView extends AppCompatActivity {
         }
 
         //equipment spinner functionality
-        final Spinner equipmentSpinner1 = spinnerRelativeLayout.findViewById(R.id.equipmentSpinner);
-        final Spinner equipmentSpinner2 = spinnerRelativeLayoutScroll.findViewById(R.id.equipmentSpinnerScroll);
+        final Spinner equipmentSpinner1 = findViewById(R.id.equipmentSpinner);
+        final Spinner equipmentSpinner2 = findViewById(R.id.equipmentSpinnerScroll);
         Spinner[] equipmentSpinners = {equipmentSpinner1, equipmentSpinner2};
 
         for (Spinner equipmentSpinner : equipmentSpinners) {
@@ -214,7 +215,7 @@ public class ExerciseView extends AppCompatActivity {
 
                 if (coordinateSpinnerScroll[1] <= coordinateSpinner[1]){
                     spinnerRelativeLayout.setVisibility(View.VISIBLE);
-                    spinnerRelativeLayoutScroll.setVisibility(View.INVISIBLE);
+                    spinnerRelativeLayoutScroll.setVisibility(View.GONE);
                 }
                 else{
                     spinnerRelativeLayout.setVisibility(View.GONE);
