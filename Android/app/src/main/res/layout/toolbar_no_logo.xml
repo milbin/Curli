@@ -1,61 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+<android.support.design.widget.AppBarLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/toolbar_background"
-    android:elevation="0dp"
-    android:animateLayoutChanges="true"
-    android:gravity="start"
-    app:contentInsetStart="0dp">
-    <RelativeLayout
-        android:id="@+id/toolbar_rl"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/app_bar"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:contentScrim="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:toolbarId="@id/toolbar"
+        >
 
-        <EditText
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/roboto_medium"
-            android:hint="Enter Title"
-            android:singleLine="true"
-            android:text="Arms and Chest"
-            android:textColor="#000000"
-            android:textSize="20sp" />
-        <ImageButton
-            android:id="@+id/edit_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_black_24dp"
-            android:scaleType="fitXY"
-            android:background="@android:color/transparent"
-            android:layout_toEndOf="@id/title"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
-            android:paddingBottom="3dp"
-            />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/toolbar_background"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin"
+                android:gravity="start"
+                app:contentInsetStart="0dp">
+                <RelativeLayout
+                    android:id="@+id/toolbar_rl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/back_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/back_button"
-            android:scaleType="fitXY"
-            android:background="@android:color/transparent"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
-            />
-        <ImageView
+                    <EditText
+                        android:id="@+id/title_collapsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/roboto_medium"
+                        android:hint="Enter Title"
+                        android:singleLine="true"
+                        android:text="Arms and Chest"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <ImageButton
+                        android:id="@+id/back_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/back_button"
+                        android:scaleType="fitXY"
+                        android:background="@android:color/transparent"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="10dp"
+                        />
+                    <ImageView
+                        android:id="@+id/toolbar_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/divider_line"
+                        android:layout_alignParentBottom="true"
+                        />
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="3px"
-            android:scaleType="fitXY"
-            android:src="@drawable/divider_line"
-            android:layout_alignParentBottom="true"
-            />
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/expandedRL"
+            android:layout_marginTop="?attr/actionBarSize"
+            >
+            <ImageView
+                android:id="@+id/toolbar_divider_collapsible"
+                android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:scaleType="fitXY"
+                android:src="@drawable/divider_line"
+                android:layout_alignParentBottom="true"
+                />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_centerVertical="true"
+                    >
 
-</android.support.v7.widget.Toolbar>
+                    <EditText
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="false"
+                        android:fontFamily="@font/quicksand"
+                        android:background="@android:color/transparent"
+                        android:textStyle="bold"
+                        android:gravity="center_horizontal"
+                        android:text="Arms and Chest"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp" />
+                    <ImageButton
+                        android:id="@+id/edit_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_edit_black_24dp"
+                        android:layout_alignParentTop="true"
+                        android:scaleType="fitXY"
+                        android:background="@android:color/transparent"
+                        android:layout_toEndOf="@id/title"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
+                        android:paddingBottom="3dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/title"
+                        android:layout_centerHorizontal="false"
+                        android:fontFamily="sans-serif-light"
+                        android:text="~40 mins"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/number_of_exercises"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12 Exercises"
+                        android:layout_centerHorizontal="false"
+                        android:layout_below="@+id/time"
+                        android:textSize="14sp"
+                        />
+                    <TextView
+                        android:id="@+id/equipment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Barbell ∙ Dumbell ∙ Cables"
+                        android:layout_centerHorizontal="false"
+                        android:layout_below="@+id/number_of_exercises"
+                        android:textSize="14sp"
+                        />
+
+
+                </RelativeLayout>
+            </RelativeLayout>
+    </android.support.design.widget.CollapsingToolbarLayout>
+</android.support.design.widget.AppBarLayout>

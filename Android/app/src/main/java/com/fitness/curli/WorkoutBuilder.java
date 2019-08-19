@@ -3,9 +3,11 @@ package com.fitness.curli;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +74,23 @@ public class WorkoutBuilder extends AppCompatActivity {
         finishButton.setLayoutParams(finishButtonLP);
         finishButton.setBackgroundColor(Color.TRANSPARENT);
         ((RelativeLayout) findViewById(R.id.toolbar_rl)).addView(finishButton);
+
+        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
+                int actionBarSize = (int) styledAttributes.getDimension(0, 0);
+                styledAttributes.recycle();
+                float alpha = (float)1-(Math.abs((float)verticalOffset)/(appBarLayout.getTotalScrollRange()));
+                System.out.println(alpha);
+                findViewById(R.id.edit_title).setAlpha(alpha);
+                findViewById(R.id.title_collapsed).setAlpha((float)1-alpha);
+                findViewById(R.id.expandedRL).setAlpha(alpha);
+                findViewById(R.id.toolbar_divider_collapsible).setAlpha(alpha);
+                findViewById(R.id.toolbar_divider).setAlpha((float)1-alpha);
+            }
+        });
 
 
     }
