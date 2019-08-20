@@ -231,6 +231,9 @@ public class MainActivity extends AppCompatActivity{
                 //set current view as selected (color primary)
                 ((ImageView)v.findViewById(R.id.schedule)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
                 ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
+                Intent intent = new Intent(MainActivity.this, ResultsView.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0); //this disables animations
 
             }else if(v.findViewById(R.id.workout)!= null){
                 //set current view as selected (color primary)
