@@ -1,6 +1,5 @@
 <resources>
     <!-- Margins -->
-    <dimen name="test">16dp</dimen>
 
     <!-- padding -->
     <dimen name="workout_card_top_padding">5dp</dimen>

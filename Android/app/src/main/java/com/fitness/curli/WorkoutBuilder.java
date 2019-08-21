@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -68,6 +69,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         //create finish button
         Button finishButton = new Button(this);
         finishButton.setText("FINISH");
+        finishButton.setTextAppearance(this, R.style.Button);
         finishButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         finishButton.setOnClickListener(new onFinishClick());
         RelativeLayout.LayoutParams finishButtonLP = new RelativeLayout.LayoutParams(

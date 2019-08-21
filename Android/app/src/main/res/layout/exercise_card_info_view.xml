@@ -6,7 +6,6 @@
     android:layout_height="155dp"
     >
     <RelativeLayout
-        android:id="@+id/group"
         android:layout_width="120dp"
         android:layout_height="145dp"
         android:layout_marginStart="3dp"
@@ -51,9 +50,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                android:id="@+id/group_image"
-                />
+                android:src="@drawable/ic_rowing_black_24dp" />
         </LinearLayout>
 
 

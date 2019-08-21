@@ -7,7 +7,6 @@
     android:focusable="true">
     <RelativeLayout
 
-        android:id="@+id/relativeLayout_marks_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/cardview_background"

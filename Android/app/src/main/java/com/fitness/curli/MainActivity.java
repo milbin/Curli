@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 finalEquipmentString += equipment+" · ";
             }
             finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
-            ((TextView)card.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+            ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
             ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
             ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
             LinearLayout ll = findViewById(R.id.linearLayoutMain);
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     finalEquipmentString += equipment+" · ";
                 }
                 finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
-                ((TextView)card.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+                ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
                 ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
                 ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
 
