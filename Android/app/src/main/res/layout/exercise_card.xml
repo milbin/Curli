@@ -23,18 +23,15 @@
 
         <TextView
             android:id="@+id/exercise_name"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/quicksand"
-            android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:paddingTop="@dimen/workout_card_top_padding"
-            android:text="Bicep Curl"
-            android:textColor="@android:color/black"
-            android:textSize="25sp" />
+            android:text="Bicep Curl" />
 
         <ImageButton
             android:id="@+id/overflowButton"
@@ -53,18 +50,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="65dp">
             <TextView
                 android:id="@+id/exercise_weight_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight:"
-                android:fontFamily="@font/quicksand"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
+                style="@style/Subtitle1"
                 android:layout_centerHorizontal="true"
-                android:textSize="20sp"
                 android:layout_marginBottom="10dp"
                 />
 
@@ -110,10 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reps:"
-                android:fontFamily="@font/quicksand"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
+                style="@style/Subtitle1"
                 android:layout_marginBottom="10dp"
                 android:layout_centerHorizontal="true"
                 />
@@ -147,7 +138,7 @@
                 android:background="@android:color/transparent"
                 android:layout_alignBottom="@+id/exercise_reps"
                 />
-        </RelativeLayout>>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/done_button"
@@ -161,6 +152,10 @@
             android:elevation="0dp"
             android:layout_marginBottom="20dp"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:letterSpacing="0.14"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
             android:background="@drawable/done_button_background"
             />
 
@@ -175,6 +170,10 @@
             android:text="Back"
             android:layout_marginBottom="20dp"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:letterSpacing="0.11"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
             android:background="@drawable/back_button_background"
             />
 
@@ -202,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Sets Completed: 0 of 3"
-                android:textSize="17sp"
+                style="@style/BodyTight"
                 android:gravity="center_horizontal"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"

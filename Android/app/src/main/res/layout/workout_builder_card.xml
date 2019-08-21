@@ -29,12 +29,10 @@
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/rubik"
+            style="@style/Title"
             android:paddingTop="@dimen/workout_card_top_padding"
             android:text="Bicep Curl"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textColor="@android:color/black" />
 
         <ImageButton
             android:id="@+id/overflowButton"
@@ -71,7 +69,6 @@
                 android:text="Weight:"
                 style="@style/Subtitle1"
                 android:layout_centerHorizontal="true"
-                android:textSize="20sp"
                 android:layout_marginBottom="10dp"
                 />
 
