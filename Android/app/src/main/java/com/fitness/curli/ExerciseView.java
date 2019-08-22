@@ -108,7 +108,7 @@ public class ExerciseView extends AppCompatActivity {
 
         displaySpinner();
         //displayExercises(sqlData.getExercisesAlphabetized());
-        displayExercises2(sqlData.getExercises("MainGroup", group));
+        displayExercises(sqlData.getExercises("MainGroup", group));
 
         dialog.dismiss();
     }
@@ -193,10 +193,10 @@ public class ExerciseView extends AppCompatActivity {
                     if (++equipmentSpinnerSelectedCheck > 1) {
                         if (!selectedEquipment.equals("Any Equipment")) {
                             recyclerView.removeAllViews();
-                            displayExercises2(sqlData.getExercises("Equipment", selectedEquipment));
+                            displayExercises(sqlData.getExercises("Equipment", selectedEquipment));
                         } else if (selectedEquipment.equals("Any Equipment")) {
                             recyclerView.removeAllViews();
-                            displayExercises2(sqlData.getExercises());
+                            displayExercises(sqlData.getExercises());
                         }
                     }
                 }
@@ -209,13 +209,13 @@ public class ExerciseView extends AppCompatActivity {
         }
         //spinnerRelativeLayout.setVisibility(View.GONE);
 
-        View anchor = findViewById(R.id.anchor);
-       RelativeLayout button = findViewById(R.id.spinner_rl);
-       ((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
+        RelativeLayout button = findViewById(R.id.spinner_rl);
+        button.bringToFront();
+        ((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
 
     }
 
-    public void displayExercises2(ArrayList<String> exercisesArray){
+    public void displayExercises(ArrayList<String> exercisesArray){
         String[] exercises = exercisesArray.toArray(new String[]{});
 
         RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);

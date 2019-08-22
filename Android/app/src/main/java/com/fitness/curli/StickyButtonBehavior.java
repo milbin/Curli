@@ -34,16 +34,15 @@ public class StickyButtonBehavior extends CoordinatorLayout.Behavior {
 
 
         //RelativeLayout stop = coordinatorLayout.findViewById(R.id.spinner_rl);
-        AppBarLayout stop = coordinatorLayout.findViewById(R.id.headerWrapper);
-        int[] stopLocation = new int[2];
-        stop.getLocationInWindow(stopLocation);
-        int coordStop = stopLocation[1];
-        coordStop = 350;
+        //AppBarLayout stop = coordinatorLayout.findViewById(R.id.headerWrapper);
+        //int[] stopLocation = new int[2];
+        //stop.getLocationInWindow(stopLocation);
+        //int coordStop = stopLocation[1];
+        int coordStop = 350;
 
         //vertical position, cannot scroll over the bottom of the coordinator layout
         child.setY(Math.max(anchorLocation[1], coordStop));
         child.bringToFront();
-        System.out.println("CHILD = " + anchorLocation[1] +" "+ coordStop);
 
         //Margins depend on the distance to the bottom
         //int diff = Math.max(coordStop - anchorLocation[1] - child.getHeight(), 0);
