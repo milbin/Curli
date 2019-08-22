@@ -21,15 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Switch
-                android:id="@+id/notification_switch"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
-                tools:ignore="NotSibling"
-                android:layout_marginLeft="150dp"
-                android:layout_marginTop="360dp"
-                />
 
 
             <TextView
@@ -115,6 +106,16 @@
                 tools:layout_editor_X="0dp"
                 tools:layout_editor_Y="170dp" />
 
+            <Switch
+                android:id="@+id/notification_switch"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
+                tools:ignore="NotSibling"
+                android:layout_marginLeft="175dp"
+                android:layout_marginTop="360dp"
+                />
+
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -125,26 +126,31 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ListPreference
+            <TextView
                 android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="410dp"
-                android:key="Choose Weight System"
-                android:title="@string/weight_preferneces"
-                android:entries="@array/weight_options"
-                android:entryValues="@array/weight_values"
-                android:summary="Choose a weighing system"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="420dp"
+                android:text="Weight unit"
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                />
+            <Spinner
+                android:id="@+id/simpleSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="420dp" />
 
         </RelativeLayout>
+
     </ScrollView>
 
     <include
         android:id="@+id/toolbar_profile"
         layout="@layout/toolbar_profile"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="117dp">
+        >
 
     </include>
 
