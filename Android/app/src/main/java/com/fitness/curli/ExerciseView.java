@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,6 +56,7 @@ public class ExerciseView extends AppCompatActivity {
     private int muscleSpinnerSelectedCheck = 0;
     private int equipmentSpinnerSelectedCheck = 0;
     private String source;
+    private boolean spinnerSwitched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -113,12 +117,12 @@ public class ExerciseView extends AppCompatActivity {
 
         final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
         //RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
-        final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.spinner_rl_scroll);
+        //final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.spinner_rl_scroll);
 
         //muscle group spinner functionality
         final Spinner muscleSpinner1 = findViewById(R.id.muscleGroupSpinner);
-        final Spinner muscleSpinner2 = findViewById(R.id.muscleGroupSpinnerScroll);
-        Spinner[] muscleSpinners = {muscleSpinner1, muscleSpinner2};
+        //final Spinner muscleSpinner2 = findViewById(R.id.muscleGroupSpinnerScroll);
+        Spinner[] muscleSpinners = {muscleSpinner1};
 
         ArrayAdapter<String> dataAdapter;
 
@@ -163,8 +167,8 @@ public class ExerciseView extends AppCompatActivity {
 
         //equipment spinner functionality
         final Spinner equipmentSpinner1 = findViewById(R.id.equipmentSpinner);
-        final Spinner equipmentSpinner2 = findViewById(R.id.equipmentSpinnerScroll);
-        Spinner[] equipmentSpinners = {equipmentSpinner1, equipmentSpinner2};
+        //final Spinner equipmentSpinner2 = findViewById(R.id.equipmentSpinnerScroll);
+        Spinner[] equipmentSpinners = {equipmentSpinner1};
 
         for (Spinner equipmentSpinner : equipmentSpinners) {
             ArrayList<String> allEquipment = new ArrayList<>(Arrays.asList("Any Equipment", "Barbell", "Body Only", "Cables", "Dumbell"));
@@ -205,94 +209,10 @@ public class ExerciseView extends AppCompatActivity {
         }
         spinnerRelativeLayout.setVisibility(View.GONE);
 
-        final int[] coordinateSpinner = new int[2];
-        final int[] coordinateSpinnerScroll = new int[2];
-        findViewById(R.id.scrollView).setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                muscleSpinner1.getLocationOnScreen(coordinateSpinner);
-                muscleSpinner2.getLocationOnScreen(coordinateSpinnerScroll);
+        View anchor = findViewById(R.id.anchor);
+       RelativeLayout button = findViewById(R.id.spinner_rl);
+       ((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
 
-                if (coordinateSpinnerScroll[1] <= coordinateSpinner[1]){
-                    spinnerRelativeLayout.setVisibility(View.VISIBLE);
-                    spinnerRelativeLayoutScroll.setVisibility(View.GONE);
-                }
-                else{
-                    spinnerRelativeLayout.setVisibility(View.GONE);
-                    spinnerRelativeLayoutScroll.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
-
-    public void displayExercises(HashMap<String, ArrayList<LinkedHashMap<String,String>>> exercises){
-        //card layout functionality
-        Display display = getWindowManager().getDefaultDisplay();
-
-        int layoutWidth = display.getWidth();
-        int cardsPerRow = 3;
-
-        for (String letter : exercises.keySet()){
-
-            TextView letterSubtitle = new TextView(this);
-            letterSubtitle.setText(letter);
-            RelativeLayout.LayoutParams letterSubtitleParams = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            int exerciseSize = exercises.get(letter).size();
-
-            if (exerciseSize > 0) {
-                letterSubtitleParams.setMargins(40, 10, 0, 10);
-                letterSubtitle.setLayoutParams(letterSubtitleParams);
-                letterSubtitle.setTextColor(getResources().getColor(R.color.colorPrimary));
-                letterSubtitle.setTextSize(22);
-                linearLayout.addView(letterSubtitle);
-            }
-
-            int exerciseNameIndex = 0;
-            boolean adding = true;
-
-            while (adding ){
-                LinearLayout rowLayout = new LinearLayout(this);
-                for (int x = 0; x < cardsPerRow; x++){
-                    if (exerciseNameIndex == exerciseSize){
-                        adding = false;
-                        break;
-                    }
-
-                    LinkedHashMap<String, String> exercise = exercises.get(letter).get(exerciseNameIndex);
-
-                    View card = LayoutInflater.from(context).inflate(R.layout.exercise_card_info_view, null);
-                    RelativeLayout rel = card.findViewById(R.id.group);
-
-                    ViewGroup.LayoutParams params = rel.getLayoutParams();
-                    params.width = layoutWidth / cardsPerRow;
-                    rel.setLayoutParams(params);
-
-                    String titleText = exercise.get("name");
-
-                    TextView title = card.findViewById(R.id.title);
-                    title.setText(titleText);
-
-                    TextView equipment = card.findViewById(R.id.equipment);
-                    equipment.setText(exercise.get("equipment"));
-
-                    card.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    });
-
-                    rowLayout.addView(card);
-
-                    exerciseNameIndex++;
-                }
-                linearLayout.addView(rowLayout);
-            }
-
-        }
     }
 
     public void displayExercises2(ArrayList<String> exercisesArray){
@@ -304,6 +224,7 @@ public class ExerciseView extends AppCompatActivity {
             ImageView groupIcon = toolbarBottom.findViewById(R.id.groupIcon);
             int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
             groupIcon.setImageResource(imageId);
+            System.out.println("HERE IT IS "+groupIcon);
         }
         catch (Exception e){}
 
@@ -325,6 +246,9 @@ public class ExerciseView extends AppCompatActivity {
         // specify an adapter (see also next example)
         ExerciseListAdapter mAdapter = new ExerciseListAdapter(this, source, exercises);
         recyclerView.setAdapter(mAdapter);
+
+        NestedScrollView scrollView = findViewById(R.id.scrollView);
+        scrollView.setVisibility(View.VISIBLE);
 
         }
 
