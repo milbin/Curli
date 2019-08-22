@@ -22,19 +22,20 @@
             android:layout_height="match_parent">
 
             <Switch
-                android:id="@+id/simpleSwitch"
-                android:layout_width="170dp"
-                android:layout_height="151dp"
+                android:id="@+id/notification_switch"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
                 tools:ignore="NotSibling"
-                tools:layout_editor_X="0dp"
-                tools:layout_editor_Y="178dp" />
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="360dp"
+                />
 
 
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="70dp"
                 android:text="Name"
                 android:textSize="18dp"
@@ -43,28 +44,28 @@
 
             <EditText
                 android:id="@+id/name_input"
-                android:layout_width="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="370dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dp"
                 android:inputType="text"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_X="0dp"
-                tools:layout_editor_Y="78dp"
-                />
+                app:layout_constraintTop_toBottomOf="parent" />
 
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="140dp"
                 android:text="Email"
                 android:textSize="18dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <EditText
                 android:id="@+id/email_input"
-                android:layout_width="match_parent"
+                android:layout_width="370dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="160dp"
                 android:inputType="text"
@@ -75,7 +76,7 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="210dp"
                 android:text="Current Weight"
                 android:textSize="18dp"
@@ -84,7 +85,8 @@
 
             <EditText
                 android:id="@+id/current_weight_input"
-                android:layout_width="match_parent"
+                android:layout_width="370dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="230dp"
                 android:inputType="number"
@@ -95,7 +97,7 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="280dp"
                 android:text="Desired Weight"
                 android:textSize="18dp"
@@ -104,13 +106,36 @@
 
             <EditText
                 android:id="@+id/desired_weight_input"
-                android:layout_width="match_parent"
+                android:layout_width="370dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="300dp"
                 android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_X="0dp"
                 tools:layout_editor_Y="170dp" />
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="360dp"
+                android:text="Notifications"
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ListPreference
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="410dp"
+                android:key="Choose Weight System"
+                android:title="@string/weight_preferneces"
+                android:entries="@array/weight_options"
+                android:entryValues="@array/weight_values"
+                android:summary="Choose a weighing system"
+
+                />
 
         </RelativeLayout>
     </ScrollView>

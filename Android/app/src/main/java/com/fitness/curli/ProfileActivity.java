@@ -54,11 +54,26 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
-        // initiate a Switch
-        Switch simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
+        //retrieve values from edit texts into java variables
+        EditText et = (EditText) findViewById(R.id.name_input);
+        String userName= et.getEditableText().toString();
 
-        // check current state of a Switch (true or false).
-        Boolean switchState = simpleSwitch.isChecked();
+        et = (EditText) findViewById(R.id.email_input);
+        String userEmail = et.getEditableText().toString();
+
+        et = (EditText) findViewById(R.id.current_weight_input);
+        String currentWeight = et.getEditableText().toString();
+
+        et = (EditText) findViewById(R.id.desired_weight_input);
+        String weightGoal = et.getEditableText().toString();
+
+        //initiate the switch
+        Switch notification_switch = (Switch) findViewById(R.id.notification_switch);
+
+        // check current state of a Switch (true or false)
+        Boolean isNotifications = notification_switch.isChecked();
+
+
 
         System.out.println("IT WORKED FOOOO0LLL");
     }
