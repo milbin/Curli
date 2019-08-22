@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("workout", null);
                     editor.apply();
+                    ((Curli) getApplication()).getWorkoutTimer().stopTimer();
                     ((Curli) getApplication()).setWorkoutTimer(null);
                     currentWorkout = null;
                     ((Toolbar)view.getParent().getParent()).setVisibility(View.GONE);

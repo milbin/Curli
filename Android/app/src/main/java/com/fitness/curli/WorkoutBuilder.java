@@ -237,6 +237,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
             CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
             LinkedHashMap set = new LinkedHashMap<>();
+            ((TextView)weightAndReps.findViewById(R.id.set_number)).setText("SET "+ll.getChildCount());
             //TODO this title needs to be changed in order to support a superset
             set.put("title", title);
             set.put("weight", 0.0);
