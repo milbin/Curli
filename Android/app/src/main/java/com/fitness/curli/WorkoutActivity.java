@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -110,8 +109,8 @@ public class WorkoutActivity extends AppCompatActivity {
 
 
         System.out.println(exercises +"HERE");
-        int counter = 0;
-        for(ArrayList<HashMap> exercise:exercises) {
+        for(ArrayList<Object> exercise:exercises) {
+            int setsCompleted = ((int)exercise.get(0));
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
             linearLayout.addView(relativeLayout);
             relativeLayout.setOnClickListener(new onExpandClick());
@@ -138,23 +137,27 @@ public class WorkoutActivity extends AppCompatActivity {
             EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
             exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
             exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
-            TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
-            View dividerLine = relativeLayout.findViewById(R.id.divider_line);
+            TextView excerciseSetsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+            TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
 
-            exerciseName.setText((String) exercise.get(1).get("title"));
+            exerciseName.setText((String) ((HashMap)exercise.get(1)).get("title"));
             try {
-                exerciseReps.setText(Integer.toString((int) exercise.get(1).get("reps")));
+                exerciseReps.setText(Integer.toString((int) ((HashMap)exercise.get(1)).get("reps")));
             }catch (ClassCastException e){
-                exerciseReps.setText(Integer.toString((int) Math.round((double)exercise.get(1).get("reps"))));
+                exerciseReps.setText(Integer.toString((int) Math.round((double)((HashMap)exercise.get(1)).get("reps"))));
             }
-            exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
-            excerciseSets.setText("Sets Completed: " + 0 + " of " + (exercise.size() - 1));
+            exerciseWeight.setText(Double.toString((Double) ((HashMap)exercise.get(1)).get("weight")));
+            excerciseSetsCompleted.setText("Sets Completed: " + setsCompleted + " of " + (exercise.size() - 1));
+            exerciseSets.setText("SET "+ (setsCompleted+1));
 
-            LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
+            LinearLayout checkboxLL = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
                 ImageView checkbox = new ImageView(this);
-                checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
-
+                if(i<=setsCompleted) {
+                    checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
+                }else {
+                    checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+                }
                 RelativeLayout.LayoutParams checkmarkParams = new RelativeLayout.LayoutParams(
                         checkmark_size,
                         checkmark_size
@@ -163,15 +166,15 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkmarkParams.setMarginStart(10);
                 }
                 checkbox.setLayoutParams(checkmarkParams);
-                exerciseSets.addView(checkbox);
+                checkboxLL.addView(checkbox);
             }
-
-            if(counter != 0){ //
+            if(currentlyExpandedCard != null) {
                 collapseCard((RelativeLayout) relativeLayout);
-            }else{ //initlize the current expanded card with the first exercise
+            }else if(setsCompleted != exercise.size()-1){ // this checks collapses all the exercises already completed assuming the workout has been resumed
                 currentlyExpandedCard = (RelativeLayout) relativeLayout;
+            }else{
+                collapseCard((RelativeLayout) relativeLayout);
             }
-            counter++;
         }
     }
 
@@ -248,8 +251,10 @@ public class WorkoutActivity extends AppCompatActivity {
                         }
                     }, 75);
 
+                    TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+                    setsCompleted.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
+                    exerciseSets.setText("SET "+(setNumber+1));
                 }
             }
 
@@ -295,16 +300,21 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setLayoutParams(params);
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
+                    TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                     //this text will get set twice, once here and once in the colapse card since the colapse card does not have the set number param
                     //the settext in the collpase card is meant only to add a newline
-                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                    setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                    //exerciseSets.setText("SET "+(setNumber+2));
+
                 }
 
                 collapseCard(relativeLayout);
                 if(exerciseNumber+1 < linearLayout.getChildCount()) { //this expands the next view
                     RelativeLayout relativeLayoutNext = (RelativeLayout) linearLayout.getChildAt(exerciseNumber + 1);
                     expandCard(relativeLayoutNext);
+                }else{ //this means that the final exercise in the workout has been finished so all cards should be collapsed
+                    currentlyExpandedCard = null;
                 }
 
 
@@ -361,8 +371,11 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }, 75);
 
+                TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+                setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                exerciseSets.setText("SET "+(setNumber+2));
+
             }
 
 
@@ -385,13 +398,15 @@ public class WorkoutActivity extends AppCompatActivity {
         setBackButtonNext.setVisibility(View.VISIBLE);
         Button doneButtonNext = relativeLayout.findViewById(R.id.done_button);
         doneButtonNext.setVisibility(View.VISIBLE);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setVisibility(View.VISIBLE);
         RelativeLayout exerciseSetsRLNext = relativeLayout.findViewById(R.id.exercise_sets_RL);
         RelativeLayout.LayoutParams paramsNext = (RelativeLayout.LayoutParams) exerciseSetsRLNext.getLayoutParams();
         paramsNext.addRule(RelativeLayout.BELOW, R.id.weight_relative_layout);
         paramsNext.setMargins(0, 20, 0, 0);
         exerciseSetsRLNext.setLayoutParams(paramsNext);
-        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(true);
@@ -413,13 +428,15 @@ public class WorkoutActivity extends AppCompatActivity {
         setBackButton.setVisibility(View.GONE);
         Button doneButton = relativeLayout.findViewById(R.id.done_button);
         doneButton.setVisibility(View.GONE);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setVisibility(View.GONE);
         RelativeLayout exerciseSetsRL = relativeLayout.findViewById(R.id.exercise_sets_RL);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseSetsRL.getLayoutParams();
         params.addRule(RelativeLayout.BELOW, R.id.exercise_name);
         params.setMargins(0, 10, 0, 0);
         exerciseSetsRL.setLayoutParams(params);
-        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
+        TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(false);
@@ -536,9 +553,14 @@ public class WorkoutActivity extends AppCompatActivity {
             if((int)exercises.get(exerciseNumber).get(0) == exercises.get(exerciseNumber).size()-1){
                 v.findViewById(R.id.exercise_sets_back_button).performClick();
             }
+            System.out.println(currentlyExpandedCard);
             if(v != currentlyExpandedCard) {
                 System.out.println(exercises);
-                collapseCard(currentlyExpandedCard);
+                if(currentlyExpandedCard !=null) {
+                    //this is meant to colpase the current card and expand the next one, however
+                    // the currently expanded card can be null if all cards are collapsed such as is the case when all exercises have been finished
+                    collapseCard(currentlyExpandedCard);
+                }
                 expandCard((RelativeLayout) v);
             }
         }

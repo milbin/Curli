@@ -46,7 +46,7 @@
 
         </RelativeLayout>
         <TextView
-            android:id="@+id/set_number"
+            android:id="@+id/sets_completed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set 2"

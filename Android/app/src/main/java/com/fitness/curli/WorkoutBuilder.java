@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
@@ -16,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -237,7 +234,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
             CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
             LinkedHashMap set = new LinkedHashMap<>();
-            ((TextView)weightAndReps.findViewById(R.id.set_number)).setText("SET "+ll.getChildCount());
+            ((TextView)weightAndReps.findViewById(R.id.sets_completed)).setText("SET "+ll.getChildCount());
             //TODO this title needs to be changed in order to support a superset
             set.put("title", title);
             set.put("weight", 0.0);
