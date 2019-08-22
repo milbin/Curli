@@ -207,7 +207,7 @@ public class ExerciseView extends AppCompatActivity {
                 }
             });
         }
-        spinnerRelativeLayout.setVisibility(View.GONE);
+        //spinnerRelativeLayout.setVisibility(View.GONE);
 
         View anchor = findViewById(R.id.anchor);
        RelativeLayout button = findViewById(R.id.spinner_rl);
@@ -246,9 +246,6 @@ public class ExerciseView extends AppCompatActivity {
         // specify an adapter (see also next example)
         ExerciseListAdapter mAdapter = new ExerciseListAdapter(this, source, exercises);
         recyclerView.setAdapter(mAdapter);
-
-        NestedScrollView scrollView = findViewById(R.id.scrollView);
-        scrollView.setVisibility(View.VISIBLE);
 
         }
 

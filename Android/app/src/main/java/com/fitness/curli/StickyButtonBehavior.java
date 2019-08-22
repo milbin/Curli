@@ -1,6 +1,7 @@
 package com.fitness.curli;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.RelativeLayout;
 import static android.support.v4.view.ViewCompat.SCROLL_AXIS_VERTICAL;
 
 public class StickyButtonBehavior extends CoordinatorLayout.Behavior {
-    private Integer mNotStickyMargin;
     private int mAnchorId;
 
     public StickyButtonBehavior(int anchorId) {
@@ -30,16 +30,20 @@ public class StickyButtonBehavior extends CoordinatorLayout.Behavior {
 
         View anchor = coordinatorLayout.findViewById(mAnchorId);
         int[] anchorLocation = new int[2];
-        anchor.getLocationOnScreen(anchorLocation);
+        anchor.getLocationInWindow(anchorLocation);
 
 
-        RelativeLayout stop = coordinatorLayout.findViewById(R.id.spinner_rl);
+        //RelativeLayout stop = coordinatorLayout.findViewById(R.id.spinner_rl);
+        AppBarLayout stop = coordinatorLayout.findViewById(R.id.headerWrapper);
         int[] stopLocation = new int[2];
-        stop.getLocationOnScreen(stopLocation);
+        stop.getLocationInWindow(stopLocation);
         int coordStop = stopLocation[1];
+        coordStop = 350;
 
         //vertical position, cannot scroll over the bottom of the coordinator layout
-        child.setY(Math.min(anchorLocation[1], coordStop - child.getHeight() ));
+        child.setY(Math.max(anchorLocation[1], coordStop));
+        child.bringToFront();
+        System.out.println("CHILD = " + anchorLocation[1] +" "+ coordStop);
 
         //Margins depend on the distance to the bottom
         //int diff = Math.max(coordStop - anchorLocation[1] - child.getHeight(), 0);
