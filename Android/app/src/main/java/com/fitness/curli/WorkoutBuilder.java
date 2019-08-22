@@ -325,12 +325,14 @@ public class WorkoutBuilder extends AppCompatActivity {
                 if(setNumber > exercises.get(exerciseNumber).size()-1){
                     setNumber = exercises.get(exerciseNumber).size()-1;
                 }
-                if (v.getId() == R.id.exercise_reps) {
-                    Integer currentReps = Integer.parseInt(((EditText) v).getText().toString());
-                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
-                } else if (v.getId() == R.id.exercise_weight) {
-                    Double currentWeight = Double.parseDouble(((EditText) v).getText().toString());
-                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+                if(((EditText) v).getText().toString().length() != 0) {
+                    if (v.getId() == R.id.exercise_reps) {
+                        Integer currentReps = Integer.parseInt(((EditText) v).getText().toString());
+                        ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+                    } else if (v.getId() == R.id.exercise_weight) {
+                        Double currentWeight = Double.parseDouble(((EditText) v).getText().toString());
+                        ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+                    }
                 }
             }
 
