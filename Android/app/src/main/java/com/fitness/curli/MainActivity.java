@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity{
                 //set current view as selected (color primary)
                 ((ImageView)v.findViewById(R.id.exercises)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
                 ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                Intent intent = new Intent(MainActivity.this, InfoView.class);
+                Intent intent = new Intent(MainActivity.this, MuscleView.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0); //this disables animations
 
