@@ -9,12 +9,13 @@
     <include
         layout="@layout/toolbar"/>
 
-    <ListView
+    <LinearLayout
         android:id="@+id/resultsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         >
-    </ListView>
+    </LinearLayout>
 
     <include
         android:id="@+id/bottom_app_bar"
