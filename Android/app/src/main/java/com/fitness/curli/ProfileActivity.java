@@ -12,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,23 +79,74 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
         //retrieve values from edit texts into java variables
-        EditText et = (EditText) findViewById(R.id.name_input);
-        userName= et.getEditableText().toString();
 
-        et = (EditText) findViewById(R.id.email_input);
-        userEmail = et.getEditableText().toString();
+        final EditText et = (EditText) findViewById(R.id.name_input);
+        et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
 
-        et = (EditText) findViewById(R.id.current_weight_input);
-        currentWeight = et.getEditableText().toString();
+                } else {
+                    userName = et.getText().toString();
+                    System.out.println(userName);
+                }
+            }
+        });
 
-        et = (EditText) findViewById(R.id.desired_weight_input);
-        weightGoal = et.getEditableText().toString();
+
+
+        final EditText et1 = (EditText) findViewById(R.id.email_input);
+        et1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                } else {
+                    userEmail = et1.getText().toString();
+                    System.out.println(userEmail);
+                }
+            }
+        });
+
+        final EditText et2 = (EditText) findViewById(R.id.current_weight_input);
+        et2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                } else {
+                    currentWeight = et2.getText().toString();
+                    System.out.println(currentWeight);
+                }
+            }
+        });
+
+        final EditText et3 = (EditText) findViewById(R.id.desired_weight_input);
+        et3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                } else {
+                    weightGoal = et3.getText().toString();
+                    System.out.println(weightGoal);
+                }
+            }
+        });
 
         //initiate the switch
         Switch notification_switch = (Switch) findViewById(R.id.notification_switch);
 
         // check current state of a Switch (true or false)
-        isNotifications = notification_switch.isChecked();
+        //set on switch listener
+        notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // do something, the isChecked will be
+                // true if the switch is in the On position
+                isNotifications = isChecked;
+                System.out.println(isNotifications);
+            }
+        });
 
         //Getting the instance of Spinner and applying OnItemSelectedListener on it
         Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
@@ -122,6 +175,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         }
 
         Toast.makeText(getApplicationContext(), "Changed weight unit to " + weights[position], Toast.LENGTH_LONG).show();
+        System.out.println(unitChoice);
     }
 
     @Override
@@ -142,6 +196,25 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
+
+    //all getters which will be used to store data in database
+    public String getUsername(){
+        return userName;
+    }
+    public String getEmail(){
+        return userEmail;
+    }
+    public int getCurrentWeight() {
+        int finalValue=Integer.parseInt(currentWeight);
+        return finalValue;
+    }
+    public int getWeightGoal(){
+        int finalValue=Integer.parseInt(weightGoal);
+        return finalValue;
+    }
+    public boolean getNotifications(){
+        return isNotifications;
+    }
     public String getUnitChoice(){
         return unitChoice;
     }
