@@ -17,6 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginLeft="20dp"
             >
 
             <TextView
@@ -25,11 +26,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="title"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"/>
             <ImageView
                 android:id="@+id/icon"
                 android:layout_width="80sp"
                 android:layout_height="80sp"
+                android:src="@drawable/ic_outline_calendar_today_24px"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="20dp"

@@ -7,13 +7,15 @@
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
 
     <LinearLayout
         android:id="@+id/resultsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_below="@id/toolbar"
         >
     </LinearLayout>
 
