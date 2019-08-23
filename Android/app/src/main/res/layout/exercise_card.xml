@@ -7,7 +7,6 @@
     android:focusable="true">
     <RelativeLayout
 
-        android:id="@+id/relativeLayout_marks_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/cardview_background"
@@ -24,6 +23,7 @@
 
         <TextView
             android:id="@+id/exercise_name"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -31,9 +31,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:paddingTop="@dimen/workout_card_top_padding"
-            android:text="Bicep Curl"
-            android:textColor="@android:color/black"
-            android:textSize="25sp" />
+            android:text="Bicep Curl" />
 
         <ImageButton
             android:id="@+id/overflowButton"
@@ -52,16 +50,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="65dp">
+            android:layout_below="@+id/exercise_name"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp">
             <TextView
                 android:id="@+id/exercise_weight_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight:"
-                android:textColor="@android:color/black"
+                style="@style/Subtitle1"
                 android:layout_centerHorizontal="true"
-                android:textSize="20sp"
                 android:layout_marginBottom="10dp"
                 />
 
@@ -96,19 +94,29 @@
                 />
 
         </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set 1"
+            android:id="@+id/set_number"
+            android:layout_below="@+id/exercise_name"
+            android:layout_marginTop="59dp"
+            style="@style/Button"
+            android:layout_centerHorizontal="true"
+            />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="45dp"
-            android:layout_marginTop="65dp">
+            android:layout_below="@+id/exercise_name"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp">
             <TextView
                 android:id="@+id/exercise_reps_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reps:"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
+                style="@style/Subtitle1"
                 android:layout_marginBottom="10dp"
                 android:layout_centerHorizontal="true"
                 />
@@ -142,7 +150,7 @@
                 android:background="@android:color/transparent"
                 android:layout_alignBottom="@+id/exercise_reps"
                 />
-        </RelativeLayout>>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/done_button"
@@ -156,6 +164,10 @@
             android:elevation="0dp"
             android:layout_marginBottom="20dp"
             android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:letterSpacing="0.14"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
             android:background="@drawable/done_button_background"
             />
 
@@ -170,6 +182,10 @@
             android:text="Back"
             android:layout_marginBottom="20dp"
             android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:letterSpacing="0.11"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
             android:background="@drawable/back_button_background"
             />
 
@@ -192,12 +208,12 @@
 
             <TextView
                 android:layout_marginTop="20dp"
-                android:id="@+id/set_number"
+                android:id="@+id/sets_completed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Sets Completed: 0 of 3"
-                android:textSize="17sp"
+                style="@style/BodyTight"
                 android:gravity="center_horizontal"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
@@ -211,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="5dp"
-                android:layout_below="@+id/set_number"
+                android:layout_below="@+id/sets_completed"
                 >
 
 

@@ -4,14 +4,25 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ffffff"
-    android:id="@+id/parentRL">
+    android:background="#ffffff">
 
     <include
         layout="@layout/toolbar_divider"
         android:id="@+id/toolbar"
         >
     </include>
+
+    <TextView
+        android:id="@+id/no_workout_tv"
+        style="@style/BodyTight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha="2"
+        android:gravity="center_horizontal"
+        android:text="It looks like you haven't created any workouts yet!\nClick the &quot;+&quot; button below to get started"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 <ScrollView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -22,29 +33,8 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:id="@+id/linearLayoutMain"
+    android:paddingBottom="30dp"
     >
-    <include
-        layout="@layout/workout_card"
-        android:id="@+id/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
-    <include
-        layout="@layout/workout_card"
-        />
 
 </LinearLayout>
 </ScrollView>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -25,11 +26,13 @@ import android.widget.Toast;
 
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.sql.*;
 
@@ -38,17 +41,58 @@ public class MainActivity extends AppCompatActivity{
     Context context = this;
     private Menu optionsMenu;
     HashMap currentWorkout;
-    private Toolbar toolbar;
+    int RESULT_FINISHED_BUILD = 1;
+    public int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
+        //add workout cards programatically
+        SQLData sqlData = new SQLData();
+        sqlData.openUserDB(this);
+        SQLData sqlDataExercise = new SQLData();
+        sqlDataExercise.openExerciseDB(this);
+        int workoutCount = sqlData.getWorkoutCount();
+        for(int i=0; i<workoutCount; i++){
+            RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+            ArrayList workoutTemp = sqlData.getworkout(i);
+            ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
+            card.setOnClickListener(new onWorkoutClick());
+            ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
+            int totalReps = 0;
+            int totalSets = 0;
+            int totalExercises = 0;
+            ArrayList<String> equipmentList = new ArrayList<String>();
+            for(ArrayList exercise:exercises){
+                for(int setNum=1;setNum<exercise.size();setNum++){
+                    LinkedTreeMap set = (LinkedTreeMap) exercise.get(setNum);
+                    String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                    for(String equipment: equipmentString.split(", ")){
+                        if(!equipmentList.contains(equipment)){
+                            equipmentList.add(equipment);
+                        }
+                    }
+                    totalReps += Math.round((double)set.get("reps"));
+                    totalSets++;
+                }
+                totalExercises++;
+            }
+            String finalEquipmentString = "";
+            for(String equipment: equipmentList){
+                finalEquipmentString += equipment+" · ";
+            }
+            finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
+            ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+            ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+            ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
+            LinearLayout ll = findViewById(R.id.linearLayoutMain);
+            ll.addView(card);
+            findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
+        }
+        sqlData.closeDB();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        RelativeLayout workoutPlaceholder = findViewById(R.id.workout_card);
-        workoutPlaceholder.setOnClickListener(new onWorkoutClick());
 
         //set on click listener for the bottom bar buttons
         ((View)findViewById(R.id.history).getParent()).setOnClickListener(new onNavbarClick());
@@ -60,8 +104,6 @@ public class MainActivity extends AppCompatActivity{
 
         //set toolbar onclick listener
 
-        findViewById(R.id.profile_button).setOnClickListener(new onProfileClick());
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -69,20 +111,61 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new onFabClick());
 
 
+
+
     }
 
-    public class onProfileClick implements View.OnClickListener {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
+            if(requestCode == RESULT_FINISHED_BUILD){
+                findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
+                HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
+                RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+                ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
+                LinearLayout ll = findViewById(R.id.linearLayoutMain);
+                ll.addView(card);
+                card.setOnClickListener(new onWorkoutClick());
+                SQLData sqlDataExercise = new SQLData();
+                sqlDataExercise.openExerciseDB(this);
+                ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) newWorkout.get("exercises");
+                int totalReps = 0;
+                int totalSets = 0;
+                int totalExercises = 0;
+                ArrayList<String> equipmentList = new ArrayList<String>();
+                for(ArrayList exercise:exercises){
+                    for(int setNum=1;setNum<exercise.size();setNum++){
+                        System.out.println(exercise);
+                        HashMap set = (HashMap) exercise.get(setNum);
+                        String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                        for(String equipment: equipmentString.split(", ")){
+                            if(!equipmentList.contains(equipment)){
+                                equipmentList.add(equipment);
+                            }
+                        }
+                        totalReps += (int)set.get("reps");
+                        totalSets++;
+                    }
+                    totalExercises++;
+                }
+                String finalEquipmentString = "";
+                for(String equipment: equipmentList){
+                    finalEquipmentString += equipment+" · ";
+                }
+                finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
+                ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+                ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+                ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
 
-        @Override
-        public void onClick(View v){
-            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(myIntent);
+            }
         }
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if(((Curli) this.getApplication()).getWorkoutTimer() != null){
             SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
             String workoutString = pref.getString("workout", "FAIL");
@@ -129,6 +212,7 @@ public class MainActivity extends AppCompatActivity{
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("workout", null);
                     editor.apply();
+                    ((Curli) getApplication()).getWorkoutTimer().stopTimer();
                     ((Curli) getApplication()).setWorkoutTimer(null);
                     currentWorkout = null;
                     ((Toolbar)view.getParent().getParent()).setVisibility(View.GONE);
@@ -150,59 +234,53 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+
     public class onWorkoutClick implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            if(currentWorkout != null){
-                Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
-                myIntent.putExtra("workout", currentWorkout);
-                startActivity(myIntent);
-            }else {
-
-                LinkedHashMap BP = new LinkedHashMap<>();
-                BP.put("title", "Bench Press");
-                BP.put("weight", 135.0);
-                BP.put("reps", 8);
-
-                LinkedHashMap BC = new LinkedHashMap<>();
-                BC.put("title", "Bicep Curl");
-                BC.put("weight", 75.0);
-                BC.put("reps", 8);
-                LinkedHashMap BC1 = new LinkedHashMap<>();
-                BC1.put("title", "Bicep Curl");
-                BC1.put("weight", 80.0);
-                BC1.put("reps", 9);
-                LinkedHashMap BC2 = new LinkedHashMap<>();
-                BC2.put("title", "Bicep Curl");
-                BC2.put("weight", 90.0);
-                BC2.put("reps", 10);
-
-                ArrayList BCList = new ArrayList();
-                ArrayList BPList = new ArrayList();
-
-                BCList.add(0);
-                BPList.add(0);
-
-                for (int i = 0; i < 3; i++) {
-                    BPList.add(BP);
+            LinearLayout ll = (LinearLayout) v.getParent();
+            int workoutNumber = 0;
+            for(int i=0; i<ll.getChildCount();i++ ){
+                if(v == ll.getChildAt(i)){
+                    workoutNumber = i;
                 }
-                BCList.add(BC);
-                BCList.add(BC1);
-                BCList.add(BC2);
+            }
+            SQLData sqlData = new SQLData();
+            sqlData.openUserDB(context);
+            ArrayList workoutList = sqlData.getworkout(workoutNumber);
+            sqlData.closeDB();
+            final HashMap workout = (HashMap) workoutList.get(1);
+            System.out.println(workout);
+            if(((Curli) getApplication()).getWorkoutTimer() != null){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Discard Current Workout?").setMessage("Starting a new workout will discard your old one.");
+                // Add the buttons
+                builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ((Curli) getApplication()).getWorkoutTimer().stopTimer();
+                        ((Curli) getApplication()).setWorkoutTimer(null);
 
-                ArrayList exercises = new ArrayList();
-                exercises.add(BPList);
-                exercises.add(BCList);
-                LinkedHashMap workout = new LinkedHashMap();
-                workout.put("title", "Arms and Chest");
-                workout.put("exercises", exercises);
+                        Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
+                        myIntent.putExtra("workout", workout);
+                        startActivity(myIntent);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialogs
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }else {
                 Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                 myIntent.putExtra("workout", workout);
                 startActivity(myIntent);
-
-                System.out.println(workout);
             }
+
 
         }
     }
@@ -259,7 +337,8 @@ public class MainActivity extends AppCompatActivity{
     public class onFabClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("IT WORKS!");
+            Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
+            startActivityForResult(myIntent, 1);
         }
     }
 

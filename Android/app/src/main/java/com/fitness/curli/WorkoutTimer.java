@@ -26,7 +26,7 @@ public class WorkoutTimer{
             seconds = (seconds % 3600)% 60;
 
             if(hours >= 1) {
-                textView.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+                textView.setText(String.format("%01d:%02d:%02d", hours, minutes, seconds));
             }else{
                 textView.setText(String.format("%02d:%02d", minutes, seconds));
             }

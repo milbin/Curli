@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,6 +10,51 @@
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:colorAccent">@color/colorPrimary</item>
         <item name="colorPrimary">#aaaaaa</item>
+    </style>
+
+    <style name="CondensedBase" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+    <style name="Title" parent="CondensedBase">
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="Subtitle1" parent="CondensedBase">
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:letterSpacing">0.038</item>
+    </style>
+
+    <style name="Subtitle2" parent="CondensedBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.035</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+
+    <style name="Caption" parent="Subtitle2">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Button" parent="CondensedBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.17</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+    <style name="Body2" parent="CondensedBase">
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.0625</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="BodyTight" parent="Body2">
+        <item name="android:letterSpacing">0.0625</item>
     </style>
 
 

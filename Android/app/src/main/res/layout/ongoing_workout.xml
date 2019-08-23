@@ -48,9 +48,7 @@
         <TextView
             android:id="@+id/ongoing_workout_title"
             android:text="Arms and Chest"
-            android:fontFamily="@font/roboto_medium"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
+            style="@style/Button"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"

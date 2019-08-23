@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +34,7 @@ public class WorkoutActivity extends AppCompatActivity {
     //This is what the activity takes as input parameters, the reason that every set has a the name of the
     //exercise associated with it is so that we can create supersets easily later on
     //TODO create superset
-    //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
+    //{"title": "Arms and Chest", "time":"1:23:34", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
     //{"title": "Bench Press", "weight":135, "reps":8}, {"title": "Bench Press", "weight":135, "reps":8}],
     //[0, {"title": "Bicep Curl", "weight":75, "reps":8}, {"title": "Bicep Curl", "weight":75, "reps":8},
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
@@ -55,9 +56,8 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
-        System.out.println(workout);
 
-
+        //setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)toolbar.getLayoutParams();
         params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -68,16 +68,27 @@ public class WorkoutActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
         toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
         toolbar.setOnClickListener(new onDownPressed());
+        //check for if the activity resumes from a previous ongoing workout by seeing if the former
+        // integer value of the 'reps' field is now a double since gson converts it to that
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
-            int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(1).get(1)).get("reps");
+            System.out.println(workout);
+            int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(0).get(1)).get("reps");
             timer = new WorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
             timer.startTimer();
             ((Curli) this.getApplication()).setWorkoutTimer(timer);
-        }catch (ClassCastException e){
+        }catch (ClassCastException e){//this means that the workout is being resumed
             timer = ((Curli) this.getApplication()).getWorkoutTimer();
-            timer.setTextView((TextView)findViewById(R.id.timer));
+            if(timer == null){
+                timer = new WorkoutTimer();
+                timer.setTextView((TextView)findViewById(R.id.timer));
+                timer.startTimer();
+                ((Curli) this.getApplication()).setWorkoutTimer(timer);
+            }else {
+                timer.setTextView((TextView) findViewById(R.id.timer));
+            }
+            // convert double reps to integer
             int count = 0;
             for(ArrayList<Object> exercise:exercises) {
                 int count1 = 0;
@@ -97,9 +108,9 @@ public class WorkoutActivity extends AppCompatActivity {
         }
 
 
-
-        int counter = 0;
-        for(ArrayList<HashMap> exercise:exercises) {
+        System.out.println(exercises +"HERE");
+        for(ArrayList<Object> exercise:exercises) {
+            int setsCompleted = ((int)exercise.get(0));
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
             linearLayout.addView(relativeLayout);
             relativeLayout.setOnClickListener(new onExpandClick());
@@ -121,24 +132,32 @@ public class WorkoutActivity extends AppCompatActivity {
 
             TextView exerciseName = relativeLayout.findViewById(R.id.exercise_name);
             EditText exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
+            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
             EditText exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
-            TextView excerciseSets = relativeLayout.findViewById(R.id.set_number);
-            View dividerLine = relativeLayout.findViewById(R.id.divider_line);
+            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
+            TextView excerciseSetsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+            TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
 
-            exerciseName.setText((String) exercise.get(1).get("title"));
+            exerciseName.setText((String) ((HashMap)exercise.get(1)).get("title"));
             try {
-                exerciseReps.setText(Integer.toString((int) exercise.get(1).get("reps")));
+                exerciseReps.setText(Integer.toString((int) ((HashMap)exercise.get(1)).get("reps")));
             }catch (ClassCastException e){
-                exerciseReps.setText(Integer.toString((int) Math.round((double)exercise.get(1).get("reps"))));
+                exerciseReps.setText(Integer.toString((int) Math.round((double)((HashMap)exercise.get(1)).get("reps"))));
             }
-            exerciseWeight.setText(Double.toString((Double) exercise.get(1).get("weight")));
-            excerciseSets.setText("Sets Completed: " + 0 + " of " + (exercise.size() - 1));
+            exerciseWeight.setText(Double.toString((Double) ((HashMap)exercise.get(1)).get("weight")));
+            excerciseSetsCompleted.setText("Sets Completed: " + setsCompleted + " of " + (exercise.size() - 1));
+            exerciseSets.setText("SET "+ (setsCompleted+1));
 
-            LinearLayout exerciseSets = relativeLayout.findViewById(R.id.checkbox_linear_layout);
+            LinearLayout checkboxLL = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
                 ImageView checkbox = new ImageView(this);
-                checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
-
+                if(i<=setsCompleted) {
+                    checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
+                }else {
+                    checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_grey_24dp));
+                }
                 RelativeLayout.LayoutParams checkmarkParams = new RelativeLayout.LayoutParams(
                         checkmark_size,
                         checkmark_size
@@ -147,15 +166,15 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkmarkParams.setMarginStart(10);
                 }
                 checkbox.setLayoutParams(checkmarkParams);
-                exerciseSets.addView(checkbox);
+                checkboxLL.addView(checkbox);
             }
-
-            if(counter != 0){ //
+            if(currentlyExpandedCard != null) {
                 collapseCard((RelativeLayout) relativeLayout);
-            }else{ //initlize the current expanded card with the first exercise
+            }else if(setsCompleted != exercise.size()-1){ // this checks collapses all the exercises already completed assuming the workout has been resumed
                 currentlyExpandedCard = (RelativeLayout) relativeLayout;
+            }else{
+                collapseCard((RelativeLayout) relativeLayout);
             }
-            counter++;
         }
     }
 
@@ -183,7 +202,8 @@ public class WorkoutActivity extends AppCompatActivity {
             if(setNumber == -1){ //this is so that the set number does not go below zero
                 return;
             }else{
-                exercise.set(0, setNumber); //decrement the set number by 1
+                //decrement the set number by 1
+                exercise.set(0, setNumber);
                 LinearLayout checkboxLinearLayout = ((View) v.getParent()).findViewById(R.id.checkbox_linear_layout);
                 for(int i=exercise.size()-2; i>=setNumber; i--) {
                     checkboxLinearLayout.getChildAt(i);
@@ -231,8 +251,10 @@ public class WorkoutActivity extends AppCompatActivity {
                         }
                     }, 75);
 
+                    TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+                    setsCompleted.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
+                    exerciseSets.setText("SET "+(setNumber+1));
                 }
             }
 
@@ -278,16 +300,21 @@ public class WorkoutActivity extends AppCompatActivity {
                     checkbox.setLayoutParams(params);
                     checkbox.setImageDrawable(getDrawable(R.drawable.ic_check_circle_black_24dp));
                     checkboxLinearLayout.addView(checkbox, i);
+                    TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
                     //this text will get set twice, once here and once in the colapse card since the colapse card does not have the set number param
                     //the settext in the collpase card is meant only to add a newline
-                    exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                    setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                    //exerciseSets.setText("SET "+(setNumber+2));
+
                 }
 
                 collapseCard(relativeLayout);
                 if(exerciseNumber+1 < linearLayout.getChildCount()) { //this expands the next view
                     RelativeLayout relativeLayoutNext = (RelativeLayout) linearLayout.getChildAt(exerciseNumber + 1);
                     expandCard(relativeLayoutNext);
+                }else{ //this means that the final exercise in the workout has been finished so all cards should be collapsed
+                    currentlyExpandedCard = null;
                 }
 
 
@@ -344,8 +371,11 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 }, 75);
 
+                TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+                setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
+                exerciseSets.setText("SET "+(setNumber+2));
+
             }
 
 
@@ -368,13 +398,15 @@ public class WorkoutActivity extends AppCompatActivity {
         setBackButtonNext.setVisibility(View.VISIBLE);
         Button doneButtonNext = relativeLayout.findViewById(R.id.done_button);
         doneButtonNext.setVisibility(View.VISIBLE);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setVisibility(View.VISIBLE);
         RelativeLayout exerciseSetsRLNext = relativeLayout.findViewById(R.id.exercise_sets_RL);
         RelativeLayout.LayoutParams paramsNext = (RelativeLayout.LayoutParams) exerciseSetsRLNext.getLayoutParams();
         paramsNext.addRule(RelativeLayout.BELOW, R.id.weight_relative_layout);
         paramsNext.setMargins(0, 20, 0, 0);
         exerciseSetsRLNext.setLayoutParams(paramsNext);
-        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(true);
@@ -396,19 +428,63 @@ public class WorkoutActivity extends AppCompatActivity {
         setBackButton.setVisibility(View.GONE);
         Button doneButton = relativeLayout.findViewById(R.id.done_button);
         doneButton.setVisibility(View.GONE);
+        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
+        exerciseSets.setVisibility(View.GONE);
         RelativeLayout exerciseSetsRL = relativeLayout.findViewById(R.id.exercise_sets_RL);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) exerciseSetsRL.getLayoutParams();
         params.addRule(RelativeLayout.BELOW, R.id.exercise_name);
         params.setMargins(0, 10, 0, 0);
         exerciseSetsRL.setLayoutParams(params);
-        TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-        exerciseSets.setText(exerciseSets.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
+        TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(false);
         exerciseWeight.setEnabled(false);
 
 
+    }
+
+    public class onEditTextDoneButtonPressed implements EditText.OnKeyListener{
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                //this will call onUserFinishedEditing (just below)
+                v.clearFocus();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public class onUserFinishedEditing implements EditText.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                LinearLayout linearLayout = (LinearLayout) ((View) ((View) v.getParent()).getParent()).getParent().getParent();
+                int exerciseNumber = 0;
+                for (int i = 0; i < linearLayout.getChildCount(); i++) {
+                    if (linearLayout.getChildAt(i) == ((View) v.getParent()).getParent().getParent()) {
+                        exerciseNumber = i;
+                        break;
+                    }
+                }
+                int setNumber = (int) exercises.get(exerciseNumber).get(0) + 1;
+                if (setNumber > exercises.get(exerciseNumber).size() - 1) {
+                    setNumber = exercises.get(exerciseNumber).size() - 1;
+                }
+                if (v.getId() == R.id.exercise_reps) {
+                    Integer currentReps = Integer.parseInt(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
+                } else if (v.getId() == R.id.exercise_weight) {
+                    Double currentWeight = Double.parseDouble(((EditText) v).getText().toString());
+                    ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
+                }
+            }
+            System.out.println(exercises);
+        }
     }
     public class onAddOrSubtractClick implements View.OnClickListener {
 
@@ -459,7 +535,6 @@ public class WorkoutActivity extends AppCompatActivity {
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
-            System.out.println(exercises);
 
         }
     }
@@ -478,10 +553,16 @@ public class WorkoutActivity extends AppCompatActivity {
             if((int)exercises.get(exerciseNumber).get(0) == exercises.get(exerciseNumber).size()-1){
                 v.findViewById(R.id.exercise_sets_back_button).performClick();
             }
-            System.out.println(exercises);
-            //expand the card that was clicked
-            collapseCard(currentlyExpandedCard);
-            expandCard((RelativeLayout)v);
+            System.out.println(currentlyExpandedCard);
+            if(v != currentlyExpandedCard) {
+                System.out.println(exercises);
+                if(currentlyExpandedCard !=null) {
+                    //this is meant to colpase the current card and expand the next one, however
+                    // the currently expanded card can be null if all cards are collapsed such as is the case when all exercises have been finished
+                    collapseCard(currentlyExpandedCard);
+                }
+                expandCard((RelativeLayout) v);
+            }
         }
     }
 
@@ -536,7 +617,6 @@ public class WorkoutActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = pref.edit();
         Gson gson = new Gson();
         String hashMapString = gson.toJson(workout);
-        System.out.println(hashMapString +"HERE1");
         editor.putString("workout", hashMapString);
         editor.apply();
         super.onBackPressed();
@@ -545,32 +625,51 @@ public class WorkoutActivity extends AppCompatActivity {
     private class onWorkoutFinished implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("HERE");
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
-            // Add the buttons
-            builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("workout", null);
-                    editor.apply();
-                    ((Curli) getApplication()).setWorkoutTimer(null);
-                    SQLData sqlData = new SQLData();
-                    sqlData.openWorkoutHistoryDB(context);
-                    sqlData.saveWorkout(workout);
-                    finish();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialog
-                }
-            });
-            // Create the AlertDialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            int totalSets = 0;
+            for (ArrayList exercise : exercises) {
+                totalSets += (int) exercise.get(0);
+            }
+            if (totalSets <= 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Cant Finish Workout!").setMessage("You need to complete a set before finishing your workout.");
+                // Add the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
+                // Add the buttons
+                builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("workout", null);
+                        editor.apply();
+                        String time = (String) ((TextView) findViewById(R.id.timer)).getText();
+                        workout.put("time", time);
+                        ((Curli) getApplication()).setWorkoutTimer(null);
+                        SQLData sqlData = new SQLData();
+                        sqlData.openUserDB(context);
+                        sqlData.saveWorkoutToHistory(workout);
+                        sqlData.closeDB();
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                // Create the AlertDialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
     }
 

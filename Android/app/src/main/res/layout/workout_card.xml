@@ -3,22 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     >
     <RelativeLayout
-        android:id="@+id/group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginEnd="7dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:elevation="0dp"
         android:background="@drawable/back_button_background"
         android:animateLayoutChanges="true">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
             >
 
@@ -27,39 +26,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="false"
-                android:fontFamily="@font/quicksand"
-                android:textStyle="bold"
+                style="@style/Title"
                 android:gravity="center_horizontal"
-                android:text="Arms and Chest"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-            <TextView
-                android:id="@+id/equipment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Barbell · Dumbbell · Cables"
-                android:layout_centerHorizontal="false"
-                android:layout_below="@+id/title"
-                android:textSize="14sp"
-                />
+                android:text="Arms and Chest" />
+
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="~40 mins"
+                android:layout_below="@+id/title"
                 android:layout_centerHorizontal="false"
+                android:text="~40 mins"
+                android:textAppearance="@style/Subtitle2" />
+
+
+            <TextView
+                android:id="@+id/equipment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/time"
+                android:layout_centerHorizontal="false"
+                android:text="Barbell ∙ Dumbell ∙ Cables"
+                android:textAppearance="@style/Subtitle2" />
+
+            <TextView
+                android:id="@+id/number_of_exercises"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/equipment"
-                android:textSize="14sp"
-                />
+                android:layout_centerHorizontal="false"
+                android:text="12 Exercises"
+                android:textAppearance="@style/Subtitle2"/>
+
         </RelativeLayout>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="3px"
-            android:scaleType="fitXY"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/divider_line"
-            />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,11 +68,10 @@
             android:layout_marginEnd="20dp"
             >
         <LinearLayout
-            android:id="@+id/musclesll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_centerHorizontal="false"
+            android:layout_alignParentEnd="true"
             >
             <ImageView
                 android:layout_width="30dp"
@@ -84,14 +83,6 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_rowing_black_24dp"
                 />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/equipmentll"
-            android:layout_below="@+id/musclesll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="false"
-            >
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
