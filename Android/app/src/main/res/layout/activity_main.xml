@@ -11,6 +11,18 @@
         android:id="@+id/toolbar"
         >
     </include>
+
+    <TextView
+        android:id="@+id/no_workout_tv"
+        style="@style/BodyTight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:alpha="2"
+        android:gravity="center_horizontal"
+        android:text="It looks like you haven't created any workouts yet!\nClick the &quot;+&quot; button below to get started"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 <ScrollView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

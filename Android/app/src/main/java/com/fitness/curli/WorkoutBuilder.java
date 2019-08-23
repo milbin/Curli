@@ -188,6 +188,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
             card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
             card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+            findViewById(R.id.no_exercise_tv).setVisibility(View.GONE);
             EditText exerciseReps = card.findViewById(R.id.exercise_reps);
             exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
             exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
@@ -204,6 +205,7 @@ public class WorkoutBuilder extends AppCompatActivity {
             setList.add(set);
             exercises.add(setList);
             updateWorkoutStats();
+
 
         }
     }

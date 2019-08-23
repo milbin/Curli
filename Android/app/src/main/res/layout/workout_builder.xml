@@ -8,6 +8,15 @@
         layout="@layout/toolbar_no_logo"
         >
     </include>
+    <TextView
+        android:id="@+id/no_exercise_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Body2"
+        android:gravity="center_horizontal"
+        android:text="Click the &quot;+&quot; button below to add an exercise!"
+        />
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

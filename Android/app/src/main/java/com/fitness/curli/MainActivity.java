@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
             LinearLayout ll = findViewById(R.id.linearLayoutMain);
             ll.addView(card);
+            findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
         }
         sqlData.closeDB();
 
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
+                findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
                 HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
                 RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
                 ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
