@@ -41,11 +41,16 @@ public class MuscleView extends AppCompatActivity {
     private ListView list;
     private Menu menu;
     private int check = 0;
+    private ArrayList<String> exercisesToAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.muscle_view);
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("FromWorkoutBuilder", false)){//check if this activity is getting called from workoutBuilder
+            exercisesToAdd = new ArrayList<>();
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
@@ -71,10 +76,8 @@ public class MuscleView extends AppCompatActivity {
 
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist, 6);
-
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
-
         displayMuscles();
 
     }
@@ -147,8 +150,15 @@ public class MuscleView extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                         intent.putExtra("group", titleText);
-                        intent.putExtra("source", "muscle_view");
-                        startActivity(intent);
+                        if(exercisesToAdd == null) {
+                            intent.putExtra("source", "muscle_view");
+                            startActivity(intent);
+                        }else{
+                            intent.putExtra("source", "WorkoutBuilder");
+                            intent.putExtra("exercisesToAdd", exercisesToAdd);
+                            startActivityForResult(intent, 1);
+                        }
+
                     }
                 });
 
@@ -221,5 +231,26 @@ public class MuscleView extends AppCompatActivity {
             intent.putExtra("exercise", name);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1) {
+            ArrayList<String> exercisesList = data.getStringArrayListExtra("exercisesToAdd");
+            System.out.println(exercisesList);
+            for(String exercise:exercisesList){
+                if(!exercisesToAdd.contains(exercise)){
+                    exercisesToAdd.add(exercise);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("exercisesToAdd", exercisesToAdd);
+        setResult(1, intent);
+        super.onBackPressed();
     }
 }

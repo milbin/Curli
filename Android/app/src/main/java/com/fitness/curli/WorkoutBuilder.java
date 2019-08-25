@@ -118,7 +118,6 @@ public class WorkoutBuilder extends AppCompatActivity {
                         //TODO add some sort of mechanism that saves newly created workouts
                         HashMap workout = new HashMap();
                         workout.put("title", title.getText().toString());
-                        System.out.println(exercises);
                         workout.put("exercises", exercises);
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("workout", workout);
@@ -175,36 +174,10 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class onFabClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            System.out.println("HERE");
-            //TODO move the code below to the method that is called when the infoView
-            // activity returns and parse the title from the intent data of said infoView activity
-            String title = "Ab Crunch Machine";
-            LinearLayout ll = findViewById(R.id.workout_builder_ll);
-            View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
-            ((TextView) card.findViewById(R.id.exercise_name)).setText(title);
-            card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
-            card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
-            card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
-            card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-            card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
-            card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-            findViewById(R.id.no_exercise_tv).setVisibility(View.GONE);
-            EditText exerciseReps = card.findViewById(R.id.exercise_reps);
-            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
-            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
-            EditText exerciseWeight = card.findViewById(R.id.exercise_weight);
-            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
-            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
-            ll.addView(card);
-            LinkedHashMap set = new LinkedHashMap<>();
-            set.put("title", title);
-            set.put("weight", 0.0);
-            set.put("reps", 0);
-            ArrayList setList = new ArrayList();
-            setList.add(0);
-            setList.add(set);
-            exercises.add(setList);
-            updateWorkoutStats();
+            Intent intent = new Intent(WorkoutBuilder.this, MuscleView.class);
+            intent.putExtra("FromWorkoutBuilder", true);
+            startActivityForResult(intent, 1);
+
 
 
         }
@@ -437,6 +410,42 @@ public class WorkoutBuilder extends AppCompatActivity {
         ((TextView)rl.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
         ((TextView)rl.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
         ((TextView)rl.findViewById(R.id.equipment)).setText(finalEquipmentString);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 1) {
+            ArrayList<String> list = data.getStringArrayListExtra("exercisesToAdd");
+            System.out.println(list);
+            for(String title:list) {
+                LinearLayout ll = findViewById(R.id.workout_builder_ll);
+                View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
+                ((TextView) card.findViewById(R.id.exercise_name)).setText(title);
+                card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
+                card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
+                card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
+                card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+                card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
+                card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+                findViewById(R.id.no_exercise_tv).setVisibility(View.GONE);
+                EditText exerciseReps = card.findViewById(R.id.exercise_reps);
+                exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+                exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
+                EditText exerciseWeight = card.findViewById(R.id.exercise_weight);
+                exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+                exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
+                ll.addView(card);
+                LinkedHashMap set = new LinkedHashMap<>();
+                set.put("title", title);
+                set.put("weight", 0.0);
+                set.put("reps", 0);
+                ArrayList setList = new ArrayList();
+                setList.add(0);
+                setList.add(set);
+                exercises.add(setList);
+                updateWorkoutStats();
+            }
+        }
     }
 
 
