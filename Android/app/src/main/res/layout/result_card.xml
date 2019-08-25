@@ -34,7 +34,7 @@
                 android:layout_width="80sp"
                 android:layout_height="80sp"
                 android:src="@drawable/ic_outline_calendar_today_24px"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="start"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
