@@ -14,15 +14,45 @@
             android:layout_height="wrap_content"
             android:text="title"
             android:layout_centerHorizontal="true"
-            android:textSize="20sp"
-            android:textColor="@android:color/darker_gray"
+            android:textSize="25sp"
             />
         <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:layout_below="@id/title"
             />
+        <LinearLayout
+            android:id="@+id/resultsList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/graph"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            >
+            <TextView
+                android:id="@+id/max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="max"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/best"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="best"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
