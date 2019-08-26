@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".ExerciseViewInfo"/>
         <activity android:name=".MuscleView"/>
+        <activity android:name=".Test"/>
     </application>
 
 </manifest>

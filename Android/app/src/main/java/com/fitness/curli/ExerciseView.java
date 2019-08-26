@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -63,9 +64,16 @@ public class ExerciseView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_view);
 
+        //Intent ontent = new Intent(ExerciseView.this, Test.class);
+        //startActivity(ontent);
+
         toolbar = (Toolbar) findViewById(R.id.header);
         setTitle("");
         setSupportActionBar(toolbar);
+
+        toolbar.bringToFront();
+        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.appbar);
+        appbar.bringToFront();
 
         Intent intent = getIntent();
         group = intent.getStringExtra("group");
@@ -115,7 +123,7 @@ public class ExerciseView extends AppCompatActivity {
 
     private void displaySpinner() {
 
-        final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
+        //final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
         //RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
         //final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.spinner_rl_scroll);
 
@@ -211,17 +219,17 @@ public class ExerciseView extends AppCompatActivity {
 
         RelativeLayout button = findViewById(R.id.spinner_rl);
         button.bringToFront();
-        ((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
+        //((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
 
     }
 
     public void displayExercises(ArrayList<String> exercisesArray){
         String[] exercises = exercisesArray.toArray(new String[]{});
 
-        RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);
+        //RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);
 
         try{
-            ImageView groupIcon = toolbarBottom.findViewById(R.id.groupIcon);
+            ImageView groupIcon = findViewById(R.id.groupIcon);
             int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
             groupIcon.setImageResource(imageId);
             System.out.println("HERE IT IS "+groupIcon);
@@ -229,7 +237,7 @@ public class ExerciseView extends AppCompatActivity {
         catch (Exception e){}
 
 
-        LinearLayout infoWrapper = toolbarBottom.findViewById(R.id.infoWrapper);
+        LinearLayout infoWrapper = findViewById(R.id.infoWrapper);
         TextView groupView = infoWrapper.findViewById(R.id.group);
         groupView.setText(group);
 
@@ -284,8 +292,8 @@ public class ExerciseView extends AppCompatActivity {
 
         */
 
-        RelativeLayout topBar = toolbar.findViewById(R.id.topBar);
-        SearchView searchView = topBar.findViewById(R.id.searchView);
+        RelativeLayout topBar = findViewById(R.id.topBar);
+        SearchView searchView = findViewById(R.id.searchView);
 
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
