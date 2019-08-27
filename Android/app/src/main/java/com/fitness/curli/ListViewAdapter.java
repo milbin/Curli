@@ -28,7 +28,7 @@ public class ListViewAdapter extends BaseAdapter {
         this.namesList = namesList;
         inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<SearchResult>();
-        this.arraylist.addAll(namesList.subList(0, maxResults));
+        this.arraylist.addAll(namesList);
         this.maxResults = maxResults;
     }
 

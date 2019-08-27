@@ -125,7 +125,7 @@
         android:visibility="invisible"
         />
     <RelativeLayout
-        android:id="@id/spinner_rl"
+        android:id="@+id/spinner_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
