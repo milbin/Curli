@@ -32,7 +32,7 @@ public class ExerciseViewInfo extends AppCompatActivity {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.exercise_view_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("EXERCISE INFO");
+        toolbar.setTitle("");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
