@@ -28,27 +28,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="abs"
-                android:textSize="25sp"
-                android:paddingStart="7dp"
-                android:paddingEnd="7dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/white_card_rounded"
-                />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/title"
             android:layout_below="@id/muscleTags"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:text="TITLE"
             android:textSize="40sp" />

@@ -4,12 +4,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
+import android.icu.util.MeasureUnit;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +25,7 @@ public class ExerciseViewInfo extends AppCompatActivity {
     ProgressDialog dialog;
     Context context;
     Menu menu;
+    ExerciseDb SQLData;
 
     @Override
     public void onCreate(Bundle savedInstanceBundle){
@@ -39,6 +46,8 @@ public class ExerciseViewInfo extends AppCompatActivity {
         dialog = ProgressDialog.show(ExerciseViewInfo.this, "", "Loading...", true);
 
         context = getApplicationContext();
+        SQLData = new ExerciseDb(context);
+        SQLData.open();
         relativeLayout = findViewById(R.id.relativeLayout);
 
         getInfo();
@@ -51,6 +60,12 @@ public class ExerciseViewInfo extends AppCompatActivity {
         String text = intent.getStringExtra("exercise");
         title.setText(text);
 
+        String group = SQLData.getGroup(text);
+        LinearLayout muscleTags = findViewById(R.id.muscleTags);
+        View card = LayoutInflater.from(context).inflate(R.layout.tag, null);
+        TextView tagText = card.findViewById(R.id.title);
+        tagText.setText(group);
+        muscleTags.addView(card);
         dialog.dismiss();
     }
 
