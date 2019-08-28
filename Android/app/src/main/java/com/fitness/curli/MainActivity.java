@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity{
     HashMap currentWorkout;
     int RESULT_FINISHED_BUILD = 1;
     public int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
+    int workoutToRemove = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
         SQLData sqlDataExercise = new SQLData();
         sqlDataExercise.openExerciseDB(this);
         int workoutCount = sqlData.getWorkoutCount();
+        System.out.println(workoutCount +"HERE!@#@#");
         for(int i=0; i<workoutCount; i++){
             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
             ArrayList workoutTemp = sqlData.getworkout(i);
@@ -113,19 +115,29 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println(resultCode);
+        System.out.println(requestCode);
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
+                LinearLayout ll = findViewById(R.id.linearLayoutMain);
+                SQLData sqlDataExercise = new SQLData();
+                sqlDataExercise.openExerciseDB(this);
                 findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
                 HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
+                System.out.println(newWorkout);
                 RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
                 ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
-                LinearLayout ll = findViewById(R.id.linearLayoutMain);
-                ll.addView(card);
+                if(workoutToRemove != -1){ //if the workout returned form being edited, delete the old once and replace with new one
+                    ll.removeViewAt(workoutToRemove);
+                    SQLData sqlDataUser = new SQLData();
+                    workoutToRemove = -1;
+                    ll.addView(card, workoutToRemove);
+                }else{//this is a new workout
+                    ll.addView(card);
+                }
                 card.setOnClickListener(new onWorkoutClick());
                 ImageButton overflowButton = card.findViewById(R.id.overflowButton);
                 overflowButton.setOnClickListener(new onOverflowClick());
-                SQLData sqlDataExercise = new SQLData();
-                sqlDataExercise.openExerciseDB(this);
                 ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) newWorkout.get("exercises");
                 int totalReps = 0;
                 int totalSets = 0;
@@ -347,22 +359,29 @@ public class MainActivity extends AppCompatActivity{
             final LinearLayout ll = (LinearLayout) v.getParent().getParent().getParent();
             int number = 0;
             for(int i=0; i<ll.getChildCount();i++ ){
-                if(v == ll.getChildAt(i)){
+                if(v.getParent().getParent() == ll.getChildAt(i)){
                     number = i;
                 }
             }
             final int workoutNumber = number;
-
+            final SQLData sqlData = new SQLData();
             // This is an android.support.v7.widget.PopupMenu;
             PopupMenu popupMenu = new PopupMenu(context, v);
             popupMenu.inflate(R.menu.workout_overflow_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-                                                     @Override
-                                                     public boolean onMenuItemClick(MenuItem item) {
+                 @Override
+                 public boolean onMenuItemClick(MenuItem item) {
                      switch (item.getItemId()) {
                          case R.id.workout_overflow_edit:
                              System.out.println("EDIT");
+                             Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
+                             sqlData.openUserDB(context);
+                             ArrayList workout = sqlData.getworkout(workoutNumber);
+                             myIntent.putExtra("workout", (HashMap)workout.get(1));
+                             myIntent.putExtra("workoutNumber", workoutNumber);
+                             workoutToRemove = workoutNumber;
+                             startActivityForResult(myIntent, 1);
                              return true;
 
                          case R.id.workout_overflow_duplicate:
@@ -375,11 +394,12 @@ public class MainActivity extends AppCompatActivity{
                              // Add the buttons
                              builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                  public void onClick(DialogInterface dialog, int id) {
-                                     SQLData sqlData = new SQLData();
                                      sqlData.openUserDB(context);
                                      sqlData.deleteWorkout(workoutNumber);
                                      ll.removeViewAt(workoutNumber);
-                                     findViewById(R.id.no_workout_tv).setVisibility(View.VISIBLE);
+                                     if(sqlData.getWorkoutCount() == 0) {
+                                         findViewById(R.id.no_workout_tv).setVisibility(View.VISIBLE);
+                                     }
                                  }
                              });
                              builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

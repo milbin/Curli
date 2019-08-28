@@ -194,6 +194,18 @@ public class SQLData {
         db.insert("Workouts", null, values);
         c.moveToFirst();
     }
+    public void updateWorkout(int id, HashMap json) {
+        String title = (String) json.get("title");
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(json);
+
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("name", title);
+        values.put("workout", jsonString);
+
+        db.update("Workouts", values, "id="+id, null);
+    }
 
     public boolean deleteWorkout(int id) {
         return db.delete("Workouts", "id" + "=" + id, null) > 0;
@@ -206,7 +218,7 @@ public class SQLData {
     }
 
     public ArrayList getworkout(int number) {
-
+        System.out.println("HERENUMBER"+number);
         c=db.rawQuery("Select id, name, workout From Workouts Where id = "+number, new String[]{});
         c.moveToFirst();
         String title = c.getString(1);

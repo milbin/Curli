@@ -47,9 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set 2"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="12dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         style="@style/Button"
         />
     <RelativeLayout

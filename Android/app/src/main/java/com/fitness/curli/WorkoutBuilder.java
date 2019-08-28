@@ -27,8 +27,9 @@ import java.util.LinkedHashMap;
 
 public class WorkoutBuilder extends AppCompatActivity {
     Context context = this;
-    ArrayList<ArrayList> exercises = new ArrayList<>();
+    ArrayList<ArrayList> exercises = new ArrayList<ArrayList>();
     EditText title;
+    int workoutNumber = -1;
 
     //This is an example of the workout data structure that is created and returned through the intent when this activity is finished by the user
     //{"title": "Arms and Chest", "exercises": [[0, {"title": "Bench Press", "weight":135, "reps":8},
@@ -62,6 +63,40 @@ public class WorkoutBuilder extends AppCompatActivity {
             }
 
         });
+
+        //get intent
+        Intent intent = getIntent();
+        HashMap currentWorkout = (HashMap) intent.getSerializableExtra("workout");
+        if(currentWorkout != null){
+            workoutNumber = intent.getIntExtra("workoutNumber", -1);
+            exercises = (ArrayList<ArrayList>)currentWorkout.get("exercises");
+            // convert double reps to integer
+            int count = 0;
+            for(ArrayList<Object> exercise:exercises) {
+                int count1 = 0;
+                for(Object set:exercise) {
+                    if (count1 != 0) {
+                        ((HashMap)set).put("reps", (int)Math.round((double)((HashMap)set).get("reps")));
+                        exercise.set(count1, set);
+                    }else{
+                        System.out.println(exercise.get(0));
+                        exercise.set(0, (int)Math.round((double)set));
+                    }
+                    count1++;
+                }
+                exercises.set(count, exercise);
+                count++;
+            }
+            title.setText((String)currentWorkout.get("title"));
+
+            //add exercises from previous workoutBuilder
+            for(ArrayList<HashMap> exercise:exercises) {
+                String exerciseTitle = (String)exercise.get(1).get("title");
+                setupCard(exerciseTitle, exercise);
+            }
+
+
+        }
 
         //create finish button
         Button finishButton = new Button(this);
@@ -125,7 +160,12 @@ public class WorkoutBuilder extends AppCompatActivity {
                         setResult(1, returnIntent);
                         SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
-                        sqlData.saveWorkout(workout);
+                        if(workoutNumber != -1){
+                            System.out.println("WORKOUT"+workout);
+                            sqlData.updateWorkout(workoutNumber, workout);
+                        }else {
+                            sqlData.saveWorkout(workout);
+                        }
                         sqlData.closeDB();
                         onBackPressed();
                     }
@@ -186,42 +226,48 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class AddSetButton implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            LinearLayout linearLayout = (LinearLayout) (v.getParent()).getParent().getParent();
-            int exerciseNumber = 0;
-            for (int i = 0; i < linearLayout.getChildCount(); i++) {
-                if (linearLayout.getChildAt(i) == ((View) v.getParent()).getParent()) {
-                    exerciseNumber = i;
-                    break;
-                }
-            }
-            View weightAndReps = LayoutInflater.from(context).inflate(R.layout.weight_and_reps, null);
-            LinearLayout ll = ((View) v.getParent()).findViewById(R.id.weight_and_reps_ll);
-            ll.addView(weightAndReps);
-            weightAndReps.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
-            weightAndReps.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-            weightAndReps.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
-            weightAndReps.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-            EditText exerciseReps = weightAndReps.findViewById(R.id.exercise_reps);
-            exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
-            exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
-            EditText exerciseWeight = weightAndReps.findViewById(R.id.exercise_weight);
-            exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
-            exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
-            CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
-            LinkedHashMap set = new LinkedHashMap<>();
-            ((TextView)weightAndReps.findViewById(R.id.sets_completed)).setText("SET "+ll.getChildCount());
-            //TODO this title needs to be changed in order to support a superset
-            set.put("title", title);
-            set.put("weight", 0.0);
-            set.put("reps", 0);
-            ArrayList setList = exercises.get(exerciseNumber);
-            setList.add(set);
-            //setList.set(0, (int)setList.get(0)+1);
-            exercises.set(exerciseNumber, setList);
-            updateWorkoutStats();
+            addSet(v, 0.0, 0);
         }
     }
 
+    private void addSet(View v, double weight, int reps){
+        LinearLayout linearLayout = (LinearLayout) (v.getParent()).getParent().getParent();
+        int exerciseNumber = 0;
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            if (linearLayout.getChildAt(i) == ((View) v.getParent()).getParent()) {
+                exerciseNumber = i;
+                break;
+            }
+        }
+        View weightAndReps = LayoutInflater.from(context).inflate(R.layout.weight_and_reps, null);
+        LinearLayout ll = ((View) v.getParent()).findViewById(R.id.weight_and_reps_ll);
+        ll.addView(weightAndReps);
+        weightAndReps.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
+        weightAndReps.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+        weightAndReps.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
+        weightAndReps.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+        EditText exerciseReps = weightAndReps.findViewById(R.id.exercise_reps);
+        exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+        exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
+        EditText exerciseWeight = weightAndReps.findViewById(R.id.exercise_weight);
+        exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+        exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
+        CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
+        LinkedHashMap set = new LinkedHashMap<>();
+        ((TextView)weightAndReps.findViewById(R.id.sets_completed)).setText("SET "+ll.getChildCount());
+        if(weight != -1&&reps != -1) {
+            //TODO this title needs to be changed in order to support a superset
+            set.put("title", title);
+            set.put("weight", weight);
+            set.put("reps", reps);
+            ArrayList setList = exercises.get(exerciseNumber);//get old set list and add new set to it
+            setList.add(set);
+            //setList.set(0, (int)setList.get(0)+1);
+            //exercises.set(exerciseNumber, setList);
+            updateWorkoutStats();
+        }
+
+    }
     public class RemoveSetButton implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -229,6 +275,14 @@ public class WorkoutBuilder extends AppCompatActivity {
             if (ll.getChildCount() != 1) {
                 ll.removeViewAt(ll.getChildCount() - 1);
             }
+            int exerciseNumber = 0;
+            for (int i = 0; i < ll.getChildCount(); i++) {
+                if (ll.getChildAt(i) == ((View) v.getParent()).getParent()) {
+                    exerciseNumber = i;
+                    break;
+                }
+            }
+            exercises.get(exerciseNumber).remove(ll.getChildCount());
             updateWorkoutStats();
         }
     }
@@ -286,7 +340,6 @@ public class WorkoutBuilder extends AppCompatActivity {
                         break;
                     }
                 }
-                System.out.println(exerciseNumber);
                 int setNumber = 0;
                 LinearLayout linearLayoutSets = (LinearLayout)v.getParent().getParent().getParent();
                 for (int i = 0; i < linearLayoutSets.getChildCount(); i++) {
@@ -389,7 +442,6 @@ public class WorkoutBuilder extends AppCompatActivity {
         ArrayList<String> equipmentList = new ArrayList<String>();
         for(ArrayList exercise:exercises){
             for(int setNum=1;setNum<exercise.size();setNum++){
-                System.out.println(exercise);
                 HashMap set = (HashMap) exercise.get(setNum);
                 String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
                 for(String equipment: equipmentString.split(", ")){
@@ -418,23 +470,6 @@ public class WorkoutBuilder extends AppCompatActivity {
             ArrayList<String> list = data.getStringArrayListExtra("exercisesToAdd");
             System.out.println(list);
             for(String title:list) {
-                LinearLayout ll = findViewById(R.id.workout_builder_ll);
-                View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
-                ((TextView) card.findViewById(R.id.exercise_name)).setText(title);
-                card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
-                card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
-                card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
-                card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-                card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
-                card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
-                findViewById(R.id.no_exercise_tv).setVisibility(View.GONE);
-                EditText exerciseReps = card.findViewById(R.id.exercise_reps);
-                exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
-                exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
-                EditText exerciseWeight = card.findViewById(R.id.exercise_weight);
-                exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
-                exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
-                ll.addView(card);
                 LinkedHashMap set = new LinkedHashMap<>();
                 set.put("title", title);
                 set.put("weight", 0.0);
@@ -443,9 +478,38 @@ public class WorkoutBuilder extends AppCompatActivity {
                 setList.add(0);
                 setList.add(set);
                 exercises.add(setList);
-                updateWorkoutStats();
+                setupCard(title, setList);
+
             }
         }
+    }
+
+    private void setupCard(String title, ArrayList<HashMap> setList){
+        LinearLayout ll = findViewById(R.id.workout_builder_ll);
+        View card = LayoutInflater.from(context).inflate(R.layout.workout_builder_card, null);
+        ((TextView) card.findViewById(R.id.exercise_name)).setText(title);
+        card.findViewById(R.id.add_set_button).setOnClickListener(new AddSetButton());
+        card.findViewById(R.id.remove_set_button).setOnClickListener(new RemoveSetButton());
+        card.findViewById(R.id.weight_add_button).setOnClickListener(new onAddOrSubtractClick());
+        card.findViewById(R.id.weight_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+        card.findViewById(R.id.reps_add_button).setOnClickListener(new onAddOrSubtractClick());
+        card.findViewById(R.id.reps_subtract_button).setOnClickListener(new onAddOrSubtractClick());
+        findViewById(R.id.no_exercise_tv).setVisibility(View.GONE);
+        EditText exerciseReps = card.findViewById(R.id.exercise_reps);
+        exerciseReps.setOnFocusChangeListener(new onUserFinishedEditing());
+        exerciseReps.setOnKeyListener(new onEditTextDoneButtonPressed());
+        EditText exerciseWeight = card.findViewById(R.id.exercise_weight);
+        exerciseWeight.setOnFocusChangeListener(new onUserFinishedEditing());
+        exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
+        ll.addView(card);
+        int setListSize = setList.size();
+        for(int i=2; i<setListSize; i++){ //the reason this starts at 2 is because there is already 1 set that comes with the card and the setnumber is first index
+            View setButton = card.findViewById(R.id.add_set_button);
+            addSet(setButton, -1, -1);
+
+        }
+        updateWorkoutStats();
+
     }
 
 
