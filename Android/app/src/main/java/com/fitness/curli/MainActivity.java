@@ -5,24 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.google.gson.Gson;
@@ -31,10 +29,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.TreeMap;
-import java.util.jar.Attributes;
-import java.sql.*;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -60,6 +54,8 @@ public class MainActivity extends AppCompatActivity{
             ArrayList workoutTemp = sqlData.getworkout(i);
             ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
             card.setOnClickListener(new onWorkoutClick());
+            ImageButton overflowButton = card.findViewById(R.id.overflowButton);
+            overflowButton.setOnClickListener(new onOverflowClick());
             ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
             int totalReps = 0;
             int totalSets = 0;
@@ -126,6 +122,8 @@ public class MainActivity extends AppCompatActivity{
                 LinearLayout ll = findViewById(R.id.linearLayoutMain);
                 ll.addView(card);
                 card.setOnClickListener(new onWorkoutClick());
+                ImageButton overflowButton = card.findViewById(R.id.overflowButton);
+                overflowButton.setOnClickListener(new onOverflowClick());
                 SQLData sqlDataExercise = new SQLData();
                 sqlDataExercise.openExerciseDB(this);
                 ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) newWorkout.get("exercises");
@@ -339,6 +337,70 @@ public class MainActivity extends AppCompatActivity{
         public void onClick(View v) {
             Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
             startActivityForResult(myIntent, 1);
+        }
+    }
+
+    private class onOverflowClick implements View.OnClickListener {
+        @Override
+        public void onClick(final View v) {
+
+            final LinearLayout ll = (LinearLayout) v.getParent().getParent().getParent();
+            int number = 0;
+            for(int i=0; i<ll.getChildCount();i++ ){
+                if(v == ll.getChildAt(i)){
+                    number = i;
+                }
+            }
+            final int workoutNumber = number;
+
+            // This is an android.support.v7.widget.PopupMenu;
+            PopupMenu popupMenu = new PopupMenu(context, v);
+            popupMenu.inflate(R.menu.workout_overflow_menu);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+                                                     @Override
+                                                     public boolean onMenuItemClick(MenuItem item) {
+                     switch (item.getItemId()) {
+                         case R.id.workout_overflow_edit:
+                             System.out.println("EDIT");
+                             return true;
+
+                         case R.id.workout_overflow_duplicate:
+                             System.out.println("DUPLICATE");
+                             return true;
+
+                         case R.id.workout_overflow_delete:
+                             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                             builder.setTitle("Are you sure you want to delete this workout?").setMessage("This action cannot be undone.");
+                             // Add the buttons
+                             builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                 public void onClick(DialogInterface dialog, int id) {
+                                     SQLData sqlData = new SQLData();
+                                     sqlData.openUserDB(context);
+                                     sqlData.deleteWorkout(workoutNumber);
+                                     ll.removeViewAt(workoutNumber);
+                                     findViewById(R.id.no_workout_tv).setVisibility(View.VISIBLE);
+                                 }
+                             });
+                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                 public void onClick(DialogInterface dialog, int id) {
+                                     // User cancelled the dialogs
+                                 }
+                             });
+                             // Create the AlertDialog
+                             AlertDialog dialog = builder.create();
+                             dialog.show();
+
+
+
+                             return true;
+
+                         default:
+                             return true;
+                     }
+                 }
+             }
+            );
         }
     }
 

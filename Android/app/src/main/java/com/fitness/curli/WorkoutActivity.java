@@ -577,7 +577,7 @@ public class WorkoutActivity extends AppCompatActivity {
         public void onClick(View v) {
             // This is an android.support.v7.widget.PopupMenu;
             PopupMenu popupMenu = new PopupMenu(context, v);
-            popupMenu.inflate(R.menu.workout_overflow_menu);
+            popupMenu.inflate(R.menu.exercise_overflow_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
                  @Override

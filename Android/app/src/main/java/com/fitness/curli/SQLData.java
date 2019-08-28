@@ -195,6 +195,10 @@ public class SQLData {
         c.moveToFirst();
     }
 
+    public boolean deleteWorkout(int id) {
+        return db.delete("Workouts", "id" + "=" + id, null) > 0;
+    }
+
     public int getWorkoutCount(){
         c=db.rawQuery("Select * From Workouts;", new String[]{});
         int returnInt = c.getCount();

@@ -14,6 +14,19 @@
         android:elevation="0dp"
         android:background="@drawable/back_button_background"
         android:animateLayoutChanges="true">
+
+        <ImageButton
+            android:id="@+id/overflowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_three_dots_24dp"
+            android:background="@null"
+            android:padding="5dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            />
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
