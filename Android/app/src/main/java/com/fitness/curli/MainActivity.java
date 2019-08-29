@@ -27,8 +27,10 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -50,44 +52,15 @@ public class MainActivity extends AppCompatActivity{
         SQLData sqlDataExercise = new SQLData();
         sqlDataExercise.openExerciseDB(this);
         int workoutCount = sqlData.getWorkoutCount();
-        System.out.println(workoutCount +"HERE!@#@#");
+
         for(int i=0; i<workoutCount; i++){
             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
             ArrayList workoutTemp = sqlData.getworkout(i);
             ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
-            card.setOnClickListener(new onWorkoutClick());
-            ImageButton overflowButton = card.findViewById(R.id.overflowButton);
-            overflowButton.setOnClickListener(new onOverflowClick());
-            ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
-            int totalReps = 0;
-            int totalSets = 0;
-            int totalExercises = 0;
-            ArrayList<String> equipmentList = new ArrayList<String>();
-            for(ArrayList exercise:exercises){
-                for(int setNum=1;setNum<exercise.size();setNum++){
-                    LinkedTreeMap set = (LinkedTreeMap) exercise.get(setNum);
-                    String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
-                    for(String equipment: equipmentString.split(", ")){
-                        if(!equipmentList.contains(equipment)){
-                            equipmentList.add(equipment);
-                        }
-                    }
-                    totalReps += Math.round((double)set.get("reps"));
-                    totalSets++;
-                }
-                totalExercises++;
-            }
-            String finalEquipmentString = "";
-            for(String equipment: equipmentList){
-                finalEquipmentString += equipment+" · ";
-            }
-            finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
-            ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
-            ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
-            ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
             LinearLayout ll = findViewById(R.id.linearLayoutMain);
             ll.addView(card);
-            findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
+            ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
+            setupWorkoutCard(card, exercises);
         }
         sqlData.closeDB();
 
@@ -115,60 +88,85 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println(resultCode);
-        System.out.println(requestCode);
+
+
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
                 LinearLayout ll = findViewById(R.id.linearLayoutMain);
                 SQLData sqlDataExercise = new SQLData();
                 sqlDataExercise.openExerciseDB(this);
-                findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
                 HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
-                System.out.println(newWorkout);
+
                 RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
                 ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
                 if(workoutToRemove != -1){ //if the workout returned form being edited, delete the old once and replace with new one
                     ll.removeViewAt(workoutToRemove);
-                    SQLData sqlDataUser = new SQLData();
                     workoutToRemove = -1;
                     ll.addView(card, workoutToRemove);
                 }else{//this is a new workout
                     ll.addView(card);
                 }
-                card.setOnClickListener(new onWorkoutClick());
-                ImageButton overflowButton = card.findViewById(R.id.overflowButton);
-                overflowButton.setOnClickListener(new onOverflowClick());
                 ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) newWorkout.get("exercises");
-                int totalReps = 0;
-                int totalSets = 0;
-                int totalExercises = 0;
-                ArrayList<String> equipmentList = new ArrayList<String>();
-                for(ArrayList exercise:exercises){
-                    for(int setNum=1;setNum<exercise.size();setNum++){
-                        System.out.println(exercise);
-                        HashMap set = (HashMap) exercise.get(setNum);
-                        String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
-                        for(String equipment: equipmentString.split(", ")){
-                            if(!equipmentList.contains(equipment)){
-                                equipmentList.add(equipment);
-                            }
-                        }
-                        totalReps += (int)set.get("reps");
-                        totalSets++;
-                    }
-                    totalExercises++;
-                }
-                String finalEquipmentString = "";
-                for(String equipment: equipmentList){
-                    finalEquipmentString += equipment+" · ";
-                }
-                finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
-                ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
-                ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
-                ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
+                setupWorkoutCard(card, exercises);
 
             }
         }
+    }
+
+    private void setupWorkoutCard(RelativeLayout card, ArrayList<ArrayList> exercises){
+        card.setOnClickListener(new onWorkoutClick());
+        ImageButton overflowButton = card.findViewById(R.id.overflowButton);
+        overflowButton.setOnClickListener(new onOverflowClick());
+        SQLData sqlDataExercise = new SQLData();
+        sqlDataExercise.openExerciseDB(this);
+        //convert double reps to int
+        int count = 0;
+        for(ArrayList<Object> exercise:exercises) {
+            int count1 = 0;
+            for(Object set:exercise) {
+                if (count1 != 0) {
+                    try {
+                    ((Map)set).put("reps", (int)Math.round((double)((Map)set).get("reps")));
+                    }catch (ClassCastException e){}//catch casting error if reps are already a int
+                    exercise.set(count1, set);
+                }else{
+                    try {
+                        exercise.set(0, (int) Math.round((double) set));
+                    }catch (ClassCastException e){}//catch casting error if set is already a int
+                }
+                count1++;
+            }
+            exercises.set(count, exercise);
+            count++;
+        }
+        int totalReps = 0;
+        int totalSets = 0;
+        int totalExercises = 0;
+        ArrayList<String> equipmentList = new ArrayList<String>();
+        for(ArrayList exercise:exercises){
+            for(int setNum=1;setNum<exercise.size();setNum++){
+                Map set = (Map) exercise.get(setNum);
+                String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                for(String equipment: equipmentString.split(", ")){
+                    if(!equipmentList.contains(equipment)){
+                        equipmentList.add(equipment);
+                    }
+                }
+                totalReps += (int)set.get("reps");
+                totalSets++;
+            }
+            totalExercises++;
+        }
+        String finalEquipmentString = "";
+        for(String equipment: equipmentList){
+            finalEquipmentString += equipment+" · ";
+        }
+        finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
+        ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
+        ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
+        findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
+
     }
 
 
@@ -261,7 +259,7 @@ public class MainActivity extends AppCompatActivity{
             ArrayList workoutList = sqlData.getworkout(workoutNumber);
             sqlData.closeDB();
             final HashMap workout = (HashMap) workoutList.get(1);
-            System.out.println(workout);
+
             if(((Curli) getApplication()).getWorkoutTimer() != null){
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Discard Current Workout?").setMessage("Starting a new workout will discard your old one.");
@@ -374,7 +372,7 @@ public class MainActivity extends AppCompatActivity{
                  public boolean onMenuItemClick(MenuItem item) {
                      switch (item.getItemId()) {
                          case R.id.workout_overflow_edit:
-                             System.out.println("EDIT");
+
                              Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
                              sqlData.openUserDB(context);
                              ArrayList workout = sqlData.getworkout(workoutNumber);
@@ -385,7 +383,17 @@ public class MainActivity extends AppCompatActivity{
                              return true;
 
                          case R.id.workout_overflow_duplicate:
-                             System.out.println("DUPLICATE");
+                             sqlData.openUserDB(context);
+                             ArrayList workoutToDuplicate = sqlData.getworkout(workoutNumber);
+                             String newTitle = "Workout "+ (sqlData.getWorkoutCount()+1);
+                             workoutToDuplicate.set(0, newTitle);
+                             ((HashMap)workoutToDuplicate.get(1)).put("title", newTitle);
+                             sqlData.saveWorkout((HashMap)workoutToDuplicate.get(1));
+                             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+                             ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutToDuplicate.get(1)).get("exercises");
+                             ll.addView(card);
+                             ((TextView)card.findViewById(R.id.title)).setText(newTitle);
+                             setupWorkoutCard(card, exercises);
                              return true;
 
                          case R.id.workout_overflow_delete:

@@ -72,7 +72,7 @@ public class WorkoutActivity extends AppCompatActivity {
         // integer value of the 'reps' field is now a double since gson converts it to that
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
-            System.out.println(workout);
+
             int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(0).get(1)).get("reps");
             timer = new WorkoutTimer();
             timer.setTextView((TextView)findViewById(R.id.timer));
@@ -97,7 +97,7 @@ public class WorkoutActivity extends AppCompatActivity {
                         ((HashMap)set).put("reps", (int)Math.round((double)((HashMap)set).get("reps")));
                         exercise.set(count1, set);
                     }else{
-                        System.out.println(exercise.get(0));
+
                         exercise.set(0, (int)Math.round((double)set));
                     }
                     count1++;
@@ -108,7 +108,7 @@ public class WorkoutActivity extends AppCompatActivity {
         }
 
 
-        System.out.println(exercises +"HERE");
+
         for(ArrayList<Object> exercise:exercises) {
             int setsCompleted = ((int)exercise.get(0));
             View relativeLayout = LayoutInflater.from(this).inflate(R.layout.exercise_card, null);
@@ -197,8 +197,8 @@ public class WorkoutActivity extends AppCompatActivity {
             ArrayList exercise = exercises.get(exerciseNumber);
             int setNumber = (int) exercise.get(0)-1;
             RelativeLayout relativeLayout = (RelativeLayout) v.getParent();
-            System.out.println(setNumber);
-            System.out.println(exercise);
+
+
             if(setNumber == -1){ //this is so that the set number does not go below zero
                 return;
             }else{
@@ -483,7 +483,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     ((HashMap) exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
                 }
             }
-            System.out.println(exercises);
+
         }
     }
     public class onAddOrSubtractClick implements View.OnClickListener {
@@ -553,9 +553,9 @@ public class WorkoutActivity extends AppCompatActivity {
             if((int)exercises.get(exerciseNumber).get(0) == exercises.get(exerciseNumber).size()-1){
                 v.findViewById(R.id.exercise_sets_back_button).performClick();
             }
-            System.out.println(currentlyExpandedCard);
+
             if(v != currentlyExpandedCard) {
-                System.out.println(exercises);
+
                 if(currentlyExpandedCard !=null) {
                     //this is meant to colpase the current card and expand the next one, however
                     // the currently expanded card can be null if all cards are collapsed such as is the case when all exercises have been finished
@@ -584,15 +584,15 @@ public class WorkoutActivity extends AppCompatActivity {
                  public boolean onMenuItemClick(MenuItem item) {
                      switch (item.getItemId()) {
                          case R.id.workout_overflow_info:
-                             System.out.println("INFO");
+
                              return true;
 
                          case R.id.workout_overflow_replace:
-                             System.out.println("REPLACE");
+
                              return true;
 
                          case R.id.workout_overflow_delete:
-                             System.out.println("DELETE");
+
                              return true;
 
                          default:

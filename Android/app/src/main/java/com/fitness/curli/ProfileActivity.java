@@ -36,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         //LinearLayout linearLayout = findViewById(R.id.linearLayoutWorkout);
         //context = this;
 
-        System.out.println("IT WORKED FOOOOLLLLLL");
+
     }
 
 }

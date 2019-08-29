@@ -79,7 +79,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                         ((HashMap)set).put("reps", (int)Math.round((double)((HashMap)set).get("reps")));
                         exercise.set(count1, set);
                     }else{
-                        System.out.println(exercise.get(0));
+
                         exercise.set(0, (int)Math.round((double)set));
                     }
                     count1++;
@@ -156,12 +156,11 @@ public class WorkoutBuilder extends AppCompatActivity {
                         workout.put("exercises", exercises);
                         Intent returnIntent = new Intent();
                         returnIntent.putExtra("workout", workout);
-                        System.out.println(workout);
+
                         setResult(1, returnIntent);
                         SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
                         if(workoutNumber != -1){
-                            System.out.println("WORKOUT"+workout);
                             sqlData.updateWorkout(workoutNumber, workout);
                         }else {
                             sqlData.saveWorkout(workout);
@@ -290,7 +289,7 @@ public class WorkoutBuilder extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent event) { //hide keyboard and unfocus current edittext if click outside of edittext
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            System.out.println(v);
+
             if(v!=null) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -413,7 +412,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 Integer currentReps = Integer.parseInt(editText.getText().toString()) + 1;
                 String currentRepsString = String.valueOf(currentReps);
                 editText.setText(currentRepsString);
-                System.out.println(setNumber);
+
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
@@ -468,7 +467,7 @@ public class WorkoutBuilder extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 1) {
             ArrayList<String> list = data.getStringArrayListExtra("exercisesToAdd");
-            System.out.println(list);
+
             for(String title:list) {
                 LinkedHashMap set = new LinkedHashMap<>();
                 set.put("title", title);

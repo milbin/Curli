@@ -116,7 +116,7 @@ public class MuscleView extends AppCompatActivity {
 
         int layoutWidth = display.getWidth();
 
-        System.out.println(layoutWidth);
+
         while (adding){
             LinearLayout rowLayout = new LinearLayout(this);
             for (int x = 0; x < cardsPerRow; x++){
@@ -237,7 +237,7 @@ public class MuscleView extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == 1) {
             ArrayList<String> exercisesList = data.getStringArrayListExtra("exercisesToAdd");
-            System.out.println(exercisesList);
+
             for(String exercise:exercisesList){
                 if(!exercisesToAdd.contains(exercise)){
                     exercisesToAdd.add(exercise);

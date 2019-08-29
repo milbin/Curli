@@ -230,7 +230,7 @@ public class ExerciseView extends AppCompatActivity {
             ImageView groupIcon = toolbarBottom.findViewById(R.id.groupIcon);
             int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
             groupIcon.setImageResource(imageId);
-            System.out.println("HERE IT IS "+groupIcon);
+
         }
         catch (Exception e){}
 

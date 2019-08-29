@@ -189,7 +189,7 @@ public class SQLData {
         values.put("id", c.getCount());
         values.put("name", title);
         values.put("workout", jsonString);
-        System.out.println(jsonString);
+
 
         db.insert("Workouts", null, values);
         c.moveToFirst();
@@ -218,7 +218,7 @@ public class SQLData {
     }
 
     public ArrayList getworkout(int number) {
-        System.out.println("HERENUMBER"+number);
+
         c=db.rawQuery("Select id, name, workout From Workouts Where id = "+number, new String[]{});
         c.moveToFirst();
         String title = c.getString(1);
