@@ -65,14 +65,6 @@ public class MainActivity extends AppCompatActivity{
         sqlData.closeDB();
 
 
-        //set on click listener for the bottom bar buttons
-        ((View)findViewById(R.id.history).getParent()).setOnClickListener(new onNavbarClick());
-        ((View)findViewById(R.id.schedule).getParent()).setOnClickListener(new onNavbarClick());
-        ((View)findViewById(R.id.workout).getParent()).setOnClickListener(new onNavbarClick());
-        ((View)findViewById(R.id.exercises).getParent()).setOnClickListener(new onNavbarClick());
-        ((View)findViewById(R.id.progress).getParent()).setOnClickListener(new onNavbarClick());
-        ((View)findViewById(R.id.workout).getParent()).performClick();
-
         //set toolbar onclick listener
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -293,54 +285,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public class onNavbarClick implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            //grey out all other icons and textviews
-            LinearLayout linearLayout = (LinearLayout)v.getParent();
-            ((ImageView)findViewById(R.id.history)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
-            ((ImageView)findViewById(R.id.schedule)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
-            ((ImageView)findViewById(R.id.workout)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
-            ((ImageView)findViewById(R.id.exercises)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
-            ((ImageView)findViewById(R.id.progress)).setColorFilter(Color.parseColor("#5f6267"), android.graphics.PorterDuff.Mode.SRC_IN);
-            int numberOfChildren = linearLayout.getChildCount();
-            for(int i=0; i<numberOfChildren; i++){
-                ((TextView)linearLayout.getChildAt(i).findViewById(R.id.bottom_icon_TV)).setTextColor(Color.parseColor("#5f6267"));
-            }
-
-            if(v.findViewById(R.id.history) != null){
-                //set current view as selected (color primary)
-                ((ImageView)v.findViewById(R.id.history)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
-                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-
-            }else if(v.findViewById(R.id.schedule) != null){
-                //set current view as selected (color primary)
-                ((ImageView)v.findViewById(R.id.schedule)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
-                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-
-            }else if(v.findViewById(R.id.workout)!= null){
-                //set current view as selected (color primary)
-                ((ImageView)v.findViewById(R.id.workout)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
-                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-
-            }else if(v.findViewById(R.id.exercises)!= null){
-                //set current view as selected (color primary)
-                ((ImageView)v.findViewById(R.id.exercises)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
-                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                Intent intent = new Intent(MainActivity.this, MuscleView.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0); //this disables animations
-
-
-            }else if(v.findViewById(R.id.progress)!= null){
-                //set current view as selected (color primary)
-                ((ImageView)v.findViewById(R.id.progress)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
-                ((TextView)v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-
-            }
-
-        }
-    }
 
     public class onFabClick implements View.OnClickListener {
         @Override
