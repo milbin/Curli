@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/toolbar_divider"
+        android:id="@+id/toolbar"
+        >
+    </include>
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/ongoing_workout"
+        android:visibility="gone"
+        android:id="@+id/ongoing_workout_toolbar"
+        android:layout_above="@+id/bottom_app_bar"
+        />
+    <include
+        layout="@layout/bottom_app_bar"
+        android:id="@+id/bottom_app_bar"
+        />
+
+</RelativeLayout>

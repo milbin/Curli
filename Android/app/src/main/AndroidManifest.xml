@@ -44,6 +44,7 @@
             android:value="com.fitness.curli.MainActivity" />
         </activity>
         <activity android:name=".ExerciseViewInfo"/>
+        <activity android:name=".SchedulePlanner"/>
         <activity android:name=".MuscleView"/>
         <activity android:name=".WorkoutBuilder"/>
 
