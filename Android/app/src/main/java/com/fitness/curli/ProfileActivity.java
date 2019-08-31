@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //retrieve values from edit texts into java variables
 
