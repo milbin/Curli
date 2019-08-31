@@ -36,6 +36,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:tint="#5f6267"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_access_time_black_24dp" />
             <TextView
@@ -62,6 +63,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:tint="#5f6267"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_outline_calendar_today_24px" />
             <TextView
@@ -89,6 +91,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:tint="#5f6267"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_dumbell" />
             <TextView
@@ -116,6 +119,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:tint="#5f6267"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_info_blue_24dp" />
             <TextView
@@ -143,6 +147,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:tint="#5f6267"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/ic_trending_up_black_24dp" />
             <TextView
