@@ -68,7 +68,6 @@ public class BottomNavBarFragment extends Fragment {
             ((TextView)((RelativeLayout)fragment.findViewById(R.id.progress).getParent()).findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
 
         }catch (ClassCastException e){}
-        System.out.println(parentActivity +"HERE");
 
         // Inflate the layout for this fragment
         return fragment;

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,7 +38,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity{
     Context context = this;
     private Menu optionsMenu;
-    HashMap currentWorkout;
     int RESULT_FINISHED_BUILD = 1;
     public int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
     int workoutToRemove = -1;
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity{
 
 
         //set toolbar onclick listener
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -74,14 +74,38 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new onFabClick());
 
 
+    }
 
+
+
+    @Override
+    public void onResume() {
+
+        //check if app was closed while workout was still in progress
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        String workoutState = pref.getString("workout", "noWorkout");
+        if(!workoutState.equals("noWorkout")) {
+            Gson gson = new Gson();
+            java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+            HashMap currentWorkout = gson.fromJson(workoutState, type);
+            FragmentManager mFragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+            WorkoutTimerFragment fr = new WorkoutTimerFragment(); // Replace with your Fragment class
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("currentWorkout",currentWorkout);
+            bundle.putBoolean("isExpanded", false);
+            fr.setArguments(bundle);
+            fragmentTransaction.replace(R.id.ongoing_workout_toolbar, fr).commit();
+            findViewById(R.id.ongoing_workout_toolbar).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.ongoing_workout_toolbar).setVisibility(View.GONE);
+        }
+        super.onResume();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
                 LinearLayout ll = findViewById(R.id.linearLayoutMain);
@@ -162,75 +186,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(((Curli) this.getApplication()).getWorkoutTimer() != null){
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-            String workoutString = pref.getString("workout", "FAIL");
-            Gson gson = new Gson();
-            java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
-            currentWorkout = gson.fromJson(workoutString, type);
-            findViewById(R.id.ongoing_workout_toolbar).setVisibility(View.VISIBLE);
-            findViewById(R.id.down_arrow).setVisibility(View.GONE);
-            findViewById(R.id.finish).setVisibility(View.GONE);
-            findViewById(R.id.up_arrow).setVisibility(View.VISIBLE);
-            findViewById(R.id.delete).setVisibility(View.VISIBLE);
-            findViewById(R.id.delete).setOnClickListener(new onCancelWorkout());
-            ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String) currentWorkout.get("title"));
-            WorkoutTimer timer = ((Curli) this.getApplication()).getWorkoutTimer();
-            timer.setTextView((TextView)findViewById(R.id.timer));
-            findViewById(R.id.up_arrow).setOnClickListener(new onResumeWorkout());
-            findViewById(R.id.ongoing_workout_toolbar).setOnClickListener(new onResumeWorkout());
-            findViewById(R.id.divider_line1).setVisibility(View.GONE);//hide the divider line for the ongoing workout
-        }
 
 
-    }
 
-    public class onResumeWorkout implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
-            myIntent.putExtra("workout", currentWorkout);
-            startActivity(myIntent);
-        }
-    }
-    public class onCancelWorkout implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            final View view  = v;
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Delete Workout?").setMessage("This action cannot be undone.");
-            // Add the buttons
-            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User clicked OK button
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("workout", null);
-                    editor.apply();
-                    ((Curli) getApplication()).getWorkoutTimer().stopTimer();
-                    ((Curli) getApplication()).setWorkoutTimer(null);
-                    currentWorkout = null;
-                    ((Toolbar)view.getParent().getParent()).setVisibility(View.GONE);
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // User cancelled the dialogs
-                }
-            });
-
-
-            // Create the AlertDialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-        }
-    }
 
 
 

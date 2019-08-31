@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -43,8 +46,8 @@ public class WorkoutActivity extends AppCompatActivity {
     Context context;
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;
-    WorkoutTimer timer;
     HashMap workout;
+    Fragment fragment;
 
 
 
@@ -57,37 +60,22 @@ public class WorkoutActivity extends AppCompatActivity {
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
 
-        //setup toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)toolbar.getLayoutParams();
-        params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        toolbar.setLayoutParams(params);
-        setSupportActionBar(toolbar);
-        toolbar.findViewById(R.id.finish).setOnClickListener(new onWorkoutFinished());
-        ((TextView)findViewById(R.id.ongoing_workout_title)).setText((String)workout.get("title"));
-        toolbar.findViewById(R.id.down_arrow).setOnClickListener(new onDownPressed());
-        toolbar.setOnClickListener(new onDownPressed());
+        //setup workout timer fragment
+        FragmentManager mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        WorkoutTimerFragment fr = new WorkoutTimerFragment(); // Replace with your Fragment class
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("currentWorkout",workout);
+        bundle.putBoolean("isExpanded", true);
+        fr.setArguments(bundle);
+        fragmentTransaction.replace(R.id.ongoing_workout_toolbar, fr).commit();
+
         //check for if the activity resumes from a previous ongoing workout by seeing if the former
         // integer value of the 'reps' field is now a double since gson converts it to that
         exercises = (ArrayList<ArrayList>) workout.get("exercises");
         try {
-
             int testForCastingError = (int)((HashMap)((ArrayList<ArrayList>) workout.get("exercises")).get(0).get(1)).get("reps");
-            timer = new WorkoutTimer();
-            timer.setTextView((TextView)findViewById(R.id.timer));
-            timer.startTimer();
-            ((Curli) this.getApplication()).setWorkoutTimer(timer);
         }catch (ClassCastException e){//this means that the workout is being resumed
-            timer = ((Curli) this.getApplication()).getWorkoutTimer();
-            if(timer == null){
-                timer = new WorkoutTimer();
-                timer.setTextView((TextView)findViewById(R.id.timer));
-                timer.startTimer();
-                ((Curli) this.getApplication()).setWorkoutTimer(timer);
-            }else {
-                timer.setTextView((TextView) findViewById(R.id.timer));
-            }
             // convert double reps to integer
             int count = 0;
             for(ArrayList<Object> exercise:exercises) {
@@ -176,6 +164,10 @@ public class WorkoutActivity extends AppCompatActivity {
                 collapseCard((RelativeLayout) relativeLayout);
             }
         }
+    }
+
+    public HashMap getWorkout(){//this is for the toolbar fragment that will store the workout
+        return workout;
     }
 
 
@@ -605,72 +597,17 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
 
-    private class onDownPressed implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            onBackPressed();
-        }
-    }
     @Override
-    public void onBackPressed(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        SharedPreferences pref = this.getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         Gson gson = new Gson();
         String hashMapString = gson.toJson(workout);
         editor.putString("workout", hashMapString);
         editor.apply();
-        super.onBackPressed();
     }
 
-    private class onWorkoutFinished implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            int totalSets = 0;
-            for (ArrayList exercise : exercises) {
-                totalSets += (int) exercise.get(0);
-            }
-            if (totalSets <= 0) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-                builder.setTitle("Cant Finish Workout!").setMessage("You need to complete a set before finishing your workout.");
-                // Add the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-                builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
-                // Add the buttons
-                builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("workout", null);
-                        editor.apply();
-                        String time = (String) ((TextView) findViewById(R.id.timer)).getText();
-                        workout.put("time", time);
-                        ((Curli) getApplication()).setWorkoutTimer(null);
-                        SQLData sqlData = new SQLData();
-                        sqlData.openUserDB(context);
-                        sqlData.saveWorkoutToHistory(workout);
-                        sqlData.closeDB();
-                        finish();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
-                // Create the AlertDialog
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        }
-    }
 
 }
