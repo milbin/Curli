@@ -51,6 +51,14 @@ public class MuscleView extends AppCompatActivity {
         if(intent.getBooleanExtra("FromWorkoutBuilder", false)){//check if this activity is getting called from workoutBuilder
             exercisesToAdd = new ArrayList<>();
             findViewById(R.id.bottom_nav_bar).setVisibility(View.GONE);
+            findViewById(R.id.addedExercisesBar).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            findViewById(R.id.addedExercisesBar).findViewById(R.id.addExercisesButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -219,11 +227,16 @@ public class MuscleView extends AppCompatActivity {
         if(resultCode == 1) {
             ArrayList<String> exercisesList = data.getStringArrayListExtra("exercisesToAdd");
 
+
             for(String exercise:exercisesList){
                 if(!exercisesToAdd.contains(exercise)){
                     exercisesToAdd.add(exercise);
                 }
             }
+            if(data.getBooleanExtra("shouldFinish", false)){ //this means the add exercises button was pressed in the child activity of this one
+                onBackPressed();
+            }
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
         }
     }
 

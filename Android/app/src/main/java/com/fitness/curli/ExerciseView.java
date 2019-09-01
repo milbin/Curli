@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,6 +83,19 @@ public class ExerciseView extends AppCompatActivity {
         source = intent.getStringExtra("source");
         if(source.equals("WorkoutBuilder")){
             exercisesToAdd = intent.getStringArrayListExtra("exercisesToAdd");
+            findViewById(R.id.addedExercisesBar).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            findViewById(R.id.addedExercisesBar).findViewById(R.id.addExercisesButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("exercisesToAdd", exercisesToAdd);
+                    intent.putExtra("shouldFinish", true);
+                    setResult(1, intent);
+                    onBackPressed();
+                }
+            });
+
         }
 
         ImageView backButton = findViewById(R.id.backbutton);
@@ -369,6 +384,7 @@ public class ExerciseView extends AppCompatActivity {
         else if (source.equals("WorkoutBuilder")){
             v.setBackground(getDrawable(R.drawable.selected_exercise_background));
             exercisesToAdd.add((String)exercise.getText());
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
         }
     }
 }
