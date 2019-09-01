@@ -41,7 +41,7 @@ public class BottomNavBarFragment extends Fragment {
 
         }catch (ClassCastException e){}
         try{
-            MuscleView testForCastingError = (MuscleView) getActivity();
+            SchedulePlanner testForCastingError = (SchedulePlanner) getActivity();
             parentActivity = "Schedule";
             ((ImageView) fragment.findViewById(R.id.schedule)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
             ((TextView)((RelativeLayout)fragment.findViewById(R.id.schedule).getParent()).findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -97,9 +97,10 @@ public class BottomNavBarFragment extends Fragment {
                 //set current view as selected (color primary)
                 ((ImageView) v.findViewById(R.id.schedule)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
                 ((TextView) v.findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
-                Intent intent = new Intent(getActivity(), MuscleView.class);
+                Intent intent = new Intent(getActivity(), SchedulePlanner.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0, 0); //this disables animations
+                getActivity().finish();
             }else if(v.findViewById(R.id.workout)!= null && !parentActivity.equals("Workout")){
                 //set current view as selected (color primary)
                 ((ImageView)v.findViewById(R.id.workout)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -107,6 +108,7 @@ public class BottomNavBarFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0, 0); //this disables animations
+                getActivity().finish();
 
             }else if(v.findViewById(R.id.exercises)!= null && !parentActivity.equals("Exercises")){
                 //set current view as selected (color primary)
@@ -115,6 +117,7 @@ public class BottomNavBarFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), MuscleView.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0, 0); //this disables animations
+                getActivity().finish();
 
 
             }else if(v.findViewById(R.id.progress)!= null && !parentActivity.equals("Progress")){
