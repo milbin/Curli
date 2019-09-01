@@ -83,26 +83,6 @@ public class MuscleView extends AppCompatActivity {
     }
 
     public void displayMuscles(){
-        Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
-        muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedGroup = parent.getSelectedItem().toString();
-
-                //Spinner father = findViewById(R.id.muscleGroupSpinner);
-                if (++check > 1) {
-                    if (!selectedGroup.equals("Any Muscle Group")) {
-                        Intent intent = new Intent(MuscleView.this, ExerciseView.class);
-                        intent.putExtra("group", selectedGroup);
-                        intent.putExtra("source", "schedule_planner");
-                        startActivity(intent);
-                    }
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent){
-            }
-        });
-
         ArrayList<String> groups = sqlData.getGroups();
 
         int groupSize = groups.size();

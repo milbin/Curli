@@ -34,7 +34,7 @@ public class BottomNavBarFragment extends Fragment {
 
         //check which activity is the parent activity
         try{
-            MuscleView testForCastingError = (MuscleView) getActivity();
+            WorkoutBuilder testForCastingError = (WorkoutBuilder) getActivity();
             parentActivity = "History";
             ((ImageView)fragment.findViewById(R.id.history)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
             ((TextView)((RelativeLayout)fragment.findViewById(R.id.history).getParent()).findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
@@ -62,7 +62,7 @@ public class BottomNavBarFragment extends Fragment {
 
         }catch (ClassCastException e){}
         try{
-            MuscleView testForCastingError = (MuscleView) getActivity();
+            WorkoutBuilder testForCastingError = (WorkoutBuilder) getActivity();
             parentActivity = "Progress";
             ((ImageView)fragment.findViewById(R.id.progress)).setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary), android.graphics.PorterDuff.Mode.SRC_IN);
             ((TextView)((RelativeLayout)fragment.findViewById(R.id.progress).getParent()).findViewById(R.id.bottom_icon_TV)).setTextColor(getResources().getColor(R.color.colorPrimary));
