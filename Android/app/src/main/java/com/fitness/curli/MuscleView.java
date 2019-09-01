@@ -50,6 +50,7 @@ public class MuscleView extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.getBooleanExtra("FromWorkoutBuilder", false)){//check if this activity is getting called from workoutBuilder
             exercisesToAdd = new ArrayList<>();
+            findViewById(R.id.bottom_nav_bar).setVisibility(View.GONE);
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -608,6 +608,19 @@ public class WorkoutActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    @Override
+    public void onBackPressed(){
+        //save workout
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        Gson gson = new Gson();
+        String hashMapString = gson.toJson(workout);
+        editor.putString("workout", hashMapString);
+        editor.apply();
+        ((Curli) getApplication()).setWorkout(workout);
+        finish();
+    }
+
 
 
 }

@@ -27,7 +27,7 @@ import java.util.LinkedHashMap;
 
 public class WorkoutBuilder extends AppCompatActivity {
     Context context = this;
-    ArrayList<ArrayList> exercises = new ArrayList<ArrayList>();
+    ArrayList<ArrayList> exercises = new ArrayList<>();
     EditText title;
     int workoutNumber = -1;
 

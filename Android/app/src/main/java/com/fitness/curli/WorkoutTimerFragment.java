@@ -114,9 +114,9 @@ public class WorkoutTimerFragment extends Fragment {
         public void onClick(View v) {
             final View view  = v;
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-            builder.setTitle("Delete Workout?").setMessage("This action cannot be undone.");
+            builder.setTitle("Discard Workout?").setMessage("This action cannot be undone.");
             // Add the buttons
-            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // User clicked OK button
                     SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode

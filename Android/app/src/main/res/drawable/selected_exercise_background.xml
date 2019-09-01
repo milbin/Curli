@@ -5,8 +5,6 @@
         <item>
             <shape android:shape="rectangle"
                 >
-                <size android:width="100dp"
-                    android:height="100dp"/>
                 <solid android:color="@android:color/transparent" />
                 <stroke android:color="#00cc00" android:width="2dp" />
                 <!--corners allow us to make the rounded corners button-->
