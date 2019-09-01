@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
@@ -382,9 +383,16 @@ public class ExerciseView extends AppCompatActivity {
             startActivity(intent);
         }
         else if (source.equals("WorkoutBuilder")){
-            v.setBackground(getDrawable(R.drawable.selected_exercise_background));
-            exercisesToAdd.add((String)exercise.getText());
-            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            if(!exercisesToAdd.contains(exerciseText)) {
+                v.setBackground(getDrawable(R.drawable.selected_exercise_background));
+                exercisesToAdd.add((String) exercise.getText());
+                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            }else{
+                v.setBackground(null);
+                exercisesToAdd.remove(exercise.getText());
+                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+
+            }
         }
     }
 }
