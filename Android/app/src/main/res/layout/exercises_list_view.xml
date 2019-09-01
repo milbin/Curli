@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:onClick="onExerciseItemSelect"
         android:id="@+id/exrciseCardRelativeLayout"
+        android:layout_margin="5dp"
         >
         <ImageView
             android:id="@+id/equipmentIcon"
