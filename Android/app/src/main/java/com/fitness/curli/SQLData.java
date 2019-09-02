@@ -159,27 +159,39 @@ public class SQLData {
     }
 
     public void createTablesNew(){
+        //contains basic profile information about the user
         db.execSQL("DROP TABLE IF EXISTS user_info");
         db.execSQL("CREATE TABLE user_info (user_guide INTEGER, token TEXT, first_name TEXT, last_name TEXT, height FLOAT, birth_date DATE, registration_date DATE)");
 
+        //contains the workout a user has created. links back to user
         db.execSQL("DROP TABLE IF EXISTS workout");
         db.execSQL("CREATE TABLE workout (workout_guide INTEGER, exercise_guide INTEGER, user_guide INTEGER, workout_name TEXT)");
 
+        //contains each exercise in a given workout, links back to related workout and user
         db.execSQL("DROP TABLE IF EXISTS exercise");
         db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, exercise_name TEXT, one_rep_max INTEGER)");
 
+        //contains specific information about individual sets for each exercise. links back to related exercise, workout, and user
         db.execSQL("DROP TABLE IF EXISTS exercise_sets");
         db.execSQL("CREATE TABLE exercise_sets (exercise_sets_guide INTEGER, exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, set_number INTEGER, reps_number INTEGER, weight FLOAT)");
 
+        //contains information about past workout the user has completed, links back to related workout
         db.execSQL("DROP TABLE IF EXISTS workout_history");
-        db.execSQL("CREATE TABLE workout_history (guide_exercise INTEGER, guide_workout INTEGER, guide_user INTEGER, order_number INTEGER, date DATE, time_taken TIME, guide_set_history INTEGER)");
+        db.execSQL("CREATE TABLE workout_history (workout_history_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, order_number INTEGER, date DATE, time_taken TIME)");
 
+        //contains information about past exercises the user has completed, links back to related completed workout, user
+        db.execSQL("DROP TABLE IF EXISTS exercise_history");
+        db.execSQL("CREATE TABLE exercise_history (exercise_history_guide INTEGER, set_history_guide INTEGER, workout_history_guide INTEGER, exercise_guide INTEGER, workout_guide INTEGER, user_guide)");
+
+        //contains information about past completed sets, links back to related completed exercise, completed workout, user
         db.execSQL("DROP TABLE IF EXISTS set_history");
         db.execSQL("CREATE TABLE set_history (set_history_guide INTEGER, guide_user INTEGER, set_number INTEGER, reps INTEGER, weight FLOAT)");
 
+        //contains information about user weight over time, links back to user
         db.execSQL("DROP TABLE IF EXISTS weight_record");
         db.execSQL("CREATE TABLE weight_record (user_guide INTEGER, weight FLOAT, date DATE)");
 
+        //contains information about the user muscle measurement over time, links back to user
         db.execSQL("DROP TABLE IF EXISTS muscle_size_record");
         db.execSQL("CREATE TABLE muscle_size_record (user_guide INTEGER, arms_size FLOAT, quads_size FLOAT, chest_size FLOAT, waist_size FLOAT, date DATE)");
     }
