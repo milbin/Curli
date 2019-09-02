@@ -23,7 +23,11 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="42a87425-c61f-434e-b879-6268b4f70f39">
+        <schema name="main" object-types="constraint, view, index, table, column, dataset trigger" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="42a87425-c61f-434e-b879-6268b4f70f39">
@@ -31,7 +35,9 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="42a87425-c61f-434e-b879-6268b4f70f39" object-ref="schemas/main/tables/ExerciseTable" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="42a87425-c61f-434e-b879-6268b4f70f39" />

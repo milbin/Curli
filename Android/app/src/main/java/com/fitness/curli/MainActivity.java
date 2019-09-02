@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -155,24 +156,69 @@ public class MainActivity extends AppCompatActivity{
             exercises.set(count, exercise);
             count++;
         }
+        //calculate total reps and sets in order to get the estimated time to complete the workout
         int totalReps = 0;
         int totalSets = 0;
         int totalExercises = 0;
         ArrayList<String> equipmentList = new ArrayList<String>();
+        ArrayList<String> muscleList = new ArrayList<>();
+        LinearLayout muscleLL = card.findViewById(R.id.MuscleGroupLL);
         for(ArrayList exercise:exercises){
             for(int setNum=1;setNum<exercise.size();setNum++){
                 Map set = (Map) exercise.get(setNum);
-                String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                String exerciseName = (String)set.get("title");
+
+                //add equipment to the equipment TextView
+                String equipmentString = sqlDataExercise.getEquipmentFromName(exerciseName);
                 for(String equipment: equipmentString.split(", ")){
                     if(!equipmentList.contains(equipment)){
                         equipmentList.add(equipment);
                     }
+                }
+                //add muscle icons to the muscle LinearLayout
+                String muscleName = sqlDataExercise.getGroupFromName(exerciseName);
+                if(!muscleList.contains(muscleName)){
+                    muscleList.add(muscleName);
+                    ImageView muscleIcon = new ImageView(context);
+                    if(muscleName.equals("Abs")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
+
+                    }else if(muscleName.equals("Back")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
+                    }else if(muscleName.equals("Bicep")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
+                    }else if(muscleName.equals("Chest")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.chest));
+                    }else if(muscleName.equals("Forearm")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
+                    }else if(muscleName.equals("Glutes")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.glutes));
+                    }else if(muscleName.equals("Lower Legs")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.lower_legs));
+                    }else if(muscleName.equals("Shoulder")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
+                    }else if(muscleName.equals("Triceps")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.triceps));
+                    }else if(muscleName.equals("Upper Legs")){
+                        muscleIcon.setImageDrawable(getDrawable(R.drawable.upper_legs));
+                    }
+                    //convert from dp to px
+                    DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+                    float dp = 30f;
+                    float fpixels = metrics.density * dp;
+                    int pixels = (int) (fpixels + 0.5f);
+                    muscleIcon.setScaleType(ImageView.ScaleType.FIT_XY);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(pixels,pixels);
+                    muscleIcon.setLayoutParams(lp);
+                    muscleLL.addView(muscleIcon);
+
                 }
                 totalReps += (int)set.get("reps");
                 totalSets++;
             }
             totalExercises++;
         }
+        //concatenate the equipment list together to create the final TV string
         String finalEquipmentString = "";
         for(String equipment: equipmentList){
             finalEquipmentString += equipment+" · ";

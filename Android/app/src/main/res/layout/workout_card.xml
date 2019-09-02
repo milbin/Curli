@@ -81,31 +81,13 @@
             android:layout_marginEnd="20dp"
             >
         <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/MuscleGroupLL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="false"
             android:layout_alignParentEnd="true"
             >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/placeholder_icon"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/placeholder_icon"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                />
         </LinearLayout>
         </RelativeLayout>
 
