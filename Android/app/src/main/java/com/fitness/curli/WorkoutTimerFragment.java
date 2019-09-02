@@ -45,8 +45,6 @@ public class WorkoutTimerFragment extends Fragment {
         isExpanded = bundle.getBoolean("isExpanded");
 
         //check if timer already exists
-        System.out.println(((Curli) getActivity().getApplication()).getWorkoutTimer() == null);
-        System.out.println("HERE");
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
         if(((Curli) getActivity().getApplication()).getWorkoutTimer() == null) {
             long startTime = pref.getLong("startTime", System.currentTimeMillis());

@@ -119,7 +119,7 @@ public class ExerciseView extends AppCompatActivity {
         sqlData = new SQLData();
         sqlData.openExerciseDB(context);
 
-        nameList = sqlData.getExercises("MainGroup", group).toArray(new String[0]);
+        nameList = sqlData.getExercises("Group1", group).toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -138,7 +138,7 @@ public class ExerciseView extends AppCompatActivity {
 
         displaySpinner();
         //displayExercises(sqlData.getExercisesAlphabetized());
-        displayExercises(sqlData.getExercises("MainGroup", group));
+        displayExercises(sqlData.getExercises("Group1", group));
 
         dialog.dismiss();
     }
@@ -254,7 +254,6 @@ public class ExerciseView extends AppCompatActivity {
             ImageView groupIcon = findViewById(R.id.groupIcon);
             int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
             groupIcon.setImageResource(imageId);
-            System.out.println("HERE IT IS "+groupIcon);
         }
         catch (Exception e){}
 

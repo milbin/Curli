@@ -442,7 +442,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         for(ArrayList exercise:exercises){
             for(int setNum=1;setNum<exercise.size();setNum++){
                 HashMap set = (HashMap) exercise.get(setNum);
-                String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                String equipmentString = sqlDataExercise.getPrimaryEquipmentFromName((String)set.get("title"));
                 for(String equipment: equipmentString.split(", ")){
                     if(!equipmentList.contains(equipment)){
                         equipmentList.add(equipment);

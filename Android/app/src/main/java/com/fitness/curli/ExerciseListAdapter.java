@@ -1,12 +1,9 @@
 package com.fitness.curli;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,7 +56,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title = holder.cardView.findViewById(R.id.exercise);
         title.setText(exercise);
 
-        String equipmentText = sqlData.getEquipmentFromName(exercise);
+        String equipmentText = sqlData.getPrimaryEquipmentFromName(exercise);
         TextView equipment = holder.cardView.findViewById(R.id.equipment);
         equipment.setText(equipmentText);
 

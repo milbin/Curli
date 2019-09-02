@@ -25,7 +25,7 @@ public class SQLData {
      */
 
     public ArrayList<String> getGroups(){
-        c=db.rawQuery("Select MainGroup From ExerciseTable", new String[]{});
+        c=db.rawQuery("Select Group1 From ExerciseTable", new String[]{});
         ArrayList<String> groups = new ArrayList();
         while(c.moveToNext()){
             String current = c.getString(0);
@@ -93,20 +93,20 @@ public class SQLData {
                 String name = c.getString(0);
                 currentExercise.put("name", name);
 
-                Cursor cursor2 = db.rawQuery("Select Equipment From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                Cursor cursor2 = db.rawQuery("Select Equipment1 From ExerciseTable Where Name = '" + name + "'", new String[]{});
                 cursor2.moveToFirst();
                 String equipment = cursor2.getString(0);
                 //String equipment = c.getString(c.getColumnIndex("Equipment"));
                 currentExercise.put("equipment", equipment);
                 cursor2.close();
 
-                cursor2 = db.rawQuery("Select MainGroup From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                cursor2 = db.rawQuery("Select Group1 From ExerciseTable Where Name = '" + name + "'", new String[]{});
                 cursor2.moveToFirst();
                 String primaryMuscleGroup = cursor2.getString(0);
                 currentExercise.put("primary muscle group", primaryMuscleGroup);
                 cursor2.close();
 
-                cursor2 = db.rawQuery("Select SecondaryGroup From ExerciseTable Where Name = '" + name + "'", new String[]{});
+                cursor2 = db.rawQuery("Select Group2 From ExerciseTable Where Name = '" + name + "'", new String[]{});
                 cursor2.moveToFirst();
                 String secondaryMuscleGroup = cursor2.getString(0);
                 currentExercise.put("secondary muscle group", secondaryMuscleGroup);
@@ -232,9 +232,29 @@ public class SQLData {
         return returnList;
     }
 
-    public String getGroupFromName(String name) {
+    public String getGroup1FromName(String name) {
 
-        c=db.rawQuery("Select MainGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
+        c=db.rawQuery("Select Group1 From ExerciseTable Where Name = '"+name+"'", new String[]{});
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String GroupStr = c.getString(0);
+            buffer.append(""+GroupStr);
+        }
+        return buffer.toString();
+    }
+    public String getGroup2FromName(String name) {
+
+        c=db.rawQuery("Select Group2 From ExerciseTable Where Name = '"+name+"'", new String[]{});
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String GroupStr = c.getString(0);
+            buffer.append(""+GroupStr);
+        }
+        return buffer.toString();
+    }
+    public String getGroup3FromName(String name) {
+
+        c=db.rawQuery("Select Group3 From ExerciseTable Where Name = '"+name+"'", new String[]{});
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
             String GroupStr = c.getString(0);
@@ -243,31 +263,19 @@ public class SQLData {
         return buffer.toString();
     }
 
-    public String[] getMusclesFromName(String name){
-        c = db.rawQuery("Select DetailedGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
+    public String getPrimaryEquipmentFromName(String name){
+        c = db.rawQuery("Select Equipment1 From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
-            String PrimaryMuscles = c.getString(0);
-            buffer.append(""+PrimaryMuscles);
+            String Equipment = c.getString(0);
+            buffer.append(""+Equipment);
         }
-         //create first part of the list from the first column
-        c = db.rawQuery("Select SecondaryGroup From ExerciseTable Where Name = '"+name+"'", new String[]{});
-
-        StringBuffer buffer2 = new StringBuffer();
-        while(c.moveToNext()){
-            String PrimaryMuscles = c.getString(0);
-            buffer2.append(""+PrimaryMuscles);
-        }
-
-        String[] Muscles = new String[(buffer.toString()).split(",").length + (buffer2.toString()).split(",").length];
-        System.arraycopy((buffer.toString()).split(","), 0, Muscles, 0, (buffer.toString()).split(",").length);
-        System.arraycopy((buffer2.toString()).split(","), 0, Muscles, (buffer.toString()).split(",").length, (buffer2.toString()).split(",").length);
-        return Muscles;
-
+        return buffer.toString();
     }
-
-    public String getEquipmentFromName(String name){
-        c = db.rawQuery("Select Equipment From ExerciseTable Where Name = '"+name+"'", new String[]{});
+    public String getSecondaryEquipmentFromName(String name){
+        c = db.rawQuery("Select Equipment2 From ExerciseTable Where Name = '"+name+"'", new String[]{});
 
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
@@ -277,8 +285,19 @@ public class SQLData {
         return buffer.toString();
     }
 
-    public String getExerciseTypeFromName(String name){
-        c = db.rawQuery("Select TypeOfExercise From ExerciseTable Where Name = '"+name+"'", new String[]{});
+    public String getExerciseDifficultyFromName(String name){
+        c = db.rawQuery("Select Difficulty From ExerciseTable Where Name = '"+name+"'", new String[]{});
+
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String ExerciseType = c.getString(0);
+            buffer.append(""+ExerciseType);
+        }
+        return buffer.toString();
+    }
+
+    public String getExercisePopularityFromName(String name){
+        c = db.rawQuery("Select Popularity From ExerciseTable Where Name = '"+name+"'", new String[]{});
 
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){

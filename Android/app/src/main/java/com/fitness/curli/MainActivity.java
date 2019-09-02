@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,10 +25,8 @@ import android.widget.TextView;
 
 
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -169,20 +165,20 @@ public class MainActivity extends AppCompatActivity{
                 String exerciseName = (String)set.get("title");
 
                 //add equipment to the equipment TextView
-                String equipmentString = sqlDataExercise.getEquipmentFromName(exerciseName);
+                String equipmentString = sqlDataExercise.getPrimaryEquipmentFromName(exerciseName);
                 for(String equipment: equipmentString.split(", ")){
                     if(!equipmentList.contains(equipment)){
                         equipmentList.add(equipment);
                     }
                 }
                 //add muscle icons to the muscle LinearLayout
-                String muscleName = sqlDataExercise.getGroupFromName(exerciseName);
+                String muscleName = sqlDataExercise.getGroup1FromName(exerciseName);
                 if(!muscleList.contains(muscleName)){
                     muscleList.add(muscleName);
                     ImageView muscleIcon = new ImageView(context);
+                    muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
                     if(muscleName.equals("Abs")){
                         muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
-
                     }else if(muscleName.equals("Back")){
                         muscleIcon.setImageDrawable(getDrawable(R.drawable.abs));
                     }else if(muscleName.equals("Bicep")){
@@ -202,6 +198,7 @@ public class MainActivity extends AppCompatActivity{
                     }else if(muscleName.equals("Upper Legs")){
                         muscleIcon.setImageDrawable(getDrawable(R.drawable.upper_legs));
                     }
+                    System.out.println(muscleName);
                     //convert from dp to px
                     DisplayMetrics metrics = context.getResources().getDisplayMetrics();
                     float dp = 30f;
