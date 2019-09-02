@@ -158,6 +158,32 @@ public class SQLData {
         db.close();
     }
 
+    public void createTablesNew(){
+        db.execSQL("DROP TABLE IF EXISTS user_info");
+        db.execSQL("CREATE TABLE user_info (user_guide INTEGER, token TEXT, first_name TEXT, last_name TEXT, height FLOAT, birth_date DATE, registration_date DATE)");
+
+        db.execSQL("DROP TABLE IF EXISTS workout");
+        db.execSQL("CREATE TABLE workout (workout_guide INTEGER, exercise_guide INTEGER, user_guide INTEGER, workout_name TEXT)");
+
+        db.execSQL("DROP TABLE IF EXISTS exercise");
+        db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, exercise_name TEXT, one_rep_max INTEGER)");
+
+        db.execSQL("DROP TABLE IF EXISTS exercise_sets");
+        db.execSQL("CREATE TABLE exercise_sets (exercise_sets_guide INTEGER, exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, set_number INTEGER, reps_number INTEGER, weight FLOAT)");
+
+        db.execSQL("DROP TABLE IF EXISTS workout_history");
+        db.execSQL("CREATE TABLE workout_history (guide_exercise INTEGER, guide_workout INTEGER, guide_user INTEGER, order_number INTEGER, date DATE, time_taken TIME, guide_set_history INTEGER)");
+
+        db.execSQL("DROP TABLE IF EXISTS set_history");
+        db.execSQL("CREATE TABLE set_history (set_history_guide INTEGER, guide_user INTEGER, set_number INTEGER, reps INTEGER, weight FLOAT)");
+
+        db.execSQL("DROP TABLE IF EXISTS weight_record");
+        db.execSQL("CREATE TABLE weight_record (user_guide INTEGER, weight FLOAT, date DATE)");
+
+        db.execSQL("DROP TABLE IF EXISTS muscle_size_record");
+        db.execSQL("CREATE TABLE muscle_size_record (user_guide INTEGER, arms_size FLOAT, quads_size FLOAT, chest_size FLOAT, waist_size FLOAT, date DATE)");
+    }
+
     public void saveWorkoutToHistory(HashMap json) {
         int id = 1;
         Date calendar = Calendar.getInstance().getTime();
