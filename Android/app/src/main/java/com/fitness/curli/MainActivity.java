@@ -37,20 +37,19 @@ public class MainActivity extends AppCompatActivity{
     private Menu optionsMenu;
     int RESULT_FINISHED_BUILD = 1;
     public int RESULT_WORKOUT_BUILDER_ACTIVITY = 1;
-    int workoutToRemove = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
+
         //add workout cards programatically
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);
         SQLData sqlDataExercise = new SQLData();
         sqlDataExercise.openExerciseDB(this);
         int workoutCount = sqlData.getWorkoutCount();
-
         for(int i=0; i<workoutCount; i++){
             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
             ArrayList workoutTemp = sqlData.getworkout(i);
@@ -105,22 +104,23 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_WORKOUT_BUILDER_ACTIVITY) {
             if(requestCode == RESULT_FINISHED_BUILD){
-                LinearLayout ll = findViewById(R.id.linearLayoutMain);
+                //add workout cards programatically
+                SQLData sqlData = new SQLData();
+                sqlData.openUserDB(this);
                 SQLData sqlDataExercise = new SQLData();
                 sqlDataExercise.openExerciseDB(this);
-                HashMap newWorkout = (HashMap) data.getSerializableExtra("workout");
-
-                RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
-                ((TextView)card.findViewById(R.id.title)).setText((String)newWorkout.get("title"));
-                if(workoutToRemove != -1){ //if the workout returned form being edited, delete the old once and replace with new one
-                    ll.removeViewAt(workoutToRemove);
-                    workoutToRemove = -1;
-                    ll.addView(card, workoutToRemove);
-                }else{//this is a new workout
+                LinearLayout ll = findViewById(R.id.linearLayoutMain);
+                ll.removeAllViews();
+                int workoutCount = sqlData.getWorkoutCount();
+                for(int i=0; i<workoutCount; i++){
+                    RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+                    ArrayList workoutTemp = sqlData.getworkout(i);
+                    ((TextView)card.findViewById(R.id.title)).setText((String)workoutTemp.get(0));
                     ll.addView(card);
+                    ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutTemp.get(1)).get("exercises");
+                    setupWorkoutCard(card, exercises);
                 }
-                ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) newWorkout.get("exercises");
-                setupWorkoutCard(card, exercises);
+                sqlData.closeDB();
 
             }
         }
@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity{
                     }else if(muscleName.equals("Upper Legs")){
                         muscleIcon.setImageDrawable(getDrawable(R.drawable.upper_legs));
                     }
-                    System.out.println(muscleName);
                     //convert from dp to px
                     DisplayMetrics metrics = context.getResources().getDisplayMetrics();
                     float dp = 30f;
@@ -218,11 +217,17 @@ public class MainActivity extends AppCompatActivity{
         //concatenate the equipment list together to create the final TV string
         String finalEquipmentString = "";
         for(String equipment: equipmentList){
-            finalEquipmentString += equipment+" · ";
+            if(!equipment.equals("None") && !equipment.equals("")) {
+                finalEquipmentString += equipment + " · ";
+            }
         }
         finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
         ((TextView)card.findViewById(R.id.time)).setText((((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
-        ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        if(totalExercises == 1){
+            ((TextView)card.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        }else {
+            ((TextView) card.findViewById(R.id.number_of_exercises)).setText(totalExercises + " Exercise");
+        }
         ((TextView)card.findViewById(R.id.equipment)).setText(finalEquipmentString);
         findViewById(R.id.no_workout_tv).setVisibility(View.GONE);
 
@@ -261,6 +266,11 @@ public class MainActivity extends AppCompatActivity{
                     public void onClick(DialogInterface dialog, int id) {
                         ((Curli) getApplication()).getWorkoutTimer().stopTimer();
                         ((Curli) getApplication()).setWorkoutTimer(null);
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("workout", null);
+                        editor.putString("startTime", null);
+                        editor.apply();
 
                         Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                         myIntent.putExtra("workout", workout);
@@ -323,7 +333,6 @@ public class MainActivity extends AppCompatActivity{
                              ArrayList workout = sqlData.getworkout(workoutNumber);
                              myIntent.putExtra("workout", (HashMap)workout.get(1));
                              myIntent.putExtra("workoutNumber", workoutNumber);
-                             workoutToRemove = workoutNumber;
                              startActivityForResult(myIntent, 1);
                              return true;
 

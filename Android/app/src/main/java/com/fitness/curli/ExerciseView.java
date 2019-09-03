@@ -385,12 +385,14 @@ public class ExerciseView extends AppCompatActivity {
             if(!exercisesToAdd.contains(exerciseText)) {
                 v.setBackground(getDrawable(R.drawable.selected_exercise_background));
                 exercisesToAdd.add((String) exercise.getText());
-                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
             }else{
                 v.setBackground(null);
                 exercisesToAdd.remove(exercise.getText());
+            }
+            if(exercisesToAdd.size() == 1){
+                ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercise");
+            }else {
                 ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
-
             }
         }
     }

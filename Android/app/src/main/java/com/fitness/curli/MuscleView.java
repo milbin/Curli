@@ -236,7 +236,11 @@ public class MuscleView extends AppCompatActivity {
             if(data.getBooleanExtra("shouldFinish", false)){ //this means the add exercises button was pressed in the child activity of this one
                 onBackPressed();
             }
-            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            if(exercisesToAdd.size() == 1){
+                ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercise");
+            }else {
+                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            }
         }
     }
 

@@ -14,7 +14,7 @@
 
     <TextView
         android:id="@+id/no_workout_tv"
-        style="@style/BodyTight"
+        style="@style/Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -33,7 +33,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:id="@+id/linearLayoutMain"
-    android:paddingBottom="30dp"
+    android:layout_marginBottom="72dp"
     >
 
 </LinearLayout>

@@ -136,7 +136,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
             exerciseWeight.setText(Double.toString((Double) ((HashMap)exercise.get(1)).get("weight")));
             excerciseSetsCompleted.setText("Sets Completed: " + setsCompleted + " of " + (exercise.size() - 1));
-            exerciseSets.setText("SET "+ (setsCompleted+1));
+            exerciseSets.setText("Set "+ (setsCompleted+1));
 
             LinearLayout checkboxLL = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
@@ -246,7 +246,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                     setsCompleted.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("SET "+(setNumber+1));
+                    exerciseSets.setText("Set "+(setNumber+1));
                 }
             }
 
@@ -366,7 +366,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                 setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("SET "+(setNumber+2));
+                exerciseSets.setText("Set "+(setNumber+2));
 
             }
 
@@ -398,7 +398,7 @@ public class WorkoutActivity extends AppCompatActivity {
         paramsNext.setMargins(0, 20, 0, 0);
         exerciseSetsRLNext.setLayoutParams(paramsNext);
         TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
-        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets:\n", "Sets Completed: "));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(true);
@@ -428,7 +428,7 @@ public class WorkoutActivity extends AppCompatActivity {
         params.setMargins(0, 10, 0, 0);
         exerciseSetsRL.setLayoutParams(params);
         TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
-        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets:\n"));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(false);
@@ -505,6 +505,10 @@ public class WorkoutActivity extends AppCompatActivity {
             if(v.getId() == R.id.weight_subtract_button) {
                 EditText editText = relativeLayout.findViewById(R.id.exercise_weight);
                 Double currentWeight = Double.parseDouble(editText.getText().toString()) - 2.5;
+                if(currentWeight <= 0){
+                    currentWeight = 0.0;
+                }
+                System.out.println(currentWeight);
                 String currentWeightString = String.valueOf(currentWeight);
                 editText.setText(currentWeightString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
@@ -516,12 +520,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 Integer currentReps = Integer.parseInt(editText.getText().toString()) + 1;
                 String currentRepsString = String.valueOf(currentReps);
                 editText.setText(currentRepsString);
+
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
             if(v.getId() == R.id.reps_subtract_button) {
                 EditText editText = relativeLayout.findViewById(R.id.exercise_reps);
                 Integer currentReps = Integer.parseInt(editText.getText().toString()) - 1;
+                if(currentReps <= 0){
+                    currentReps = 0;
+                }
                 String currentRepsString = String.valueOf(currentReps);
                 editText.setText(currentRepsString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
