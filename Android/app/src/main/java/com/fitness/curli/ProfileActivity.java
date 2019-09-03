@@ -64,12 +64,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     Boolean isNotifications;
     String unitChoice;
     String sexChoice;
+    String heightUnit;
 
     //set weighing options
     String[] weights={"Pounds","Kilograms"};
 
     //set sex options
     String[] sexes={"Male","Female"};
+
+    //set height options
+    String[] heights={"Feet","Meters"};
 
 
     @Override
@@ -99,8 +103,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         });
 
 
-
-        final EditText et1 = (EditText) findViewById(R.id.email_input);
+        //eventually to add email change option
+        /*final EditText et1 = (EditText) findViewById(R.id.email_input);
         et1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -111,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                     System.out.println(userEmail);
                 }
             }
-        });
+        }); */
 
         final EditText et2 = (EditText) findViewById(R.id.current_weight_input);
         et2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -174,12 +178,25 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         //Setting the ArrayAdapter data on the Spinner
         spinSex.setAdapter(sexA);
+
+        Spinner spinHeight = (Spinner) findViewById(R.id.heightSpinner);
+
+        spinHeight.setOnItemSelectedListener(this);
+
+        //Creating the ArrayAdapter instance having the bank name list
+        ArrayAdapter heightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item, heights);
+        heightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //Setting the ArrayAdapter data on the Spinner
+        spinHeight.setAdapter(heightA);
     }
 
 
     //Performing action onItemSelected and onNothing selected
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
+
+        heightUnit = heights[position];
 
         if(sexes[position].equals("Female")){
             sexChoice = "Female";
@@ -198,6 +215,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         System.out.println(unitChoice);
         System.out.println(sexChoice);
+        System.out.println(heights);
     }
 
     @Override
