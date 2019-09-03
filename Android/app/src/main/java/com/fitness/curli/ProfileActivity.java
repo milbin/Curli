@@ -63,9 +63,14 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     String weightGoal;
     Boolean isNotifications;
     String unitChoice;
+    String sexChoice;
 
     //set weighing options
     String[] weights={"Pounds","Kilograms"};
+
+    //set sex options
+    String[] sexes={"Male","Female"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +163,17 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
+
+
+        Spinner spinSex = (Spinner) findViewById(R.id.sexSpinner);
+
+        spinSex.setOnItemSelectedListener(this);
+        //Creating the ArrayAdapter instance having the bank name list
+        ArrayAdapter sexA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,sexes);
+        sexA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //Setting the ArrayAdapter data on the Spinner
+        spinSex.setAdapter(sexA);
     }
 
 
@@ -165,17 +181,23 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
 
-        unitChoice = weights[position];
+        if(sexes[position].equals("Female")){
+            sexChoice = "Female";
+        }
+        else if(sexes[position].equals("Male")){
+            sexChoice = "Male";
+        }
 
-        if(unitChoice.equals("Pounds")){
+        if(weights[position].equals("Pounds")){
             unitChoice = "lbs";
         }
-        else if(unitChoice.equals("Kilograms")){
+        else if(weights[position].equals("Kilograms")){
             unitChoice = "kg";
         }
 
-        Toast.makeText(getApplicationContext(), "Changed weight unit to " + weights[position], Toast.LENGTH_LONG).show();
+
         System.out.println(unitChoice);
+        System.out.println(sexChoice);
     }
 
     @Override

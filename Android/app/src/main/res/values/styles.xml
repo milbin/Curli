@@ -12,4 +12,15 @@
         <item name="colorPrimary">#aaaaaa</item>
     </style>
 
+    <style name="CondensedBase" parent="AppTheme">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="Title" parent="CondensedBase">
+        <item name="android:fontFamily">@font/rubik_light</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
 </resources>
