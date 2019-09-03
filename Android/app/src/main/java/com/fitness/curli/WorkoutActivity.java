@@ -166,6 +166,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 collapseCard((RelativeLayout) relativeLayout);
             }
         }
+        save();
     }
 
     public HashMap getWorkout(){//this is for the toolbar fragment that will store the workout
@@ -624,16 +625,16 @@ public class WorkoutActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        SharedPreferences pref = this.getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
-        SharedPreferences.Editor editor = pref.edit();
-        Gson gson = new Gson();
-        String hashMapString = gson.toJson(workout);
-        editor.putString("workout", hashMapString);
-        editor.apply();
+        save();
     }
 
     @Override
     public void onBackPressed(){
+        save();
+        finish();
+    }
+
+    private void save(){
         //save workout
         SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
@@ -642,7 +643,6 @@ public class WorkoutActivity extends AppCompatActivity {
         editor.putString("workout", hashMapString);
         editor.apply();
         ((Curli) getApplication()).setWorkout(workout);
-        finish();
     }
 
 
