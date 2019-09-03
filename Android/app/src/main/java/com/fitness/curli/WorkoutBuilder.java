@@ -88,6 +88,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 count++;
             }
             title.setText((String)currentWorkout.get("title"));
+            ((TextView)findViewById(R.id.title_toolbar)).setText((String)currentWorkout.get("title"));
 
             //add exercises from previous workoutBuilder
             for(ArrayList<HashMap> exercise:exercises) {

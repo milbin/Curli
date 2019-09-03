@@ -43,6 +43,7 @@ public class WorkoutTimerFragment extends Fragment {
         Bundle bundle = this.getArguments();
         currentWorkout = (HashMap) bundle.getSerializable("currentWorkout");
         isExpanded = bundle.getBoolean("isExpanded");
+        ((TextView)fragment.findViewById(R.id.ongoing_workout_title)).setText((String)currentWorkout.get("title"));
 
         //check if timer already exists
         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
