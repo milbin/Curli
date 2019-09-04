@@ -211,9 +211,20 @@
                 android:layout_width="400dp"
                 android:layout_height="40dp"
                 android:text="Change Email"
+                android:textSize="14dp"
                 android:gravity="left"
                 android:layout_marginTop="460dp"/>
 
+
+
+            <Button
+                android:id="@+id/passwordButton"
+                android:layout_width="400dp"
+                android:layout_height="40dp"
+                android:text="Change Password"
+                android:textSize="14dp"
+                android:gravity="left"
+                android:layout_marginTop="495dp"/>
 
 
         </RelativeLayout>
