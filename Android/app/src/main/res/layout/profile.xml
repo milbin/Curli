@@ -39,6 +39,8 @@
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="90dp"
                 android:inputType="text"
+                android:background="@drawable/back_button_background"
+                android:padding="4dp"
                 app:layout_constraintTop_toBottomOf="parent" />
 
 
@@ -83,8 +85,9 @@
                 android:layout_marginTop="180dp"
                 android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_X="0dp"
-                tools:layout_editor_Y="120dp" />
+                android:background="@drawable/back_button_background"
+                android:padding="4dp"
+                />
 
             <TextView
                 style="@style/Title"
@@ -127,7 +130,9 @@
                 android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_X="0dp"
-                tools:layout_editor_Y="170dp" />
+                tools:layout_editor_Y="170dp"
+                android:background="@drawable/back_button_background"
+                android:padding="4dp"/>
 
 
 
@@ -169,8 +174,8 @@
                 android:layout_marginTop="360dp"
                 android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_X="0dp"
-                tools:layout_editor_Y="170dp" />
+                android:background="@drawable/back_button_background"
+                android:padding="4dp" />
 
 
 
@@ -214,7 +219,6 @@
                 android:textSize="14dp"
                 android:gravity="left"
                 android:layout_marginTop="460dp"/>
-
 
 
             <Button
