@@ -163,6 +163,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                             sqlData.saveWorkout(workout);
                         }
                         sqlData.closeDB();
+                        setResult(1);
                         onBackPressed();
                     }
                 });
@@ -178,6 +179,11 @@ public class WorkoutBuilder extends AppCompatActivity {
 
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+        findViewById(R.id.back_button).performClick();
+        super.onBackPressed();
     }
 
     public class onBackButtonClicked implements View.OnClickListener {
@@ -320,6 +326,11 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class onTitleEdit implements EditText.OnFocusChangeListener {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus){
+                findViewById(R.id.edit_title).setVisibility(View.GONE);
+            }else{
+                findViewById(R.id.edit_title).setVisibility(View.VISIBLE);
+            }
             ((TextView)findViewById(R.id.title_toolbar)).setText(((EditText)v).getText());
         }
     }
