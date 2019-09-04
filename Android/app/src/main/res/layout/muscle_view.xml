@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout"
+    >
+
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        >
+    </include>
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/bottom_nav_bar"
+        android:background="@drawable/gradient">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/MuscleViewLinearLayout"
+            android:orientation="vertical"
+            >
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"/>
+    <fragment android:name="com.fitness.curli.BottomNavBarFragment"
+        android:id="@+id/bottom_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        />
+    <RelativeLayout
+        android:id="@+id/addedExercisesBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="#33333d"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/numberOfExercisesAdded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Exercises "
+            android:layout_centerVertical="true"
+            android:layout_marginStart="32dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            style="@style/Subtitle2"/>
+
+        <TextView
+            android:id="@+id/addExercisesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            style="@style/Button"/>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

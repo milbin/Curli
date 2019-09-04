@@ -12,6 +12,7 @@
         android:fillViewport="false"
         android:orientation="vertical"
         android:padding="10dp"
+        android:background="@android:color/white"
         app:layout_constraintTop_toBottomOf="@id/toolbar_profile">
 
 
@@ -183,8 +184,8 @@
                 style="@style/Title"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="210dp"
-                android:layout_marginTop="340dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="540dp"
                 android:text="Notifications"
                 android:textSize="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -194,8 +195,8 @@
                 android:id="@+id/notification_switch"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="205dp"
-                android:layout_marginTop="365dp"
+                android:layout_marginLeft="95dp"
+                android:layout_marginTop="537dp"
                 app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
                 tools:ignore="NotSibling" />
 

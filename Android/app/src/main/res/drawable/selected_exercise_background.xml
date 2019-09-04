@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#d3e2fc" />
+            <!--corners allow us to make the rounded corners button-->
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
+    <item android:gravity="end|top"
+        android:top="5dp"
+        android:right="5dp"
+        >
+        <vector android:height="24dp" android:tint="#00cc00"
+            android:viewportHeight="24" android:viewportWidth="24"
+            android:width="24dp"
+            >
+            <path android:fillColor="#FF000000" android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM10,17l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z"/>
+        </vector>
+    </item>
+
+</layer-list>

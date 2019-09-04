@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/workout_overflow_info"
-    android:title="Info" />
+        android:id="@+id/workout_overflow_edit"
+        android:title="Edit" />
     <item
-        android:id="@+id/workout_overflow_replace"
-        android:title="Replace Exercise" />
+        android:id="@+id/workout_overflow_duplicate"
+        android:title="Duplicate" />
     <item
         android:id="@+id/workout_overflow_delete"
         android:title="Delete" />

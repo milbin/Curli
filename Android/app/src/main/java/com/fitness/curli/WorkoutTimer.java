@@ -10,7 +10,6 @@ import java.util.Timer;
 
 public class WorkoutTimer{
     private long startTime;
-    private String currentTime;
     private TextView textView;
 
     //runs without a timer by reposting this handler at the end of the runnable
@@ -26,7 +25,7 @@ public class WorkoutTimer{
             seconds = (seconds % 3600)% 60;
 
             if(hours >= 1) {
-                textView.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
+                textView.setText(String.format("%01d:%02d:%02d", hours, minutes, seconds));
             }else{
                 textView.setText(String.format("%02d:%02d", minutes, seconds));
             }
@@ -35,6 +34,10 @@ public class WorkoutTimer{
     };
     public void startTimer(){
         startTime = System.currentTimeMillis();
+        timerHandler.postDelayed(runnable, 0);
+    }
+    public void resumeTimer(long time){
+        startTime = time;
         timerHandler.postDelayed(runnable, 0);
     }
 

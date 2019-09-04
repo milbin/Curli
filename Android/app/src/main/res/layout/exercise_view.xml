@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        app:elevation="0dp"
+        android:layout_height="160dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/white"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/Theme.AppCompat.Light">
+
+                <RelativeLayout
+                    android:id="@+id/topBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/backbutton"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/back_button" />
+
+                    <ImageView
+                        android:id="@+id/title"
+                        android:layout_width="105dp"
+                        android:layout_height="45dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/final_logo" />
+
+                    <android.support.v7.widget.SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="0dp"
+                        android:animateLayoutChanges="true"
+                        />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@android:color/white"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/toolbarBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="?attr/actionBarSize"
+                    android:background="@android:color/white">
+                    <!--app:layout_constraintTop_toBottomOf="parent"-->
+
+                    <ImageView
+                        android:id="@+id/groupIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="37dp"
+                        android:src="@drawable/chest" />
+
+                    <LinearLayout
+                        android:id="@+id/infoWrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="170dp"
+                        android:layout_toRightOf="@id/groupIcon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="group"
+                            android:textSize="20sp"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_fitness_center_blue_24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_below="@id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:layout_anchor="@id/header"
+        app:layout_anchorGravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="invisible"
+        />
+        <RelativeLayout
+            android:id="@+id/spinner_rl"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:color/white"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="3px"
+            app:layout_anchor="@id/appbar"
+            app:layout_anchorGravity="bottom"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                >
+
+            <Spinner
+                android:id="@+id/muscleGroupSpinner"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/spinner_background"
+                android:padding="-6dp"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/muscleGroupSpinner"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+            <Spinner
+                android:id="@id/equipmentSpinner"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/muscleGroupSpinner"
+                android:background="@drawable/spinner_background"
+                android:padding="-6dp"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/equipmentSpinner"
+                android:paddingTop="3dp"
+                android:paddingEnd="2dp"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:scaleType="fitXY"
+            android:src="@drawable/divider_line"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="false"
+        android:layout_marginTop="30dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/scrollViewWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+                <!--android:layout_below="@id/anchor"
+                app:layout_constraintTop_toBottomOf="@id/anchor" />-->
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <RelativeLayout
+        android:id="@+id/addedExercisesBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="#33333d"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/numberOfExercisesAdded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Exercises "
+            android:layout_centerVertical="true"
+            android:layout_marginStart="32dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            style="@style/Subtitle2"/>
+
+        <TextView
+            android:id="@+id/addExercisesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            style="@style/Button"/>
+
+
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cardview_background"
+        android:minHeight="@dimen/min_height_of_workout_card"
+        android:layout_gravity="top"
+        android:elevation="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:animateLayoutChanges="true"
+
+        >
+
+        <TextView
+            android:id="@+id/exercise_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            style="@style/Title"
+            android:paddingTop="@dimen/workout_card_top_padding"
+            android:text="Bicep Curl"
+            android:textColor="@android:color/black" />
+
+        <ImageButton
+            android:id="@+id/overflowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_three_dots_24dp"
+            android:background="@null"
+            android:padding="5dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/exercise_name"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/weight_and_reps_ll"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/weight_relative_layout"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true">
+                    <TextView
+                        android:id="@+id/exercise_weight_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weight:"
+                        style="@style/Subtitle1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/exercise_weight"
+                        android:layout_width="80dp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/exercise_weight_TV"
+                        android:layout_marginTop="-4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        style="@style/EditTextStyle"
+                        android:background="@drawable/back_button_background"
+                        android:inputType="numberDecimal"
+                        android:layout_centerHorizontal="true"
+                        android:text="0.0" />
+                    <ImageButton
+                        android:id="@+id/weight_subtract_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_remove_circle_outline_blue_24dp"
+                        android:layout_toStartOf="@+id/exercise_weight"
+                        android:background="@android:color/transparent"
+                        android:layout_alignBottom="@+id/exercise_weight"
+                        android:paddingBottom="4dp"
+                        android:layout_marginEnd="8dp"
+                        />
+                    <ImageButton
+                        android:id="@+id/weight_add_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_add_blue_24dp"
+                        android:layout_toEndOf="@+id/exercise_weight"
+                        android:background="@android:color/transparent"
+                        android:layout_alignBottom="@+id/exercise_weight"
+                        android:paddingBottom="4dp"
+                        android:layout_marginStart="8dp"
+                        />
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set 1"
+                    android:id="@+id/set_number"
+                    style="@style/Button"
+                    android:paddingBottom="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignBottom="@+id/weight_relative_layout"
+                    />
+                <RelativeLayout
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
+                    <TextView
+                        android:id="@+id/exercise_reps_TV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reps:"
+                        style="@style/Subtitle1"
+                        android:layout_marginBottom="10dp"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <EditText
+                        android:id="@+id/exercise_reps"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/exercise_reps_TV"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        style="@style/EditTextStyle"
+                        android:inputType="numberDecimal"
+                        android:background="@drawable/back_button_background"
+                        android:layout_marginTop="-4dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="0"/>
+
+                    <ImageButton
+                        android:id="@+id/reps_subtract_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_remove_circle_outline_blue_24dp"
+                        android:layout_toStartOf="@+id/exercise_reps"
+                        android:background="@android:color/transparent"
+                        android:layout_alignBottom="@+id/exercise_reps"
+                        android:paddingBottom="4dp"
+                        android:layout_marginEnd="8dp"
+                        />
+                    <ImageButton
+                        android:id="@+id/reps_add_button"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_add_blue_24dp"
+                        android:layout_toEndOf="@+id/exercise_reps"
+                        android:background="@android:color/transparent"
+                        android:layout_alignBottom="@+id/exercise_reps"
+                        android:paddingBottom="4dp"
+                        android:layout_marginStart="8dp"
+                        />
+                </RelativeLayout>
+        </RelativeLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_set_button"
+            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@+id/exercise_sets_RL"
+            android:layout_alignParentEnd="true"
+            android:text="Add Set"
+            android:elevation="0dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@android:color/white"
+            style="@style/Button"
+            android:background="@drawable/done_button_background"
+            />
+
+        <Button
+            android:id="@+id/remove_set_button"
+            android:layout_marginTop="5dp"
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_below="@+id/exercise_sets_RL"
+            android:layout_alignParentStart="true"
+            android:text="Remove Set"
+            android:layout_marginBottom="20dp"
+            android:textColor="#fe0000"
+            style="@style/Button"
+            android:background="@drawable/back_button_background"
+            />
+
+
+        <RelativeLayout
+            android:id="@+id/exercise_sets_RL"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/weight_and_reps_ll"
+            android:layout_centerHorizontal="true"
+            >
+            <View
+                android:id="@+id/divider_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="#ededed"/>
+
+
+            <LinearLayout
+                android:id="@+id/checkbox_linear_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/sets_completed"
+                >
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -19,15 +19,17 @@ public class ListViewAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater inflater;
-    private List<SearchResult> namesList = null;
+    private List<SearchResult> namesList;
     private ArrayList<SearchResult> arraylist;
+    private int maxResults;
 
-    public ListViewAdapter(Context context, List<SearchResult> namesList) {
+    public ListViewAdapter(Context context, List<SearchResult> namesList, int maxResults) {
         mContext = context;
         this.namesList = namesList;
         inflater = LayoutInflater.from(mContext);
         this.arraylist = new ArrayList<SearchResult>();
         this.arraylist.addAll(namesList);
+        this.maxResults = maxResults;
     }
 
     public class ViewHolder {
@@ -73,19 +75,6 @@ public class ListViewAdapter extends BaseAdapter {
         holder.name.setText(namesList.get(position).getName());
         String name = namesList.get(position).getName();
 
-        if (data.GROUPS.contains(name)){
-            holder2.name.setText("Group : ");
-            //System.out.println("GROUP -----> "+name);
-        }
-        else if (data.MUSCLES.contains(name)){
-            holder2.name.setText("Muscle : ");
-            //System.out.println("MUSCLE -----> "+name);
-        }
-        else if (data.EXERCISES.contains(name)){
-            holder2.name.setText("Exercise : ");
-            //System.out.println("EXERCISE --> "+name);
-        }
-
         return view;
     }
 
@@ -94,11 +83,15 @@ public class ListViewAdapter extends BaseAdapter {
         charText = charText.toLowerCase(Locale.getDefault());
         namesList.clear();
         if (charText.length() == 0) {
-            namesList.addAll(arraylist);
+            namesList.addAll(arraylist.subList(0, maxResults));
         } else {
-            for (SearchResult wp : arraylist) {
+            for (int index = 0; index < arraylist.size(); index++) {
+                SearchResult wp = arraylist.get(index);
                 if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     namesList.add(wp);
+                }
+                if (namesList.size() == maxResults){
+                    break;
                 }
             }
         }

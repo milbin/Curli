@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@android:color/white"
     android:layout_width="125dp"
-    android:layout_height="155dp"
+    android:layout_height="200dp"
     >
     <RelativeLayout
         android:id="@+id/group"
-        android:layout_width="120dp"
-        android:layout_height="145dp"
-        android:layout_marginStart="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="6dp"
         android:layout_marginEnd="3dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
@@ -31,7 +30,7 @@
             android:id="@+id/equipment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Barbell"
+            android:text="equipment"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/title"
             android:textSize="14sp"
@@ -40,9 +39,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/equipment"
+            android:layout_marginTop="0dp"
+            android:layout_below="@+id/title"
             >
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/icon"
+                />
+            <!--
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -54,6 +59,7 @@
                 android:src="@drawable/ic_rowing_black_24dp"
                 android:id="@+id/group_image"
                 />
+                -->
         </LinearLayout>
 
 
