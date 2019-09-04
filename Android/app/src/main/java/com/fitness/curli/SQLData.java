@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -161,7 +162,7 @@ public class SQLData {
     public void createTablesNew(){
         //contains basic profile information about the user
         db.execSQL("DROP TABLE IF EXISTS user_info");
-        db.execSQL("CREATE TABLE user_info (user_guide INTEGER, token TEXT, first_name TEXT, last_name TEXT, height FLOAT, birth_date DATE, registration_date DATE)");
+        db.execSQL("CREATE TABLE user_info (user_guide INTEGER, token TEXT, first_name TEXT, last_name TEXT, height FLOAT, birth_date TEXT, registration_date TEXT)");
 
         //contains the workout a user has created. links back to user
         db.execSQL("DROP TABLE IF EXISTS workout");
@@ -169,11 +170,11 @@ public class SQLData {
 
         //contains each exercise in a given workout, links back to related workout and user
         db.execSQL("DROP TABLE IF EXISTS exercise");
-        db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, exercise_name TEXT, one_rep_max INTEGER)");
+        db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, one_rep_max INTEGER)");
 
         //contains specific information about individual sets for each exercise. links back to related exercise, workout, and user
         db.execSQL("DROP TABLE IF EXISTS exercise_sets");
-        db.execSQL("CREATE TABLE exercise_sets (exercise_sets_guide INTEGER, exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, set_number INTEGER, reps_number INTEGER, weight FLOAT)");
+        db.execSQL("CREATE TABLE exercise_sets (exercise_sets_guide INTEGER, exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, set_number INTEGER, exercise_name TEXT, reps_number INTEGER, weight FLOAT)");
 
         //contains information about past workout the user has completed, links back to related workout
         db.execSQL("DROP TABLE IF EXISTS workout_history");
@@ -194,6 +195,35 @@ public class SQLData {
         //contains information about the user muscle measurement over time, links back to user
         db.execSQL("DROP TABLE IF EXISTS muscle_size_record");
         db.execSQL("CREATE TABLE muscle_size_record (user_guide INTEGER, arms_size FLOAT, quads_size FLOAT, chest_size FLOAT, waist_size FLOAT, date DATE)");
+    }
+
+    public void createUser(String token, String firstName, String lastName, Float height, Date birthDate){
+        int user_guide = 0;
+        try {
+            c = db.rawQuery("SELECT MAX(user_guide) FROM user_info", new String[]{});
+            String id = c.getString(0);
+            user_guide = Integer.valueOf(id) + 1;
+        }
+        catch (CursorIndexOutOfBoundsException e){
+            System.out.println(e);
+        }
+
+        Date calendar = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String registrationDate = df.format(calendar);
+
+        String birthDateString = new SimpleDateFormat("dd-MM-yyyy").format(birthDate);
+
+        ContentValues values = new ContentValues();
+        values.put("user_guide", user_guide);
+        values.put("token", token);
+        values.put("first_name", firstName);
+        values.put("last_name", lastName);
+        values.put("height", height);
+        values.put("birth_date", birthDateString);
+        values.put("registration_date", registrationDate);
+
+        db.insert("user_info", null, values);
     }
 
     public void saveWorkoutToHistory(HashMap json) {
@@ -217,6 +247,7 @@ public class SQLData {
         c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
         c.moveToFirst();
     }
+
     public void saveWorkout(HashMap json) {
         String title = (String) json.get("title");
         Gson gson = new Gson();
@@ -228,10 +259,42 @@ public class SQLData {
         values.put("name", title);
         values.put("workout", jsonString);
 
+        System.out.println("JSON = " + jsonString);
 
         db.insert("Workouts", null, values);
         c.moveToFirst();
     }
+
+    public void saveWorkoutNew(HashMap json){
+        int user_guide = 0;
+        int workout_guide = 0;
+        try {
+            c = db.rawQuery("SELECT MAX(workout_guide) FROM workout", new String[]{});
+            workout_guide = Integer.valueOf(c.getString(0)) + 1;
+
+            c = db.rawQuery("SELECT MAX(exercise_guide) FROM exercise", new String[]{});
+            workout_guide = Integer.valueOf(c.getString(0)) + 1;
+        }
+        catch (CursorIndexOutOfBoundsException e){
+            System.out.println(e);
+        }
+        System.out.println(user_guide);
+        System.out.println(json);
+
+        String workoutTitle = (String) json.get("title");
+        ArrayList<ArrayList> exercises = (ArrayList) json.get("exercises");
+        for (ArrayList exercise : exercises){
+            for (int setIndex = 0; setIndex < exercises.size()/2; setIndex += 2){
+                int setNumber = (int)(exercise.get(setIndex));
+                HashMap setInfo = (HashMap) (exercise.get(setIndex+1));
+                String setTitle = (String) (setInfo.get("title"));
+                Float weight = (Float) (setInfo.get("weight"));
+                int reps = (int) (setInfo.get("reps"));
+            }
+        }
+
+    }
+
     public void updateWorkout(int id, HashMap json) {
         String title = (String) json.get("title");
         Gson gson = new Gson();

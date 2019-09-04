@@ -31,6 +31,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,17 @@ public class MainActivity extends AppCompatActivity{
         sqlData.openUserDB(this);
         SQLData sqlDataExercise = new SQLData();
         sqlDataExercise.openExerciseDB(this);
+        sqlData.createTablesNew();
+
+        HashMap json = new HashMap();
+        HashMap backExtension = new HashMap();
+        backExtension.put("title", "Back Extension Machine");
+        backExtension.put("weight", 0.0);
+        backExtension.put("reps", 0);
+        json.put("exercises", new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList(0, backExtension)))));
+        json.put("title", "Theo\u0027s workout");
+        //sqlData.createUser("1080", "theo", "vasile", (float)(178.0), Calendar.getInstance().getTime());
+        sqlData.saveWorkoutNew(json);
         int workoutCount = sqlData.getWorkoutCount();
 
         for(int i=0; i<workoutCount; i++){
