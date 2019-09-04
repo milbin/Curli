@@ -15,12 +15,12 @@
     <TextView
         android:id="@+id/no_workout_tv"
         style="@style/Body1"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:alpha="2"
         android:gravity="center_horizontal"
-        android:text="It looks like you haven't created any workouts yet!\nClick the &quot;+&quot; button below to get started"
+        android:text="Hmm... it looks like you haven't created any workouts yet!\n\nClick the &quot;+&quot; button below to get started."
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 <ScrollView

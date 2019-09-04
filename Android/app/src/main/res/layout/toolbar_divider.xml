@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <ImageView
-        android:layout_width="105dp"
-        android:layout_height="35dp"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:layout_centerInParent="true"
         android:src="@mipmap/final_logo"
         android:layout_gravity="center"
@@ -27,7 +27,7 @@
         android:background="@android:color/transparent"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="15dp"
         />
     <ImageView
         android:layout_width="match_parent"
