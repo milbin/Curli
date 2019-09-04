@@ -7,7 +7,7 @@
     android:background="#ffffff">
 
     <include
-        layout="@layout/toolbar_divider"
+        layout="@layout/toolbar_main"
         android:id="@+id/toolbar"
         >
     </include>
