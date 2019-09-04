@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Curli</string>
 
+    <string name="weight_preferences">Weighing:</string>
+
     <string-array name="MuscleGroups">
         <item>Any Muscle Group</item>
         <item>Quadriceps</item>

@@ -20,6 +20,7 @@
         />
 
     <ImageButton
+        android:id="@+id/profile_button"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_person_outline_black_24dp"

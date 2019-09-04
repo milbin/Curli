@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity{
         }
         sqlData.closeDB();
 
-
+        findViewById(R.id.profile_button).setOnClickListener(new onProfileClick());
         //set toolbar onclick listener
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,6 +70,15 @@ public class MainActivity extends AppCompatActivity{
         fab.setOnClickListener(new onFabClick());
 
 
+    }
+
+    public class onProfileClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v){
+            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(myIntent);
+        }
     }
 
 
