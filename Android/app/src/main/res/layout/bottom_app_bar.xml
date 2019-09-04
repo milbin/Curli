@@ -49,7 +49,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#5f6267"
                 android:layout_below="@+id/history"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 />
         </RelativeLayout>
 
@@ -76,7 +76,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#5f6267"
                 android:layout_below="@+id/schedule"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 />
         </RelativeLayout>
 
@@ -104,7 +104,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#5f6267"
                 android:layout_below="@+id/workout"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 />
         </RelativeLayout>
 
@@ -132,7 +132,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#5f6267"
                 android:layout_below="@+id/exercises"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 />
         </RelativeLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="#5f6267"
                 android:layout_below="@+id/progress"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="2dp"
                 />
         </RelativeLayout>
 
