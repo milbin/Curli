@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,13 @@ public class ResultsView extends AppCompatActivity {
     }
 
     public void displayResults(){
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("CLICKED");
+            }
+        });
         /*
         String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
         LinearLayout resultLinearLayout = findViewById(R.id.resultsList);
