@@ -29,6 +29,7 @@ public class ResultsView extends AppCompatActivity {
     }
 
     public void displayResults(){
+        /*
         String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
         LinearLayout resultLinearLayout = findViewById(R.id.resultsList);
 
@@ -38,5 +39,6 @@ public class ResultsView extends AppCompatActivity {
             title.setText(result);
             resultLinearLayout.addView(card);
         }
+        */
     }
 }

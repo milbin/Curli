@@ -1,54 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:id="@+id/result"
-        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_card_rounded">
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="3dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:elevation="3dp"
-        android:background="@drawable/white_card_rounded"
-        android:animateLayoutChanges="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            >
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="title"
-                android:textSize="30sp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"/>
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
-                android:src="@drawable/ic_outline_calendar_today_24px"
-                android:layout_gravity="start"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_below="@id/title"
-                />
-        </LinearLayout>
+        >
         <ImageView
+            android:id="@+id/icon"
             android:layout_width="80sp"
             android:layout_height="80sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_add_circle_outline_blue_24dp"
+            android:src="@drawable/ic_outline_calendar_today_24px"
+            android:layout_gravity="start"
+            android:layout_marginTop="5dp"
             />
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="title"
+            android:textSize="40sp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
 
 </RelativeLayout>
