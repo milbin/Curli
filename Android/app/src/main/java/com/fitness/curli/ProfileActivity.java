@@ -49,7 +49,7 @@ import java.util.HashMap;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
-public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     RelativeLayout relativeLayout;
     ProgressDialog dialog;
@@ -74,6 +74,9 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     //set height options
     String[] heights={"Feet","Meters"};
+
+    Button changeEmail;
+    Button changePassword;
 
 
     @Override
@@ -116,6 +119,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 }
             }
         }); */
+
+        changeEmail = (Button) findViewById(R.id.emailButton);
+        changePassword = (Button) findViewById(R.id.passwordButton);
+
+        changeEmail.setOnClickListener(ProfileActivity.this);
+        changePassword.setOnClickListener(ProfileActivity.this);
 
         final EditText et2 = (EditText) findViewById(R.id.current_weight_input);
         et2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -191,12 +200,40 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         spinHeight.setAdapter(heightA);
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.emailButton:
+                System.out.println("email button pressed");
+                break;
+
+            case R.id.passwordButton:
+                System.out.println("password button pressed");
+                break;
+
+            /*case R.id.threeButton:
+                // do your code
+                break;
+                */
+
+            default:
+                break;
+        }
+    }
+
 
     //Performing action onItemSelected and onNothing selected
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
 
-        heightUnit = heights[position];
+        if(heights[position].equals("Feet")){
+            heightUnit = "Feet";
+        }
+        else if(heights[position].equals("Meters")){
+            heightUnit = "Meters";
+        }
 
         if(sexes[position].equals("Female")){
             sexChoice = "Female";
@@ -212,15 +249,15 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             unitChoice = "kg";
         }
 
-
-        System.out.println(unitChoice);
+        System.out.println("testing location");
         System.out.println(sexChoice);
-        System.out.println(heights);
+        System.out.println(heightUnit);
+        System.out.println(unitChoice);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
-// TODO Auto-generated method stub
+        // TODO (Auto-generated method stub)
     }
 
     @Override
