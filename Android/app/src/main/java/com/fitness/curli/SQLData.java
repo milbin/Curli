@@ -170,7 +170,7 @@ public class SQLData {
 
         //contains each exercise in a given workout, links back to related workout and user
         db.execSQL("DROP TABLE IF EXISTS exercise");
-        db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, one_rep_max INTEGER)");
+        db.execSQL("CREATE TABLE exercise (exercise_guide INTEGER, workout_guide INTEGER, user_guide INTEGER, exercise_sets_guide INTEGER, one_rep_max FLOAT)");
 
         //contains specific information about individual sets for each exercise. links back to related exercise, workout, and user
         db.execSQL("DROP TABLE IF EXISTS exercise_sets");
@@ -268,12 +268,16 @@ public class SQLData {
     public void saveWorkoutNew(HashMap json){
         int user_guide = 0;
         int workout_guide = 0;
+        int exercise_guide = 0;
+        int set_guide = 0;
         try {
             c = db.rawQuery("SELECT MAX(workout_guide) FROM workout", new String[]{});
-            workout_guide = Integer.valueOf(c.getString(0)) + 1;
+            workout_guide = Integer.valueOf(c.getString(0));
 
             c = db.rawQuery("SELECT MAX(exercise_guide) FROM exercise", new String[]{});
-            workout_guide = Integer.valueOf(c.getString(0)) + 1;
+            exercise_guide = Integer.valueOf(c.getString(0)) + 1;
+            c = db.rawQuery("SELECT MAX(exercise_sets_guide) FROM exercise_sets", new String[]{});
+            set_guide = Integer.valueOf(c.getString(0)) + 1;
         }
         catch (CursorIndexOutOfBoundsException e){
             System.out.println(e);
@@ -284,15 +288,44 @@ public class SQLData {
         String workoutTitle = (String) json.get("title");
         ArrayList<ArrayList> exercises = (ArrayList) json.get("exercises");
         for (ArrayList exercise : exercises){
+            ContentValues exerciseValues = new ContentValues();
+            exerciseValues.put("exercise_guide", exercise_guide);
+            exerciseValues.put("workout_guide", workout_guide);
+            exerciseValues.put("user_guide", user_guide);
+            exerciseValues.put("exercise_sets_guide", set_guide);
+            exerciseValues.put("one_rep_max", 0);
+            db.insert("exercise", null, exerciseValues);
             for (int setIndex = 0; setIndex < exercises.size()/2; setIndex += 2){
+                ContentValues setValues = new ContentValues();
+
                 int setNumber = (int)(exercise.get(setIndex));
                 HashMap setInfo = (HashMap) (exercise.get(setIndex+1));
                 String setTitle = (String) (setInfo.get("title"));
                 Float weight = (Float) (setInfo.get("weight"));
                 int reps = (int) (setInfo.get("reps"));
-            }
-        }
 
+                setValues.put("exercise_sets_guide", set_guide);
+                setValues.put("exercise_guide", exercise_guide);
+                setValues.put("workout_guide", workout_guide);
+                setValues.put("user_guide", user_guide);
+                setValues.put("set_number", setNumber);
+                setValues.put("exercise_name", setTitle);
+                setValues.put("reps_number", reps);
+                setValues.put("weight", weight);
+
+                db.insert("exercise_sets", null, setValues);
+            }
+            set_guide ++;
+        }
+        ContentValues workoutValues = new ContentValues();
+        workoutValues.put("workout_guide", workout_guide);
+        workoutValues.put("exercise_guide", exercise_guide);
+        workoutValues.put("user_guide", user_guide);
+        workoutValues.put("workout_name", workoutTitle);
+
+        db.insert("workout", null, workoutValues);
+
+        System.out.println("DONE");
     }
 
     public void updateWorkout(int id, HashMap json) {

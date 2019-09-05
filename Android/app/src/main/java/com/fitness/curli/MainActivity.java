@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity{
         //add workout cards programatically
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);
-        SQLData sqlDataExercise = new SQLData();
-        sqlDataExercise.openExerciseDB(this);
-        sqlData.createTablesNew();
+        //sqlData.createTablesNew();
 
         HashMap json = new HashMap();
         HashMap backExtension = new HashMap();
@@ -63,8 +61,12 @@ public class MainActivity extends AppCompatActivity{
         backExtension.put("reps", 0);
         json.put("exercises", new ArrayList<>(Arrays.asList(new ArrayList<>(Arrays.asList(0, backExtension)))));
         json.put("title", "Theo\u0027s workout");
-        //sqlData.createUser("1080", "theo", "vasile", (float)(178.0), Calendar.getInstance().getTime());
+        sqlData.createUser("1080", "theo", "vasile", (float)(178.0), Calendar.getInstance().getTime());
         sqlData.saveWorkoutNew(json);
+
+        SQLData sqlDataExercise = new SQLData();
+        sqlDataExercise.openExerciseDB(this);
+
         int workoutCount = sqlData.getWorkoutCount();
 
         for(int i=0; i<workoutCount; i++){
