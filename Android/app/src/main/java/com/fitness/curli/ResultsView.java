@@ -5,9 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.text.PrecomputedTextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +35,21 @@ public class ResultsView extends AppCompatActivity {
     }
 
     public void displayResults(){
+        String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
+        LinearLayout fabList = findViewById(R.id.fab_list);
+        for (String resultName : resultsList){
+            RelativeLayout card = new RelativeLayout(this);
+            card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+            card.setBackgroundColor(getResources().getColor(R.color.white));
+            TextView title = new TextView(this);
+            title.setText(resultName);
+            title.setGravity(Gravity.CENTER_HORIZONTAL);
+            card.setGravity(Gravity.CENTER_HORIZONTAL);
+            card.addView(title);
+            fabList.addView(card);
+        }
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

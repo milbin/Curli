@@ -37,14 +37,15 @@
         app:layout_anchor="@id/bottom_app_bar"
         app:layout_anchorGravity="end" />
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/fab_list"
-        android:layout_width="40dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:background="@android:color/white"
         app:layout_anchor="@id/fab"
-        app:layout_anchorGravity="end"></ListView>
+        app:layout_anchorGravity="end"></LinearLayout>
 
     <include
         android:id="@+id/bottom_app_bar"
