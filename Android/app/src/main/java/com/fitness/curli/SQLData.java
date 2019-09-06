@@ -232,6 +232,23 @@ public class SQLData {
         return returnList;
     }
 
+    public void saveProfile(int id, ArrayList profile){
+
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        /*
+        values.put("name", profile.get(1));
+        values.put("sex", profile.get(2));
+        values.put("height", profile.get(3));
+        values.put("currentWeight", profile.get(4));
+        values.put("weightGoal", profile.get(5));
+        values.put("notifications", profile.get(6));
+
+        db.update("Profile", values, "id="+id, null);
+        */
+
+    }
+
     public String getGroup1FromName(String name) {
 
         c=db.rawQuery("Select Group1 From ExerciseTable Where Name = '"+name+"'", new String[]{});

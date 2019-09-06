@@ -198,7 +198,14 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         //Setting the ArrayAdapter data on the Spinner
         spinHeight.setAdapter(heightA);
+
+        /*TODO finish sql save data, array, method, table
+        SQLData db = new SQLData();
+        db.saveProfile(1, ArrayList MAKEANARRAY);
+        /*
+
     }
+
 
     @Override
     public void onClick(View v) {
