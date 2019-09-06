@@ -202,7 +202,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         /*TODO finish sql save data, array, method, table
         SQLData db = new SQLData();
         db.saveProfile(1, ArrayList MAKEANARRAY);
-        /*
+        */
 
     }
 
