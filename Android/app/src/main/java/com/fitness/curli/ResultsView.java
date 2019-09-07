@@ -21,12 +21,14 @@ public class ResultsView extends AppCompatActivity {
     Context context;
     boolean fabClick = false;
     LinearLayout fabList;
+    LinearLayout resultsLinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_view);
 
+        resultsLinearLayout = findViewById(R.id.resultsList);
         dialog = ProgressDialog.show(this, "Loading...", "", false);
 
         context = getApplicationContext();
@@ -38,7 +40,7 @@ public class ResultsView extends AppCompatActivity {
 
 
     public void displayResults(){
-        String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
+        final String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
         fabList = findViewById(R.id.fab_list);
         for (String resultName : resultsList){
             RelativeLayout card = new RelativeLayout(this);
@@ -49,6 +51,13 @@ public class ResultsView extends AppCompatActivity {
             title.setGravity(Gravity.CENTER_HORIZONTAL);
             card.setGravity(Gravity.CENTER_HORIZONTAL);
             card.addView(title);
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
+                    resultsLinearLayout.addView(resultCard);
+                }
+            });
             fabList.addView(card);
         }
         fabList.setVisibility(View.GONE);
