@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,10 +59,27 @@ public class ResultsView extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
+                    final RelativeLayout recordResultWrapper = resultCard.findViewById(R.id.recordResultWrapper);
+                    recordResultWrapper.setVisibility(View.GONE);
                     TextView title = resultCard.findViewById(R.id.title);
                     TextView titleText = v.findViewById(R.id.title);
                     String titleTextString = titleText.getText().toString();
                     title.setText(titleTextString);
+                    Button button = resultCard.findViewById(R.id.button);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RelativeLayout card = (RelativeLayout) v.getParent();
+                            System.out.println(card);
+                            RelativeLayout resultWrapper = card.findViewById(R.id.recordResultWrapper);
+                            if (recordResultWrapper.getVisibility() == View.GONE) {
+                                recordResultWrapper.setVisibility(View.VISIBLE);
+                            }
+                            else if (recordResultWrapper.getVisibility() == View.VISIBLE){
+                                recordResultWrapper.setVisibility(View.GONE);
+                            }
+                        }
+                    });
                     resultsLinearLayout.addView(resultCard);
                     fab.callOnClick();
                 }
