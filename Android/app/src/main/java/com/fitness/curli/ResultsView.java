@@ -49,6 +49,7 @@ public class ResultsView extends AppCompatActivity {
             card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
             card.setBackgroundColor(getResources().getColor(R.color.white));
             TextView title = new TextView(this);
+            title.setId(R.id.title);
             title.setText(resultName);
             title.setGravity(Gravity.CENTER_HORIZONTAL);
             card.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -57,9 +58,12 @@ public class ResultsView extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
+                    TextView title = resultCard.findViewById(R.id.title);
+                    TextView titleText = v.findViewById(R.id.title);
+                    String titleTextString = titleText.getText().toString();
+                    title.setText(titleTextString);
                     resultsLinearLayout.addView(resultCard);
                     fab.callOnClick();
-
                 }
             });
             fabList.addView(card);
