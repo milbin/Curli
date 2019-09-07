@@ -19,6 +19,8 @@ import android.widget.TextView;
 public class ResultsView extends AppCompatActivity {
     ProgressDialog dialog;
     Context context;
+    boolean fabClick = false;
+    LinearLayout fabList;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -34,9 +36,10 @@ public class ResultsView extends AppCompatActivity {
         dialog.dismiss();
     }
 
+
     public void displayResults(){
         String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
-        LinearLayout fabList = findViewById(R.id.fab_list);
+        fabList = findViewById(R.id.fab_list);
         for (String resultName : resultsList){
             RelativeLayout card = new RelativeLayout(this);
             card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -48,14 +51,21 @@ public class ResultsView extends AppCompatActivity {
             card.addView(title);
             fabList.addView(card);
         }
+        fabList.setVisibility(View.GONE);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("CLICKED");
-
+                if (fabClick) {
+                    fabList.setVisibility(View.GONE);
+                    fabClick = false;
+                }
+                else if (!fabClick){
+                    fabList.setVisibility(View.VISIBLE);
+                    fabClick = true;
+                }
             }
         });
         /*
