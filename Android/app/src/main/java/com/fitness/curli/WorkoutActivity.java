@@ -45,6 +45,7 @@ public class WorkoutActivity extends AppCompatActivity {
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
 
     ArrayList<ArrayList> exercises;
+    ArrayList<ArrayList> originalExercise;
     Context context;
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;

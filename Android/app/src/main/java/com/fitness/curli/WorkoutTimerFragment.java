@@ -6,21 +6,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class WorkoutTimerFragment extends Fragment {
     View fragment;
@@ -28,6 +24,7 @@ public class WorkoutTimerFragment extends Fragment {
     HashMap currentWorkout;
     WorkoutTimer timer;
     Boolean isExpanded;
+    HashMap originalWorkout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +38,10 @@ public class WorkoutTimerFragment extends Fragment {
 
 
         Bundle bundle = this.getArguments();
+        System.out.println("Created");
         currentWorkout = (HashMap) bundle.getSerializable("currentWorkout");
+        originalWorkout = (HashMap) bundle.getSerializable("currentWorkout");
+        System.out.println(currentWorkout == originalWorkout);
         isExpanded = bundle.getBoolean("isExpanded");
         ((TextView)fragment.findViewById(R.id.ongoing_workout_title)).setText((String)currentWorkout.get("title"));
 
@@ -162,6 +162,7 @@ public class WorkoutTimerFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
                 // Add the buttons
@@ -192,7 +193,23 @@ public class WorkoutTimerFragment extends Fragment {
                 // Create the AlertDialog
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
+                removeSets(currentWorkout);
+                removeSets(originalWorkout);
+                System.out.println(currentWorkout);
+                System.out.println(originalWorkout);
+                if(currentWorkout.equals(originalWorkout)){
+                    System.out.println("EQUAL");
+                }else{
+                    System.out.println("NOT EQUAL");
+                }
             }
+        }
+    }
+
+    private void removeSets(HashMap workout){
+        for (ArrayList exercise : (ArrayList<ArrayList>)workout.get("exercises")) {
+           exercise.set(0, 0);
         }
     }
 
