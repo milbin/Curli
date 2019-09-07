@@ -71,7 +71,6 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
             ImageView icon = holder.cardView.findViewById(R.id.icon);
             icon.setImageResource(R.drawable.ic_add_blue_24dp);
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)

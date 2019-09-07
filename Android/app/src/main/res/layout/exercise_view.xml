@@ -117,7 +117,7 @@
         android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="#fff"
         app:layout_anchor="@id/header"
         app:layout_anchorGravity="bottom"
         android:layout_gravity="bottom"
@@ -133,7 +133,8 @@
         android:paddingBottom="20dp"
         android:layout_gravity="bottom"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom"
+        app:layout_anchorGravity="bottom|center_horizontal"
+        android:gravity="center_horizontal"
         >
 
         <Spinner
@@ -175,7 +176,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="#45639C"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:clipToPadding="false"
         android:layout_marginTop="30dp"
