@@ -204,6 +204,9 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         db.saveProfile(1, ArrayList MAKEANARRAY);
         */
 
+
+        System.out.println("only runs on initil open");
+
     }
 
 
@@ -302,5 +305,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     public String getUnitChoice(){
         return unitChoice;
     }
+    public String getSex(){
+        return sexChoice;
+
+    }
+
 
 }
