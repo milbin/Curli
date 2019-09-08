@@ -211,17 +211,19 @@ public class SQLData {
     public void deleteWorkout(int id) {
         db.delete("Workouts", "id=" + id, null);
         c=db.rawQuery("Select * From Workouts;", new String[]{});
-        c.moveToFirst();
-        for(int i=0;i<=c.getCount();i++){
-            Cursor cursor = db.rawQuery("Select id, name, workout From Workouts Where id = "+i, new String[]{});
+        for(int i=0;i<c.getCount();i++){
+            Cursor cursor = db.rawQuery("Select * From Workouts Where id = "+i, new String[]{});
+            Cursor cursor1 = db.rawQuery("Select * From Workouts Where id = "+(i+1), new String[]{});
+            cursor.moveToFirst();
+            cursor1.moveToFirst();
             if(cursor.getCount() == 0) {
                 ContentValues values = new ContentValues();
                 values.put("id", i);
-                values.put("name", c.getString(1));
-                values.put("workout", c.getString(2));
+                values.put("name", cursor1.getString(1));
+                values.put("workout", cursor1.getString(2));
                 db.insert("Workouts",  null, values);
+                db.delete("Workouts", "id=" + (i+1), null);
             }
-            c.moveToNext();
         }
 
 

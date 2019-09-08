@@ -43,9 +43,10 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
-
         //add workout cards programatically
         SQLData sqlData = new SQLData();
+        sqlData.openUserDB(this);
+        sqlData.closeDB();
         sqlData.openUserDB(this);
         int workoutCount = sqlData.getWorkoutCount();
         for(int i=0; i<workoutCount; i++){
@@ -367,7 +368,6 @@ public class MainActivity extends AppCompatActivity{
                         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 sqlData.openUserDB(context);
-                                System.out.println(workoutNumber);
                                 sqlData.deleteWorkout(workoutNumber);
                                 ll.removeViewAt(workoutNumber);
                                 if (sqlData.getWorkoutCount() == 0) {
