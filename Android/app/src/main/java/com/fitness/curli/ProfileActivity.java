@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -50,7 +51,7 @@ import java.util.HashMap;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
-public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class ProfileActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener, View.OnTouchListener{
 
     RelativeLayout relativeLayout;
     ProgressDialog dialog;
@@ -79,6 +80,13 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     Button changeEmail;
     Button changePassword;
 
+    //variable for checking if user is editing spinners
+    boolean userSelectSpinner;
+
+    //initialize spinners
+    Spinner spinSex;
+    Spinner spinHeight;
+    Spinner spinWeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,38 +178,38 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             }
         });
 
-        //Getting the instance of Spinner and applying OnItemSelectedListener on it
-        Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
-        spin.setOnItemSelectedListener(this);
 
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,weights);
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        //Setting the ArrayAdapter data on the Spinner
-        spin.setAdapter(aa);
-
-
-        Spinner spinSex = (Spinner) findViewById(R.id.sexSpinner);
-
+        //Create spinners and their interaction listeners
+        spinSex = (Spinner) findViewById(R.id.sexSpinner);
         spinSex.setOnItemSelectedListener(this);
+        spinSex.setOnTouchListener(this);
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter sexA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,sexes);
         sexA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         //Setting the ArrayAdapter data on the Spinner
         spinSex.setAdapter(sexA);
 
-        Spinner spinHeight = (Spinner) findViewById(R.id.heightSpinner);
 
+        spinHeight = (Spinner) findViewById(R.id.heightSpinner);
         spinHeight.setOnItemSelectedListener(this);
-
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter heightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item, heights);
         heightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         //Setting the ArrayAdapter data on the Spinner
         spinHeight.setAdapter(heightA);
+
+
+        //Getting the instance of Spinner and applying OnItemSelectedListener on it
+        spinWeight = (Spinner) findViewById(R.id.simpleSpinner);
+        spinWeight.setSelection(0,false);
+        spinWeight.setOnItemSelectedListener(this);
+        //Creating the ArrayAdapter instance having the bank name list
+        ArrayAdapter weightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,weights);
+        weightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spinWeight.setAdapter(weightA);
+
+
 
         /*TODO finish sql save data, array, method, table
         SQLData db = new SQLData();
@@ -227,7 +235,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 System.out.println("password button pressed");
                 break;
 
-            /*case R.id.threeButton:
+            /*case R.id.thirdButton:
                 // do your code
                 break;
                 */
@@ -238,30 +246,41 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     }
 
 
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        userSelectSpinner = true;
+        return false;
+    }
+
+
+
     //Performing action onItemSelected and onNothing selected
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
+    public void onItemSelected(AdapterView<?> arg0, View v, int position,long id) {
 
-        if(heights[position].equals("Feet")){
+
+        sexChoice = spinSex.getSelectedItem().toString();
+
+
+        if (heights[position].equals("Feet")) {
             heightUnit = "Feet";
-        }
-        else if(heights[position].equals("Meters")){
+        } else if (heights[position].equals("Meters")) {
             heightUnit = "Meters";
         }
 
-        if(sexes[position].equals("Female")){
-            sexChoice = "Female";
-        }
-        else if(sexes[position].equals("Male")){
-            sexChoice = "Male";
-        }
 
-        if(weights[position].equals("Pounds")){
+        if (weights[position].equals("Pounds")) {
             unitChoice = "lbs";
-        }
-        else if(weights[position].equals("Kilograms")){
+        } else if (weights[position].equals("Kilograms")) {
             unitChoice = "kg";
         }
+
+        heightUnit = spinHeight.getSelectedItem().toString();
+
+        unitChoice = spinWeight.getSelectedItem().toString();
+
+
 
         System.out.println("testing location");
         System.out.println(sexChoice);
