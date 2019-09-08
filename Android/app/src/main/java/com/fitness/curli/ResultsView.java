@@ -16,9 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.Series;
 
 public class ResultsView extends AppCompatActivity {
     ProgressDialog dialog;
@@ -77,10 +83,18 @@ public class ResultsView extends AppCompatActivity {
                     View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
                     final RelativeLayout recordResultWrapper = resultCard.findViewById(R.id.recordResultWrapper);
                     recordResultWrapper.setVisibility(View.GONE);
-                    TextView title = resultCard.findViewById(R.id.title);
+
+                    final GraphView graph = resultCard.findViewById(R.id.graph);
+                    final LineGraphSeries series = new LineGraphSeries();
+                    graph.addSeries(series);
+
+                    final EditText editText = resultCard.findViewById(R.id.editText);
+
                     TextView titleText = v.findViewById(R.id.title);
                     String titleTextString = titleText.getText().toString();
+                    TextView title = resultCard.findViewById(R.id.title);
                     title.setText(titleTextString);
+
                     Button button = resultCard.findViewById(R.id.button);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -94,6 +108,10 @@ public class ResultsView extends AppCompatActivity {
                             }
                             else if (recordResultWrapper.getVisibility() == View.VISIBLE){
                                 vButton.setText("RECORD RESULT");
+                                Float y = Float.valueOf(editText.getText().toString());
+                                double x = series.getHighestValueX()+1;
+                                series.appendData(new DataPoint(x, y), false, 10);
+                                graph.addSeries(series);
                                 recordResultWrapper.setVisibility(View.GONE);
                             }
                         }
