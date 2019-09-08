@@ -97,7 +97,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
                 } else {
                     userName = et.getText().toString();
-                    System.out.println(userName);
+
                 }
             }
         });
@@ -112,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
                 } else {
                     userEmail = et1.getText().toString();
-                    System.out.println(userEmail);
+
                 }
             }
         }); */
@@ -125,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
                 } else {
                     currentWeight = et2.getText().toString();
-                    System.out.println(currentWeight);
+
                 }
             }
         });
@@ -138,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
                 } else {
                     weightGoal = et3.getText().toString();
-                    System.out.println(weightGoal);
+
                 }
             }
         });
@@ -153,7 +153,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 // do something, the isChecked will be
                 // true if the switch is in the On position
                 isNotifications = isChecked;
-                System.out.println(isNotifications);
+
             }
         });
 
@@ -213,9 +213,9 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         }
 
 
-        System.out.println(unitChoice);
-        System.out.println(sexChoice);
-        System.out.println(heights);
+
+
+
     }
 
     @Override

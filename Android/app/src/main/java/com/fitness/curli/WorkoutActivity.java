@@ -51,6 +51,7 @@ public class WorkoutActivity extends AppCompatActivity {
     RelativeLayout currentlyExpandedCard;
     HashMap workout;
     Fragment fragment;
+    int workoutNumber;
 
 
 
@@ -62,6 +63,8 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
+        workoutNumber = getIntent().getIntExtra("workoutNumber", -1);
+
 
         //setup workout timer fragment
         FragmentManager mFragmentManager = getSupportFragmentManager();
@@ -69,6 +72,7 @@ public class WorkoutActivity extends AppCompatActivity {
         WorkoutTimerFragment fr = new WorkoutTimerFragment(); // Replace with your Fragment class
         Bundle bundle = new Bundle();
         bundle.putSerializable("currentWorkout",workout);
+        bundle.putInt("workoutNumber", workoutNumber);
         bundle.putBoolean("isExpanded", true);
         fr.setArguments(bundle);
         fragmentTransaction.replace(R.id.ongoing_workout_toolbar, fr).commit();
@@ -512,7 +516,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 if(currentWeight <= 0){
                     currentWeight = 0.0;
                 }
-                System.out.println(currentWeight);
+
                 String currentWeightString = String.valueOf(currentWeight);
                 editText.setText(currentWeightString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
@@ -642,6 +646,7 @@ public class WorkoutActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String hashMapString = gson.toJson(workout);
         editor.putString("workout", hashMapString);
+        editor.putInt("workoutNumber", workoutNumber);
         editor.apply();
         ((Curli) getApplication()).setWorkout(workout);
     }

@@ -91,7 +91,7 @@
                         android:id="@+id/equipment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Barbell ∙ Dumbell ∙ Cables"
+                        android:text="No Equipment"
                         android:textAppearance="@style/Subtitle1" />
                     <EditText
                         android:id="@+id/title"
