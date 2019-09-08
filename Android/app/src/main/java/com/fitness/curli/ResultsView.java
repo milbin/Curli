@@ -22,9 +22,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class ResultsView extends AppCompatActivity {
     ProgressDialog dialog;
@@ -86,7 +90,13 @@ public class ResultsView extends AppCompatActivity {
 
                     final GraphView graph = resultCard.findViewById(R.id.graph);
                     final LineGraphSeries series = new LineGraphSeries();
+                    series.setThickness(10);
                     graph.addSeries(series);
+                    graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
+
+                    graph.getViewport().setXAxisBoundsManual(true);
+
+                    graph.getGridLabelRenderer().setHumanRounding(false);
 
                     final EditText editText = resultCard.findViewById(R.id.editText);
 
@@ -107,10 +117,12 @@ public class ResultsView extends AppCompatActivity {
                                 recordResultWrapper.setVisibility(View.VISIBLE);
                             }
                             else if (recordResultWrapper.getVisibility() == View.VISIBLE){
+                                Calendar calendar = Calendar.getInstance();
                                 vButton.setText("RECORD RESULT");
-                                Float y = Float.valueOf(editText.getText().toString());
-                                double x = series.getHighestValueX()+1;
-                                series.appendData(new DataPoint(x, y), false, 10);
+                                double y = Double.valueOf(editText.getText().toString());
+                                //double x = series.getHighestValueX()+1;
+                                Date x = calendar.getTime();
+                                series.appendData(new DataPoint(x, y), true, 10);
                                 graph.addSeries(series);
                                 recordResultWrapper.setVisibility(View.GONE);
                             }
