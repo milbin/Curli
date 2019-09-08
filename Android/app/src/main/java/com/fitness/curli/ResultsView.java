@@ -2,11 +2,14 @@ package com.fitness.curli;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.text.PrecomputedTextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,11 +27,14 @@ public class ResultsView extends AppCompatActivity {
     LinearLayout fabList;
     LinearLayout resultsLinearLayout;
     FloatingActionButton fab;
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_view);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setTitle("");
 
         dialog = ProgressDialog.show(this, "Loading...", "", false);
 
@@ -45,10 +51,20 @@ public class ResultsView extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         final String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
         fabList = findViewById(R.id.fab_list);
-        for (String resultName : resultsList){
+        for (int index = 0; index < resultsList.length; index++){
+            String resultName = resultsList[index];
             RelativeLayout card = new RelativeLayout(this);
             card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-            card.setBackgroundColor(getResources().getColor(R.color.white));
+            if (index == 0){
+                System.out.println("ROUNDED");
+                card.setBackground(ContextCompat.getDrawable(this, R.drawable.white_card_rounded_top));
+            }
+            else if (index == resultsList.length-1){
+                card.setBackground(ContextCompat.getDrawable(this, R.drawable.white_card_rounded_bottom));
+            }
+            else {
+                card.setBackgroundColor(getResources().getColor(R.color.white));
+            }
             TextView title = new TextView(this);
             title.setId(R.id.title);
             title.setText(resultName);
@@ -69,13 +85,15 @@ public class ResultsView extends AppCompatActivity {
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            RelativeLayout card = (RelativeLayout) v.getParent();
-                            System.out.println(card);
-                            RelativeLayout resultWrapper = card.findViewById(R.id.recordResultWrapper);
+                            Button vButton = (Button) v;
+                            TextView nothing = findViewById(R.id.nothing);
+                            nothing.setVisibility(View.GONE);
                             if (recordResultWrapper.getVisibility() == View.GONE) {
+                                vButton.setText("DONE");
                                 recordResultWrapper.setVisibility(View.VISIBLE);
                             }
                             else if (recordResultWrapper.getVisibility() == View.VISIBLE){
+                                vButton.setText("RECORD RESULT");
                                 recordResultWrapper.setVisibility(View.GONE);
                             }
                         }

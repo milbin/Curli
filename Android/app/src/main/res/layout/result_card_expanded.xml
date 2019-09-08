@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <RelativeLayout
         android:id="@+id/contentWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        >
 
         <TextView
             android:id="@+id/title"
@@ -41,8 +44,7 @@
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginEnd="10dp"/>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/recordResultWrapper"
@@ -50,7 +52,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/contentWrapper"
         android:background="@drawable/white_card_rounded_bottom">
+        <RelativeLayout
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E7E7E7"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            />
         <LinearLayout
+            android:layout_below="@id/space"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
