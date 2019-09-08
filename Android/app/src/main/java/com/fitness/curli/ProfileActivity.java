@@ -3,6 +3,7 @@ package com.fitness.curli;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -86,9 +87,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         toolbar.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbar);
 
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
 
         //retrieve values from edit texts into java variables
 
@@ -272,16 +276,22 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id==R.id.back_button) {
+            finish();
+        }
+
         switch (item.getItemId()) {
-            case R.id.back:
+            case android.R.id.home:
                 finish();
                 return true;
+        }
 
-            default:
-                return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
 
         }
-    }
+
 
 
     //all getters which will be used to store data in database
