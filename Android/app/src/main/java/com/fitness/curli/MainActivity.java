@@ -43,12 +43,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
-
         //add workout cards programatically
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);
-        SQLData sqlDataExercise = new SQLData();
-        sqlDataExercise.openExerciseDB(this);
+        sqlData.closeDB();
+        sqlData.openUserDB(this);
         int workoutCount = sqlData.getWorkoutCount();
         for(int i=0; i<workoutCount; i++){
             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity{
         //check if app was closed while workout was still in progress
         SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
         String workoutState = pref.getString("workout", "noWorkout");
+        int workoutNumber = pref.getInt("workoutNumber", -1);
         if(!workoutState.equals("noWorkout")) {
             Gson gson = new Gson();
             java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity{
             WorkoutTimerFragment fr = new WorkoutTimerFragment(); // Replace with your Fragment class
             Bundle bundle = new Bundle();
             bundle.putSerializable("currentWorkout",currentWorkout);
+            bundle.putInt("workoutNumber",workoutNumber);
             bundle.putBoolean("isExpanded", false);
             fr.setArguments(bundle);
             fragmentTransaction.replace(R.id.ongoing_workout_toolbar, fr).commit();
@@ -263,6 +264,7 @@ public class MainActivity extends AppCompatActivity{
             }
             SQLData sqlData = new SQLData();
             sqlData.openUserDB(context);
+            final int workoutNumberFinal = workoutNumber;
             ArrayList workoutList = sqlData.getworkout(workoutNumber);
             sqlData.closeDB();
             final HashMap workout = (HashMap) workoutList.get(1);
@@ -278,11 +280,13 @@ public class MainActivity extends AppCompatActivity{
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("workout", null);
+                        editor.putInt("workoutNumber", -1);
                         editor.putString("startTime", null);
                         editor.apply();
 
                         Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                         myIntent.putExtra("workout", workout);
+                        myIntent.putExtra("workoutNumber", workoutNumberFinal);
                         startActivity(myIntent);
                     }
                 });
@@ -298,6 +302,7 @@ public class MainActivity extends AppCompatActivity{
             }else {
                 Intent myIntent = new Intent(MainActivity.this, WorkoutActivity.class);
                 myIntent.putExtra("workout", workout);
+                myIntent.putExtra("workoutNumber", workoutNumberFinal);
                 startActivity(myIntent);
             }
 
@@ -334,61 +339,54 @@ public class MainActivity extends AppCompatActivity{
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
                  @Override
                  public boolean onMenuItemClick(MenuItem item) {
-                     switch (item.getItemId()) {
-                         case R.id.workout_overflow_edit:
+                    if(item.getItemId() == R.id.workout_overflow_edit) {
+                        Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
+                        sqlData.openUserDB(context);
+                        ArrayList workout = sqlData.getworkout(workoutNumber);
+                        myIntent.putExtra("workout", (HashMap) workout.get(1));
+                        myIntent.putExtra("workoutNumber", workoutNumber);
+                        startActivityForResult(myIntent, 1);
+                        sqlData.closeDB();
+                    }else if(item.getItemId() == R.id.workout_overflow_duplicate) {
+                        sqlData.openUserDB(context);
+                        ArrayList workoutToDuplicate = sqlData.getworkout(workoutNumber);
+                        String newTitle = "Workout " + (sqlData.getWorkoutCount() + 1);
+                        workoutToDuplicate.set(0, newTitle);
+                        ((HashMap) workoutToDuplicate.get(1)).put("title", newTitle);
+                        sqlData.saveWorkout((HashMap) workoutToDuplicate.get(1));
+                        RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
+                        ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap) workoutToDuplicate.get(1)).get("exercises");
+                        ll.addView(card);
+                        ((TextView) card.findViewById(R.id.title)).setText(newTitle);
+                        setupWorkoutCard(card, exercises);
+                        sqlData.closeDB();
 
-                             Intent myIntent = new Intent(MainActivity.this, WorkoutBuilder.class);
-                             sqlData.openUserDB(context);
-                             ArrayList workout = sqlData.getworkout(workoutNumber);
-                             myIntent.putExtra("workout", (HashMap)workout.get(1));
-                             myIntent.putExtra("workoutNumber", workoutNumber);
-                             startActivityForResult(myIntent, 1);
-                             return true;
+                    }else if(item.getItemId() == R.id.workout_overflow_delete) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                        builder.setTitle("Are you sure you want to delete this workout?").setMessage("This action cannot be undone.");
+                        // Add the buttons
+                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                sqlData.openUserDB(context);
+                                sqlData.deleteWorkout(workoutNumber);
+                                ll.removeViewAt(workoutNumber);
+                                if (sqlData.getWorkoutCount() == 0) {
+                                    findViewById(R.id.no_workout_tv).setVisibility(View.VISIBLE);
+                                }
+                                sqlData.closeDB();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialogs
+                            }
+                        });
+                        // Create the AlertDialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
 
-                         case R.id.workout_overflow_duplicate:
-                             sqlData.openUserDB(context);
-                             ArrayList workoutToDuplicate = sqlData.getworkout(workoutNumber);
-                             String newTitle = "Workout "+ (sqlData.getWorkoutCount()+1);
-                             workoutToDuplicate.set(0, newTitle);
-                             ((HashMap)workoutToDuplicate.get(1)).put("title", newTitle);
-                             sqlData.saveWorkout((HashMap)workoutToDuplicate.get(1));
-                             RelativeLayout card = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.workout_card, null);
-                             ArrayList<ArrayList> exercises = (ArrayList<ArrayList>) ((HashMap)workoutToDuplicate.get(1)).get("exercises");
-                             ll.addView(card);
-                             ((TextView)card.findViewById(R.id.title)).setText(newTitle);
-                             setupWorkoutCard(card, exercises);
-                             return true;
-
-                         case R.id.workout_overflow_delete:
-                             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-                             builder.setTitle("Are you sure you want to delete this workout?").setMessage("This action cannot be undone.");
-                             // Add the buttons
-                             builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                 public void onClick(DialogInterface dialog, int id) {
-                                     sqlData.openUserDB(context);
-                                     sqlData.deleteWorkout(workoutNumber);
-                                     ll.removeViewAt(workoutNumber);
-                                     if(sqlData.getWorkoutCount() == 0) {
-                                         findViewById(R.id.no_workout_tv).setVisibility(View.VISIBLE);
-                                     }
-                                 }
-                             });
-                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                 public void onClick(DialogInterface dialog, int id) {
-                                     // User cancelled the dialogs
-                                 }
-                             });
-                             // Create the AlertDialog
-                             AlertDialog dialog = builder.create();
-                             dialog.show();
-
-
-
-                             return true;
-
-                         default:
-                             return true;
-                     }
+                     return true;
                  }
              }
             );

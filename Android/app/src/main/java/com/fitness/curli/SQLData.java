@@ -159,7 +159,8 @@ public class SQLData {
     }
 
     public void saveWorkoutToHistory(HashMap json) {
-        int id = 1;
+        c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+        int id = c.getCount();
         Date calendar = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String date = df.format(calendar);
@@ -207,12 +208,30 @@ public class SQLData {
         db.update("Workouts", values, "id="+id, null);
     }
 
-    public boolean deleteWorkout(int id) {
-        return db.delete("Workouts", "id" + "=" + id, null) > 0;
+    public void deleteWorkout(int id) {
+        db.delete("Workouts", "id=" + id, null);
+        c=db.rawQuery("Select * From Workouts;", new String[]{});
+        for(int i=0;i<c.getCount();i++){
+            Cursor cursor = db.rawQuery("Select * From Workouts Where id = "+i, new String[]{});
+            Cursor cursor1 = db.rawQuery("Select * From Workouts Where id = "+(i+1), new String[]{});
+            cursor.moveToFirst();
+            cursor1.moveToFirst();
+            if(cursor.getCount() == 0) {
+                ContentValues values = new ContentValues();
+                values.put("id", i);
+                values.put("name", cursor1.getString(1));
+                values.put("workout", cursor1.getString(2));
+                db.insert("Workouts",  null, values);
+                db.delete("Workouts", "id=" + (i+1), null);
+            }
+        }
+
+
     }
 
     public int getWorkoutCount(){
         c=db.rawQuery("Select * From Workouts;", new String[]{});
+        c.moveToFirst();
         int returnInt = c.getCount();
         return returnInt;
     }
@@ -221,6 +240,7 @@ public class SQLData {
 
         c=db.rawQuery("Select id, name, workout From Workouts Where id = "+number, new String[]{});
         c.moveToFirst();
+        System.out.println(number);
         String title = c.getString(1);
         String jsonString = c.getString(2);
         Gson gson = new Gson();

@@ -164,7 +164,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                         }
                         sqlData.closeDB();
                         setResult(1);
-                        onBackPressed();
+                        finish();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -193,7 +193,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 onBackPressed();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-                builder.setTitle("Discard Workout?").setMessage("Are you sure you want to discard this workout? This action is irreversible.");
+                builder.setTitle("Discard Changes?").setMessage("Are you sure you want to discard any changes made to this workout?");
                 // Add the buttons
                 builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -409,7 +409,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 if(currentWeight <= 0){
                     currentWeight = 0.0;
                 }
-                System.out.println(currentWeight);
+
                 String currentWeightString = String.valueOf(currentWeight);
                 editText.setText(currentWeightString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);

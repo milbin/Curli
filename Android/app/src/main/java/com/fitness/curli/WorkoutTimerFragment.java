@@ -6,21 +6,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class WorkoutTimerFragment extends Fragment {
     View fragment;
@@ -28,6 +28,7 @@ public class WorkoutTimerFragment extends Fragment {
     HashMap currentWorkout;
     WorkoutTimer timer;
     Boolean isExpanded;
+    int workoutNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +42,9 @@ public class WorkoutTimerFragment extends Fragment {
 
 
         Bundle bundle = this.getArguments();
+
         currentWorkout = (HashMap) bundle.getSerializable("currentWorkout");
+        workoutNumber = bundle.getInt("workoutNumber");
         isExpanded = bundle.getBoolean("isExpanded");
         ((TextView)fragment.findViewById(R.id.ongoing_workout_title)).setText((String)currentWorkout.get("title"));
 
@@ -55,6 +58,7 @@ public class WorkoutTimerFragment extends Fragment {
             ((Curli) getActivity().getApplication()).setWorkoutTimer(timer);
             SharedPreferences.Editor editor = pref.edit();
             editor.putLong("startTime", startTime);
+            editor.putInt("workoutNumber", workoutNumber);
             editor.apply();
         }else{
             long startTime = pref.getLong("startTime", System.currentTimeMillis());
@@ -105,6 +109,7 @@ public class WorkoutTimerFragment extends Fragment {
         public void onClick(View v) {
             Intent myIntent = new Intent(getActivity(), WorkoutActivity.class);
             myIntent.putExtra("workout", currentWorkout);
+            myIntent.putExtra("workoutNumber", workoutNumber);
             startActivity(myIntent);
         }
     }
@@ -121,6 +126,7 @@ public class WorkoutTimerFragment extends Fragment {
                     SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("workout", null);
+                    editor.putInt("workoutNumber", -1);
                     editor.putString("startTime", null);
                     editor.apply();
                     ((Curli) getActivity().getApplication()).getWorkoutTimer().stopTimer();
@@ -162,6 +168,7 @@ public class WorkoutTimerFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else {
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
                 builder.setTitle("Finish Workout?").setMessage("Are you sure you want to finish this workout?");
                 // Add the buttons
@@ -171,17 +178,49 @@ public class WorkoutTimerFragment extends Fragment {
                         SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("workout", null);
+                        editor.putInt("workoutNumber", -1);
                         editor.putString("startTime", null);
                         editor.apply();
-                        String time = (String) ((TextView) fragment.findViewById(R.id.timer)).getText();
-                        currentWorkout.put("time", time);
+                        final String time = (String) ((TextView) fragment.findViewById(R.id.timer)).getText();
                         ((Curli) getActivity().getApplication()).getWorkoutTimer().stopTimer();
                         ((Curli) getActivity().getApplication()).setWorkoutTimer(null);
-                        SQLData sqlData = new SQLData();
+                        final SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
+
+                        Gson gson = new Gson();
+                        String jsonString = gson.toJson(currentWorkout);
+                        java.lang.reflect.Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+                        final HashMap workoutToCompare = gson.fromJson(jsonString, type);
+                        removeSets(workoutToCompare);
+
+                        currentWorkout.put("time", time);
                         sqlData.saveWorkoutToHistory(currentWorkout);
-                        sqlData.closeDB();
-                        getActivity().finish();
+
+
+
+
+                        if(!workoutToCompare.equals(sqlData.getworkout(workoutNumber).get(1))){ //workout was changed by user
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+                            builder1.setTitle("Update Workout?").setMessage("You modified this workout. Would you like to save these changes?");
+                            // Add the buttons
+                            builder1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    sqlData.updateWorkout(workoutNumber, workoutToCompare);
+                                    sqlData.closeDB();
+                                    getActivity().finish();
+                                }
+                            });
+                            builder1.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {}
+                            });
+                            AlertDialog dialog1 = builder1.create();
+                            dialog1.show();
+
+                        }else{
+                            sqlData.closeDB();
+                            getActivity().finish();
+                        }
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -193,6 +232,12 @@ public class WorkoutTimerFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+        }
+    }
+
+    private void removeSets(HashMap workout){
+        for (ArrayList exercise : (ArrayList<ArrayList>)workout.get("exercises")) {
+           exercise.set(0, 0.0);
         }
     }
 

@@ -190,6 +190,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         spinSex.setAdapter(sexA);
 
 
+        //Create height spinner attributes
         spinHeight = (Spinner) findViewById(R.id.heightSpinner);
         spinHeight.setOnItemSelectedListener(this);
         spinHeight.setOnTouchListener(this);
@@ -210,7 +211,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         weightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spinWeight.setAdapter(weightA);
-
 
 
         /*TODO finish sql save data, array, method, table
@@ -237,17 +237,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                 System.out.println("password button pressed");
                 break;
 
-            /*case R.id.thirdButton:
-                // do your code
-                break;
-                */
-
             default:
                 break;
         }
     }
-
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -279,12 +272,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id==R.id.back_button) {
-            finish();
-        }
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -294,7 +281,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         return super.onOptionsItemSelected(item);
 
         }
-
 
 
     //all getters which will be used to store data in database
@@ -322,6 +308,5 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         return sexChoice;
 
     }
-
 
 }
