@@ -192,6 +192,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         spinHeight = (Spinner) findViewById(R.id.heightSpinner);
         spinHeight.setOnItemSelectedListener(this);
+        spinHeight.setOnTouchListener(this);
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter heightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item, heights);
         heightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -202,6 +203,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         //Getting the instance of Spinner and applying OnItemSelectedListener on it
         spinWeight = (Spinner) findViewById(R.id.simpleSpinner);
         spinWeight.setSelection(0,false);
+        spinWeight.setOnTouchListener(this);
         spinWeight.setOnItemSelectedListener(this);
         //Creating the ArrayAdapter instance having the bank name list
         ArrayAdapter weightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,weights);
@@ -259,30 +261,12 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> arg0, View v, int position,long id) {
 
-
         sexChoice = spinSex.getSelectedItem().toString();
-
-
-        if (heights[position].equals("Feet")) {
-            heightUnit = "Feet";
-        } else if (heights[position].equals("Meters")) {
-            heightUnit = "Meters";
-        }
-
-
-        if (weights[position].equals("Pounds")) {
-            unitChoice = "lbs";
-        } else if (weights[position].equals("Kilograms")) {
-            unitChoice = "kg";
-        }
 
         heightUnit = spinHeight.getSelectedItem().toString();
 
         unitChoice = spinWeight.getSelectedItem().toString();
 
-
-
-        System.out.println("testing location");
         System.out.println(sexChoice);
         System.out.println(heightUnit);
         System.out.println(unitChoice);
