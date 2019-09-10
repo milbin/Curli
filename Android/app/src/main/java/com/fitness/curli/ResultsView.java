@@ -27,8 +27,12 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ResultsView extends AppCompatActivity {
     ProgressDialog dialog;
@@ -59,26 +63,39 @@ public class ResultsView extends AppCompatActivity {
     public void displayResults(){
         resultsLinearLayout = findViewById(R.id.resultsList);
         fab = findViewById(R.id.fab);
-        final String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
+        final LinkedHashMap resultsMap = new LinkedHashMap();
+        resultsMap.put("Weight", null);
+        resultsMap.put("Blood Pressure", null);
+        resultsMap.put("Muscle Size", new String[]{"Arms", "Quads", "Waist", "Chest"});
         fabList = findViewById(R.id.fab_list);
-        for (int index = 0; index < resultsList.length; index++){
-            String resultName = resultsList[index];
+        //String[] resultsArray = (String[]) resultsMap.keySet().toArray();
+        String[] resultsArray = (String[]) resultsMap.keySet().toArray(new String[]{});
+        //String[] resultsArray = Arrays.asList(resultsMap.keySet()).toArray(new String[resultsMap.keySet().toArray().length]);
+        for (int index = 0; index < resultsArray.length; index++){
+            String resultName = resultsArray[index];
             RelativeLayout card = new RelativeLayout(this);
             card.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            TextView title = new TextView(this);
+            title.setId(R.id.title);
+            title.setText(resultName);
+            title.setGravity(Gravity.CENTER_HORIZONTAL);
+
             if (index == 0){
-                System.out.println("ROUNDED");
+                LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                titleParams.topMargin = 20;
+                title.setLayoutParams(titleParams);
                 card.setBackground(ContextCompat.getDrawable(this, R.drawable.white_card_rounded_top));
             }
-            else if (index == resultsList.length-1){
+            else if (index == resultsArray.length-1){
+                LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                titleParams.bottomMargin = 20;
+                title.setLayoutParams(titleParams);
                 card.setBackground(ContextCompat.getDrawable(this, R.drawable.white_card_rounded_bottom));
             }
             else {
                 card.setBackgroundColor(getResources().getColor(R.color.white));
             }
-            TextView title = new TextView(this);
-            title.setId(R.id.title);
-            title.setText(resultName);
-            title.setGravity(Gravity.CENTER_HORIZONTAL);
             card.setGravity(Gravity.CENTER_HORIZONTAL);
             card.addView(title);
             card.setOnClickListener(new View.OnClickListener() {
@@ -93,9 +110,6 @@ public class ResultsView extends AppCompatActivity {
                     series.setThickness(10);
                     graph.addSeries(series);
                     graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
-
-                    graph.getViewport().setXAxisBoundsManual(true);
-
                     graph.getGridLabelRenderer().setHumanRounding(false);
 
                     final EditText editText = resultCard.findViewById(R.id.editText);
@@ -119,10 +133,10 @@ public class ResultsView extends AppCompatActivity {
                             else if (recordResultWrapper.getVisibility() == View.VISIBLE){
                                 Calendar calendar = Calendar.getInstance();
                                 vButton.setText("RECORD RESULT");
-                                double y = Double.valueOf(editText.getText().toString());
+                                Float y = Float.valueOf(editText.getText().toString());
                                 //double x = series.getHighestValueX()+1;
                                 Date x = calendar.getTime();
-                                series.appendData(new DataPoint(x, y), true, 10);
+                                series.appendData(new DataPoint(x, y), false, 10);
                                 graph.addSeries(series);
                                 recordResultWrapper.setVisibility(View.GONE);
                             }
