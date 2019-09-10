@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="70dp"
-                android:fontFamily="@font/rubik_light"
                 android:text="Name"
                 android:textSize="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -52,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="210dp"
                 android:layout_marginTop="70dp"
-                android:fontFamily="@font/rubik_light"
                 android:text="Sex"
                 android:textSize="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -64,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:layout_marginHorizontal="200dp"
+                android:entries="@array/sex_values"
                  />
 
 

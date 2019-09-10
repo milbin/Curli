@@ -180,14 +180,21 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
 
         //Create spinners and their interaction listeners
+        //spinSex = (Spinner) findViewById(R.id.sexSpinner);
+
         spinSex = (Spinner) findViewById(R.id.sexSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.sex_values, R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(R.layout.simple_spinner_item);
+        spinSex.setAdapter(adapter);
+
         spinSex.setOnItemSelectedListener(this);
         spinSex.setOnTouchListener(this);
         //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter sexA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,sexes);
-        sexA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //ArrayAdapter sexA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,sexes);
+        //sexA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
-        spinSex.setAdapter(sexA);
+        //spinSex.setAdapter(sexA);
+
 
 
         //Create height spinner attributes
