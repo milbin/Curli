@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +43,7 @@ public class ResultsView extends AppCompatActivity {
     LinearLayout resultsLinearLayout;
     FloatingActionButton fab;
     Toolbar toolbar;
+    CoordinatorLayout layout;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -50,6 +52,7 @@ public class ResultsView extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
 
+        layout = findViewById(R.id.layout);
         dialog = ProgressDialog.show(this, "Loading...", "", false);
 
         context = getApplicationContext();
@@ -101,49 +104,19 @@ public class ResultsView extends AppCompatActivity {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
-                    final RelativeLayout recordResultWrapper = resultCard.findViewById(R.id.recordResultWrapper);
-                    recordResultWrapper.setVisibility(View.GONE);
-
-                    final GraphView graph = resultCard.findViewById(R.id.graph);
-                    final LineGraphSeries series = new LineGraphSeries();
-                    series.setThickness(10);
-                    graph.addSeries(series);
-                    graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
-                    graph.getGridLabelRenderer().setHumanRounding(false);
-
-                    final EditText editText = resultCard.findViewById(R.id.editText);
-
-                    TextView titleText = v.findViewById(R.id.title);
-                    String titleTextString = titleText.getText().toString();
-                    TextView title = resultCard.findViewById(R.id.title);
-                    title.setText(titleTextString);
-
-                    Button button = resultCard.findViewById(R.id.button);
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Button vButton = (Button) v;
-                            TextView nothing = findViewById(R.id.nothing);
-                            nothing.setVisibility(View.GONE);
-                            if (recordResultWrapper.getVisibility() == View.GONE) {
-                                vButton.setText("DONE");
-                                recordResultWrapper.setVisibility(View.VISIBLE);
-                            }
-                            else if (recordResultWrapper.getVisibility() == View.VISIBLE){
-                                Calendar calendar = Calendar.getInstance();
-                                vButton.setText("RECORD RESULT");
-                                Float y = Float.valueOf(editText.getText().toString());
-                                //double x = series.getHighestValueX()+1;
-                                Date x = calendar.getTime();
-                                series.appendData(new DataPoint(x, y), false, 10);
-                                graph.addSeries(series);
-                                recordResultWrapper.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                    resultsLinearLayout.addView(resultCard);
-                    fab.callOnClick();
+                    TextView title =  v.findViewById(R.id.title);
+                    String titleText = title.getText().toString();
+                    if (resultsMap.get(titleText) != null){
+                        String[] entries = (String[]) resultsMap.get(titleText);
+                        RelativeLayout darken = new RelativeLayout(context);
+                        darken.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                        darken.setBackgroundColor(getResources().getColor(R.color.design_default_color_primary_dark));
+                        darken.setAlpha((float) 0.5);
+                        layout.addView(darken);
+                    }
+                    else {
+                        addCard(v);
+                    }
                 }
             });
             fabList.addView(card);
@@ -164,16 +137,51 @@ public class ResultsView extends AppCompatActivity {
                 }
             }
         });
-        /*
-        String[] resultsList = new String[]{"Weight", "Blood pressure", "Muscle Mass"};
-        LinearLayout resultLinearLayout = findViewById(R.id.resultsList);
+    }
 
-        for (String result : resultsList){
-            View card = LayoutInflater.from(context).inflate(R.layout.result_card, null);
-            TextView title = card.findViewById(R.id.title);
-            title.setText(result);
-            resultLinearLayout.addView(card);
-        }
-        */
+    public void addCard(View v){
+        View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
+        final RelativeLayout recordResultWrapper = resultCard.findViewById(R.id.recordResultWrapper);
+        recordResultWrapper.setVisibility(View.GONE);
+
+        final GraphView graph = resultCard.findViewById(R.id.graph);
+        final LineGraphSeries series = new LineGraphSeries();
+        series.setThickness(10);
+        graph.addSeries(series);
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
+        graph.getGridLabelRenderer().setHumanRounding(false);
+
+        final EditText editText = resultCard.findViewById(R.id.editText);
+
+        TextView titleText = v.findViewById(R.id.title);
+        String titleTextString = titleText.getText().toString();
+        TextView title = resultCard.findViewById(R.id.title);
+        title.setText(titleTextString);
+
+        Button button = resultCard.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button vButton = (Button) v;
+                TextView nothing = findViewById(R.id.nothing);
+                nothing.setVisibility(View.GONE);
+                if (recordResultWrapper.getVisibility() == View.GONE) {
+                    vButton.setText("DONE");
+                    recordResultWrapper.setVisibility(View.VISIBLE);
+                }
+                else if (recordResultWrapper.getVisibility() == View.VISIBLE){
+                    Calendar calendar = Calendar.getInstance();
+                    vButton.setText("RECORD RESULT");
+                    Float y = Float.valueOf(editText.getText().toString());
+                    //double x = series.getHighestValueX()+1;
+                    Date x = calendar.getTime();
+                    series.appendData(new DataPoint(x, y), false, 10);
+                    graph.addSeries(series);
+                    recordResultWrapper.setVisibility(View.GONE);
+                }
+            }
+        });
+        resultsLinearLayout.addView(resultCard);
+        fab.callOnClick();
     }
 }
