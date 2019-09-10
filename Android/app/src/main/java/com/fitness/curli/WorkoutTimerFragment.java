@@ -211,7 +211,17 @@ public class WorkoutTimerFragment extends Fragment {
                                 }
                             });
                             builder1.setNegativeButton("Discard", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {}
+                                public void onClick(DialogInterface dialog, int id) {
+                                    sqlData.closeDB();
+                                    getActivity().finish();
+                                }
+                            });
+                            builder1.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    sqlData.closeDB();
+                                    getActivity().finish();
+                                }
                             });
                             AlertDialog dialog1 = builder1.create();
                             dialog1.show();
