@@ -110,6 +110,7 @@ public class ResultsView extends AppCompatActivity {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final View view = v;
                     TextView title =  v.findViewById(R.id.title);
                     String titleText = title.getText().toString();
                     if (resultsMap.get(titleText) != null){
@@ -135,6 +136,7 @@ public class ResultsView extends AppCompatActivity {
                             public void onClick(View v) {
                                 darken.removeAllViews();
                                 darken.setVisibility(View.GONE);
+                                addCard(view);
                             }
                         });
                     }
