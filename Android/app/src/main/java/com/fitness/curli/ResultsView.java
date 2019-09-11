@@ -16,10 +16,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -28,6 +30,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -69,7 +72,7 @@ public class ResultsView extends AppCompatActivity {
         final LinkedHashMap resultsMap = new LinkedHashMap();
         resultsMap.put("Weight", null);
         resultsMap.put("Blood Pressure", null);
-        resultsMap.put("Muscle Size", new String[]{"Arms", "Quads", "Waist", "Chest"});
+        resultsMap.put("Muscle Size", new ArrayList<>(Arrays.asList("Arms", "Quads", "Waist", "Chest")));
         fabList = findViewById(R.id.fab_list);
         //String[] resultsArray = (String[]) resultsMap.keySet().toArray();
         String[] resultsArray = (String[]) resultsMap.keySet().toArray(new String[]{});
@@ -107,12 +110,24 @@ public class ResultsView extends AppCompatActivity {
                     TextView title =  v.findViewById(R.id.title);
                     String titleText = title.getText().toString();
                     if (resultsMap.get(titleText) != null){
-                        String[] entries = (String[]) resultsMap.get(titleText);
+                        ArrayList<String> entries = (ArrayList<String>) resultsMap.get(titleText);
                         RelativeLayout darken = new RelativeLayout(context);
                         darken.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                         darken.setBackgroundColor(getResources().getColor(R.color.design_default_color_primary_dark));
                         darken.setAlpha((float) 0.5);
                         layout.addView(darken);
+
+                        RelativeLayout makeResultCard = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.result_card, null);
+                        Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
+                        // Creating adapter for spinner
+                        ArrayAdapter dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, entries);
+
+                        // Drop down layout style - list view with radio button
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        // attaching data adapter to spinner
+                        titleSpinner.setAdapter(dataAdapter);
+                        layout.addView(makeResultCard);
                     }
                     else {
                         addCard(v);

@@ -2,33 +2,89 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/white_card_rounded">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        >
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_outline_calendar_today_24px"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginTop="5dp"
-            />
+    >
 
-        <TextView
+    <RelativeLayout
+        android:id="@+id/contentWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        >
+
+        <Spinner
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"
-            android:textSize="40sp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center_vertical"
-            />
-    </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:textSize="25sp" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/white_card_rounded"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="record result"
+            android:textColor="@color/white"
+            android:textSize="10dp" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_width="345dp"
+            android:layout_height="111dp"
+            android:layout_below="@id/title"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="10dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/recordResultWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contentWrapper"
+        android:background="@drawable/white_card_rounded_bottom">
+        <RelativeLayout
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E7E7E7"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            />
+        <LinearLayout
+            android:layout_below="@id/space"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/white_card_rounded"
+            android:backgroundTint="#F1F1F1"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="result : "
+                android:textSize="20sp"
+                />
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
