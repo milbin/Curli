@@ -71,13 +71,17 @@
 
     <style name="spinnerItemStyle" parent="CondensedBase">
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/sandstone_regular</item>
 
     </style>
 
     <style name="spinnerDropDownItemStyle" parent="CondensedBase">
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:padding">10sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/sandstone_regular</item>
 
     </style>
 

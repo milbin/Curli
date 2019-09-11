@@ -180,8 +180,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
 
         //Create spinners and their interaction listeners
-        //spinSex = (Spinner) findViewById(R.id.sexSpinner);
-
+        //sex choice spinner
         spinSex = (Spinner) findViewById(R.id.sexSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.sex_values, R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(R.layout.simple_spinner_item);
@@ -189,35 +188,26 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
         spinSex.setOnItemSelectedListener(this);
         spinSex.setOnTouchListener(this);
-        //Creating the ArrayAdapter instance having the bank name list
-        //ArrayAdapter sexA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,sexes);
-        //sexA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        //spinSex.setAdapter(sexA);
-
 
 
         //Create height spinner attributes
-        spinHeight = (Spinner) findViewById(R.id.heightSpinner);
+        spinHeight= (Spinner) findViewById(R.id.heightSpinner);
+        ArrayAdapter<CharSequence> adapterHeight = ArrayAdapter.createFromResource(this, R.array.height_options, R.layout.simple_spinner_item);
+        adapterHeight.setDropDownViewResource(R.layout.simple_spinner_item);
+        spinHeight.setAdapter(adapterHeight);
+
         spinHeight.setOnItemSelectedListener(this);
         spinHeight.setOnTouchListener(this);
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter heightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item, heights);
-        heightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        spinHeight.setAdapter(heightA);
 
 
         //Getting the instance of Spinner and applying OnItemSelectedListener on it
-        spinWeight = (Spinner) findViewById(R.id.simpleSpinner);
-        spinWeight.setSelection(0,false);
-        spinWeight.setOnTouchListener(this);
+        spinWeight = (Spinner) findViewById(R.id.weightSpinner);
+        ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(this, R.array.weight_options, R.layout.simple_spinner_item);
+        adapter3.setDropDownViewResource(R.layout.simple_spinner_item);
+        spinWeight.setAdapter(adapter3);
+
         spinWeight.setOnItemSelectedListener(this);
-        //Creating the ArrayAdapter instance having the bank name list
-        ArrayAdapter weightA = new ArrayAdapter(this,android.R.layout.simple_spinner_item,weights);
-        weightA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        spinWeight.setAdapter(weightA);
+        spinWeight.setOnTouchListener(this);
 
 
         /*TODO finish sql save data, array, method, table
