@@ -47,6 +47,7 @@ public class ResultsView extends AppCompatActivity {
     FloatingActionButton fab;
     Toolbar toolbar;
     CoordinatorLayout layout;
+    RelativeLayout darken;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -69,6 +70,8 @@ public class ResultsView extends AppCompatActivity {
     public void displayResults(){
         resultsLinearLayout = findViewById(R.id.resultsList);
         fab = findViewById(R.id.fab);
+        darken = findViewById(R.id.darken);
+        darken.setVisibility(View.GONE);
         final LinkedHashMap resultsMap = new LinkedHashMap();
         resultsMap.put("Weight", null);
         resultsMap.put("Blood Pressure", null);
@@ -111,11 +114,8 @@ public class ResultsView extends AppCompatActivity {
                     String titleText = title.getText().toString();
                     if (resultsMap.get(titleText) != null){
                         ArrayList<String> entries = (ArrayList<String>) resultsMap.get(titleText);
-                        RelativeLayout darken = new RelativeLayout(context);
-                        darken.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                        darken.setBackgroundColor(getResources().getColor(R.color.design_default_color_primary_dark));
-                        darken.setAlpha((float) 0.5);
-                        layout.addView(darken);
+                        darken.bringToFront();
+                        darken.setVisibility(View.VISIBLE);
 
                         RelativeLayout makeResultCard = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.result_card, null);
                         Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
@@ -127,7 +127,16 @@ public class ResultsView extends AppCompatActivity {
 
                         // attaching data adapter to spinner
                         titleSpinner.setAdapter(dataAdapter);
-                        layout.addView(makeResultCard);
+                        darken.addView(makeResultCard);
+
+                        Button done = makeResultCard.findViewById(R.id.button);
+                        done.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                darken.removeAllViews();
+                                darken.setVisibility(View.GONE);
+                            }
+                        });
                     }
                     else {
                         addCard(v);

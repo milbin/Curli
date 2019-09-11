@@ -9,6 +9,14 @@
     android:id="@+id/layout"
     >
 
+    <RelativeLayout
+        android:id="@+id/darken"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:alpha="0.5"
+        />
+
     <include
         layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
