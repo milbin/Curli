@@ -16,9 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -43,11 +45,13 @@ public class WorkoutActivity extends AppCompatActivity {
     //{"title": "Bicep Curl", "weight":75, "reps":8}]]}
 
     ArrayList<ArrayList> exercises;
+    ArrayList<ArrayList> originalExercise;
     Context context;
     int checkmark_size = 50;
     RelativeLayout currentlyExpandedCard;
     HashMap workout;
     Fragment fragment;
+    int workoutNumber;
 
 
 
@@ -59,6 +63,8 @@ public class WorkoutActivity extends AppCompatActivity {
         context = this;
 
         workout = (HashMap) getIntent().getSerializableExtra("workout");
+        workoutNumber = getIntent().getIntExtra("workoutNumber", -1);
+
 
         //setup workout timer fragment
         FragmentManager mFragmentManager = getSupportFragmentManager();
@@ -66,6 +72,7 @@ public class WorkoutActivity extends AppCompatActivity {
         WorkoutTimerFragment fr = new WorkoutTimerFragment(); // Replace with your Fragment class
         Bundle bundle = new Bundle();
         bundle.putSerializable("currentWorkout",workout);
+        bundle.putInt("workoutNumber", workoutNumber);
         bundle.putBoolean("isExpanded", true);
         fr.setArguments(bundle);
         fragmentTransaction.replace(R.id.ongoing_workout_toolbar, fr).commit();
@@ -136,7 +143,7 @@ public class WorkoutActivity extends AppCompatActivity {
             }
             exerciseWeight.setText(Double.toString((Double) ((HashMap)exercise.get(1)).get("weight")));
             excerciseSetsCompleted.setText("Sets Completed: " + setsCompleted + " of " + (exercise.size() - 1));
-            exerciseSets.setText("SET "+ (setsCompleted+1));
+            exerciseSets.setText("Set "+ (setsCompleted+1));
 
             LinearLayout checkboxLL = relativeLayout.findViewById(R.id.checkbox_linear_layout);
             for (int i = 1; i < exercise.size(); i++) {
@@ -164,6 +171,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 collapseCard((RelativeLayout) relativeLayout);
             }
         }
+        save();
     }
 
     public HashMap getWorkout(){//this is for the toolbar fragment that will store the workout
@@ -246,7 +254,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                     setsCompleted.setText("Sets Completed: "+(setNumber)+" of "+(exercise.size()-1));
                     TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                    exerciseSets.setText("SET "+(setNumber+1));
+                    exerciseSets.setText("Set "+(setNumber+1));
                 }
             }
 
@@ -366,7 +374,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
                 setsCompleted.setText("Sets Completed: "+(setNumber+1)+" of "+(exercise.size()-1));
                 TextView exerciseSets = relativeLayout.findViewById(R.id.set_number);
-                exerciseSets.setText("SET "+(setNumber+2));
+                exerciseSets.setText("Set "+(setNumber+2));
 
             }
 
@@ -398,7 +406,7 @@ public class WorkoutActivity extends AppCompatActivity {
         paramsNext.setMargins(0, 20, 0, 0);
         exerciseSetsRLNext.setLayoutParams(paramsNext);
         TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
-        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: \n", "Sets Completed: "));
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets:\n", "Sets Completed: "));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(true);
@@ -428,7 +436,7 @@ public class WorkoutActivity extends AppCompatActivity {
         params.setMargins(0, 10, 0, 0);
         exerciseSetsRL.setLayoutParams(params);
         TextView setsCompleted = relativeLayout.findViewById(R.id.sets_completed);
-        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets Completed: \n"));
+        setsCompleted.setText(setsCompleted.getText().toString().replace("Sets Completed: ", "Sets:\n"));
         TextView exerciseReps = relativeLayout.findViewById(R.id.exercise_reps);
         TextView exerciseWeight = relativeLayout.findViewById(R.id.exercise_weight);
         exerciseReps.setEnabled(false);
@@ -505,6 +513,10 @@ public class WorkoutActivity extends AppCompatActivity {
             if(v.getId() == R.id.weight_subtract_button) {
                 EditText editText = relativeLayout.findViewById(R.id.exercise_weight);
                 Double currentWeight = Double.parseDouble(editText.getText().toString()) - 2.5;
+                if(currentWeight <= 0){
+                    currentWeight = 0.0;
+                }
+
                 String currentWeightString = String.valueOf(currentWeight);
                 editText.setText(currentWeightString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
@@ -516,12 +528,16 @@ public class WorkoutActivity extends AppCompatActivity {
                 Integer currentReps = Integer.parseInt(editText.getText().toString()) + 1;
                 String currentRepsString = String.valueOf(currentReps);
                 editText.setText(currentRepsString);
+
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
 
             }
             if(v.getId() == R.id.reps_subtract_button) {
                 EditText editText = relativeLayout.findViewById(R.id.exercise_reps);
                 Integer currentReps = Integer.parseInt(editText.getText().toString()) - 1;
+                if(currentReps <= 0){
+                    currentReps = 0;
+                }
                 String currentRepsString = String.valueOf(currentReps);
                 editText.setText(currentRepsString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("reps", currentReps);
@@ -596,16 +612,43 @@ public class WorkoutActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) { //hide keyboard and unfocus current edittext if click outside of edittext
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+
+            if(v!=null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                v.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent( event );
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        SharedPreferences pref = this.getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
+        save();
+    }
+
+    @Override
+    public void onBackPressed(){
+        save();
+        finish();
+    }
+
+    private void save(){
+        //save workout
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("ongoing workout", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         Gson gson = new Gson();
         String hashMapString = gson.toJson(workout);
         editor.putString("workout", hashMapString);
+        editor.putInt("workoutNumber", workoutNumber);
         editor.apply();
+        ((Curli) getApplication()).setWorkout(workout);
     }
 
 

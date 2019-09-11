@@ -50,6 +50,15 @@ public class MuscleView extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.getBooleanExtra("FromWorkoutBuilder", false)){//check if this activity is getting called from workoutBuilder
             exercisesToAdd = new ArrayList<>();
+            findViewById(R.id.bottom_nav_bar).setVisibility(View.GONE);
+            findViewById(R.id.addedExercisesBar).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            findViewById(R.id.addedExercisesBar).findViewById(R.id.addExercisesButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,26 +92,6 @@ public class MuscleView extends AppCompatActivity {
     }
 
     public void displayMuscles(){
-        Spinner muscleGroupSpinner = findViewById(R.id.muscleGroupSpinner);
-        muscleGroupSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedGroup = parent.getSelectedItem().toString();
-
-                //Spinner father = findViewById(R.id.muscleGroupSpinner);
-                if (++check > 1) {
-                    if (!selectedGroup.equals("Any Muscle Group")) {
-                        Intent intent = new Intent(MuscleView.this, ExerciseView.class);
-                        intent.putExtra("group", selectedGroup);
-                        intent.putExtra("source", "schedule_planner");
-                        startActivity(intent);
-                    }
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent){
-            }
-        });
-
         ArrayList<String> groups = sqlData.getGroups();
 
         int groupSize = groups.size();
@@ -238,10 +227,19 @@ public class MuscleView extends AppCompatActivity {
         if(resultCode == 1) {
             ArrayList<String> exercisesList = data.getStringArrayListExtra("exercisesToAdd");
 
+
             for(String exercise:exercisesList){
                 if(!exercisesToAdd.contains(exercise)){
                     exercisesToAdd.add(exercise);
                 }
+            }
+            if(data.getBooleanExtra("shouldFinish", false)){ //this means the add exercises button was pressed in the child activity of this one
+                onBackPressed();
+            }
+            if(exercisesToAdd.size() == 1){
+                ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercise");
+            }else {
+                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
             }
         }
     }

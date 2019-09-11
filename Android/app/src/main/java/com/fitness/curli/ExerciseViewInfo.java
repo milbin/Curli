@@ -7,9 +7,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,13 +22,14 @@ public class ExerciseViewInfo extends AppCompatActivity {
     ProgressDialog dialog;
     Context context;
     Menu menu;
+    SQLData SQLData;
 
     @Override
     public void onCreate(Bundle savedInstanceBundle){
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.exercise_view_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("EXERCISE INFO");
+        toolbar.setTitle("");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
 
@@ -39,6 +43,8 @@ public class ExerciseViewInfo extends AppCompatActivity {
         dialog = ProgressDialog.show(ExerciseViewInfo.this, "", "Loading...", true);
 
         context = getApplicationContext();
+        SQLData = new SQLData();
+        SQLData.openExerciseDB(context);
         relativeLayout = findViewById(R.id.relativeLayout);
 
         getInfo();
@@ -51,6 +57,12 @@ public class ExerciseViewInfo extends AppCompatActivity {
         String text = intent.getStringExtra("exercise");
         title.setText(text);
 
+        String group = SQLData.getGroup1FromName(text);
+        LinearLayout muscleTags = findViewById(R.id.muscleTags);
+        View card = LayoutInflater.from(context).inflate(R.layout.tag, null);
+        TextView tagText = card.findViewById(R.id.title);
+        tagText.setText(group);
+        muscleTags.addView(card);
         dialog.dismiss();
     }
 

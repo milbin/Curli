@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="weight_options">
+    <item>Pounds</item>
+
+    <item>Kilograms</item>
+
+    </string-array>
+
+    <string-array name="weight_values">
+        <item>lbs</item>
+
+        <item>kg</item>
+
+    </string-array>
+
+    <string-array name="sex_options">
+        <item>Male</item>
+
+        <item>Female</item>
+
+    </string-array>
+
+    <string-array name="sex_values">
+        <item>Male</item>
+
+        <item>Female</item>
+
+    </string-array>
+
+</resources>

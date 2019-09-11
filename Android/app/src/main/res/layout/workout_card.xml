@@ -12,7 +12,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:elevation="0dp"
-        android:background="@drawable/back_button_background"
+        android:background="@drawable/white_card_rounded_hollow"
         android:animateLayoutChanges="true">
 
         <ImageButton
@@ -34,14 +34,7 @@
             android:layout_centerVertical="true"
             >
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="false"
-                style="@style/Title"
-                android:gravity="center_horizontal"
-                android:text="Arms and Chest" />
+
 
             <TextView
                 android:id="@+id/time"
@@ -57,16 +50,23 @@
                 android:id="@+id/equipment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/time"
-                android:layout_centerHorizontal="false"
                 android:text="Barbell ∙ Dumbell ∙ Cables"
-                android:textAppearance="@style/Subtitle2" />
+                android:textAppearance="@style/Subtitle1" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                android:layout_below="@id/equipment"
+                style="@style/Title"
+                android:gravity="center_horizontal"
+                android:text="Arms and Chest" />
 
             <TextView
                 android:id="@+id/number_of_exercises"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/equipment"
+                android:layout_below="@+id/time"
                 android:layout_centerHorizontal="false"
                 android:text="12 Exercises"
                 android:textAppearance="@style/Subtitle2"/>
@@ -81,31 +81,13 @@
             android:layout_marginEnd="20dp"
             >
         <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/MuscleGroupLL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="false"
             android:layout_alignParentEnd="true"
             >
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/placeholder_icon"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/placeholder_icon"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_rowing_black_24dp"
-                />
         </LinearLayout>
         </RelativeLayout>
 

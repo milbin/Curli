@@ -41,12 +41,11 @@
                 android:src="@drawable/ic_access_time_black_24dp" />
             <TextView
                 android:id="@+id/bottom_icon_TV"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="History"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5f6267"
+                style="@style/BottomNavBarText"
                 android:layout_below="@+id/history"
                 />
         </RelativeLayout>
@@ -68,12 +67,11 @@
                 android:src="@drawable/ic_outline_calendar_today_24px" />
             <TextView
                 android:id="@+id/bottom_icon_TV"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Schedule"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5f6267"
+                style="@style/BottomNavBarText"
                 android:layout_below="@+id/schedule"
                 />
         </RelativeLayout>
@@ -96,12 +94,11 @@
                 android:src="@drawable/ic_dumbell" />
             <TextView
                 android:id="@+id/bottom_icon_TV"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Workout"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5f6267"
+                style="@style/BottomNavBarText"
                 android:layout_below="@+id/workout"
                 />
         </RelativeLayout>
@@ -124,12 +121,11 @@
                 android:src="@drawable/ic_info_blue_24dp" />
             <TextView
                 android:id="@+id/bottom_icon_TV"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Exercises"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5f6267"
+                style="@style/BottomNavBarText"
                 android:layout_below="@+id/exercises"
                 />
         </RelativeLayout>
@@ -152,12 +148,11 @@
                 android:src="@drawable/ic_trending_up_black_24dp" />
             <TextView
                 android:id="@+id/bottom_icon_TV"
-                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Progress"
                 android:layout_centerHorizontal="true"
-                android:textColor="#5f6267"
+                style="@style/BottomNavBarText"
                 android:layout_below="@+id/progress"
                 />
         </RelativeLayout>

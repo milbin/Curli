@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
@@ -34,6 +36,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,15 +68,35 @@ public class ExerciseView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.exercise_view);
 
+        //Intent ontent = new Intent(ExerciseView.this, Test.class);
+        //startActivity(ontent);
+
         toolbar = (Toolbar) findViewById(R.id.header);
         setTitle("");
         setSupportActionBar(toolbar);
+
+        toolbar.bringToFront();
+        AppBarLayout appbar = (AppBarLayout) findViewById(R.id.appbar);
+        appbar.bringToFront();
 
         final Intent intent = getIntent();
         group = intent.getStringExtra("group");
         source = intent.getStringExtra("source");
         if(source.equals("WorkoutBuilder")){
             exercisesToAdd = intent.getStringArrayListExtra("exercisesToAdd");
+            findViewById(R.id.addedExercisesBar).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            findViewById(R.id.addedExercisesBar).findViewById(R.id.addExercisesButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("exercisesToAdd", exercisesToAdd);
+                    intent.putExtra("shouldFinish", true);
+                    setResult(1, intent);
+                    onBackPressed();
+                }
+            });
+
         }
 
         ImageView backButton = findViewById(R.id.backbutton);
@@ -95,7 +119,7 @@ public class ExerciseView extends AppCompatActivity {
         sqlData = new SQLData();
         sqlData.openExerciseDB(context);
 
-        nameList = sqlData.getExercises("MainGroup", group).toArray(new String[0]);
+        nameList = sqlData.getExercises("Group1", group).toArray(new String[0]);
 
         for (int i = 0; i < nameList.length; i++) {
             SearchResult name = new SearchResult(nameList[i]);
@@ -114,14 +138,14 @@ public class ExerciseView extends AppCompatActivity {
 
         displaySpinner();
         //displayExercises(sqlData.getExercisesAlphabetized());
-        displayExercises(sqlData.getExercises("MainGroup", group));
+        displayExercises(sqlData.getExercises("Group1", group));
 
         dialog.dismiss();
     }
 
     private void displaySpinner() {
 
-        final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
+        //final RelativeLayout spinnerRelativeLayout = findViewById(R.id.spinner_rl);
         //RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.scrollView).findViewById(R.id.scrollViewWrapper).findViewById(R.id.spinner_rl_scroll);
         //final RelativeLayout spinnerRelativeLayoutScroll = findViewById(R.id.spinner_rl_scroll);
 
@@ -217,25 +241,24 @@ public class ExerciseView extends AppCompatActivity {
 
         RelativeLayout button = findViewById(R.id.spinner_rl);
         button.bringToFront();
-        ((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
+        //((CoordinatorLayout.LayoutParams) button.getLayoutParams()).setBehavior(new StickyButtonBehavior(R.id.anchor));
 
     }
 
     public void displayExercises(ArrayList<String> exercisesArray){
         String[] exercises = exercisesArray.toArray(new String[]{});
 
-        RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);
+        //RelativeLayout toolbarBottom = findViewById(R.id.toolbarBottom);
 
         try{
-            ImageView groupIcon = toolbarBottom.findViewById(R.id.groupIcon);
+            ImageView groupIcon = findViewById(R.id.groupIcon);
             int imageId = context.getResources().getIdentifier(group.toLowerCase().replaceAll(" ", "_"), "drawable", context.getPackageName());
             groupIcon.setImageResource(imageId);
-
         }
         catch (Exception e){}
 
 
-        LinearLayout infoWrapper = toolbarBottom.findViewById(R.id.infoWrapper);
+        LinearLayout infoWrapper = findViewById(R.id.infoWrapper);
         TextView groupView = infoWrapper.findViewById(R.id.group);
         groupView.setText(group);
 
@@ -290,8 +313,8 @@ public class ExerciseView extends AppCompatActivity {
 
         */
 
-        RelativeLayout topBar = toolbar.findViewById(R.id.topBar);
-        SearchView searchView = topBar.findViewById(R.id.searchView);
+        RelativeLayout topBar = findViewById(R.id.topBar);
+        SearchView searchView = findViewById(R.id.searchView);
 
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -359,8 +382,18 @@ public class ExerciseView extends AppCompatActivity {
             startActivity(intent);
         }
         else if (source.equals("WorkoutBuilder")){
-            v.setBackground(getDrawable(R.drawable.selected_exercise_background));
-            exercisesToAdd.add((String)exercise.getText());
+            if(!exercisesToAdd.contains(exerciseText)) {
+                v.setBackground(getDrawable(R.drawable.selected_exercise_background));
+                exercisesToAdd.add((String) exercise.getText());
+            }else{
+                v.setBackground(null);
+                exercisesToAdd.remove(exercise.getText());
+            }
+            if(exercisesToAdd.size() == 1){
+                ((TextView)findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercise");
+            }else {
+                ((TextView) findViewById(R.id.addedExercisesBar).findViewById(R.id.numberOfExercisesAdded)).setText(exercisesToAdd.size() + " Exercises");
+            }
         }
     }
 }

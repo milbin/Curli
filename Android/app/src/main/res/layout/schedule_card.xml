@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <RelativeLayout
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp">
+    <TextView
+        android:id="@+id/DayOfWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WED"
+        style="@style/Subtitle2"
+        />
+    <TextView
+        android:id="@+id/DayNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="13"
+        android:layout_below="@id/DayOfWeek"
+        style="@style/Title"
+        />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Subtitle1"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:text="No Workout Today"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toEndOf="@+id/date"
+        android:background="@drawable/white_card_rounded_hollow"
+        android:animateLayoutChanges="true">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@drawable/done_button_background"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="32dp"
+            android:text="Edit"
+            style="@style/Button"
+            android:textColor="@android:color/white"
+
+            />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            >
+
+
+            <TextView
+                android:id="@+id/repeats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_centerHorizontal="false"
+                android:text="Repeats Weekly"
+                android:textAppearance="@style/Subtitle1" />
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="false"
+                style="@style/Title"
+                android:gravity="center_horizontal"
+                android:text="Arms and Chest" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/repeats"
+                android:layout_centerHorizontal="false"
+                android:text="9:00-10:00pm"
+                android:textAppearance="@style/Subtitle2"/>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -47,6 +47,7 @@
         <activity android:name=".SchedulePlanner"/>
         <activity android:name=".MuscleView"/>
         <activity android:name=".WorkoutBuilder"/>
+        <activity android:name=".ProfileActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -27,7 +27,7 @@ import java.util.LinkedHashMap;
 
 public class WorkoutBuilder extends AppCompatActivity {
     Context context = this;
-    ArrayList<ArrayList> exercises = new ArrayList<ArrayList>();
+    ArrayList<ArrayList> exercises = new ArrayList<>();
     EditText title;
     int workoutNumber = -1;
 
@@ -88,6 +88,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 count++;
             }
             title.setText((String)currentWorkout.get("title"));
+            ((TextView)findViewById(R.id.title_toolbar)).setText((String)currentWorkout.get("title"));
 
             //add exercises from previous workoutBuilder
             for(ArrayList<HashMap> exercise:exercises) {
@@ -154,10 +155,6 @@ public class WorkoutBuilder extends AppCompatActivity {
                         HashMap workout = new HashMap();
                         workout.put("title", title.getText().toString());
                         workout.put("exercises", exercises);
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra("workout", workout);
-
-                        setResult(1, returnIntent);
                         SQLData sqlData = new SQLData();
                         sqlData.openUserDB(context);
                         if(workoutNumber != -1){
@@ -166,7 +163,8 @@ public class WorkoutBuilder extends AppCompatActivity {
                             sqlData.saveWorkout(workout);
                         }
                         sqlData.closeDB();
-                        onBackPressed();
+                        setResult(1);
+                        finish();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -182,6 +180,11 @@ public class WorkoutBuilder extends AppCompatActivity {
 
         }
     }
+    @Override
+    public void onBackPressed() {
+        findViewById(R.id.back_button).performClick();
+        super.onBackPressed();
+    }
 
     public class onBackButtonClicked implements View.OnClickListener {
         @Override
@@ -190,7 +193,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 onBackPressed();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
-                builder.setTitle("Discard Workout?").setMessage("Are you sure you want to discard this workout? This action is irreversible.");
+                builder.setTitle("Discard Changes?").setMessage("Are you sure you want to discard any changes made to this workout?");
                 // Add the buttons
                 builder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -253,7 +256,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         exerciseWeight.setOnKeyListener(new onEditTextDoneButtonPressed());
         CharSequence title = ((TextView) ((View) v.getParent()).findViewById(R.id.exercise_name)).getText();
         LinkedHashMap set = new LinkedHashMap<>();
-        ((TextView)weightAndReps.findViewById(R.id.sets_completed)).setText("SET "+ll.getChildCount());
+        ((TextView)weightAndReps.findViewById(R.id.sets_completed)).setText("Set "+ll.getChildCount());
         if(weight != -1&&reps != -1) {
             //TODO this title needs to be changed in order to support a superset
             set.put("title", title);
@@ -323,6 +326,11 @@ public class WorkoutBuilder extends AppCompatActivity {
     public class onTitleEdit implements EditText.OnFocusChangeListener {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus){
+                findViewById(R.id.edit_title).setVisibility(View.GONE);
+            }else{
+                findViewById(R.id.edit_title).setVisibility(View.VISIBLE);
+            }
             ((TextView)findViewById(R.id.title_toolbar)).setText(((EditText)v).getText());
         }
     }
@@ -401,6 +409,7 @@ public class WorkoutBuilder extends AppCompatActivity {
                 if(currentWeight <= 0){
                     currentWeight = 0.0;
                 }
+
                 String currentWeightString = String.valueOf(currentWeight);
                 editText.setText(currentWeightString);
                 ((HashMap)exercises.get(exerciseNumber).get(setNumber)).put("weight", currentWeight);
@@ -442,7 +451,7 @@ public class WorkoutBuilder extends AppCompatActivity {
         for(ArrayList exercise:exercises){
             for(int setNum=1;setNum<exercise.size();setNum++){
                 HashMap set = (HashMap) exercise.get(setNum);
-                String equipmentString = sqlDataExercise.getEquipmentFromName((String)set.get("title"));
+                String equipmentString = sqlDataExercise.getPrimaryEquipmentFromName((String)set.get("title"));
                 for(String equipment: equipmentString.split(", ")){
                     if(!equipmentList.contains(equipment)){
                         equipmentList.add(equipment);
@@ -455,11 +464,17 @@ public class WorkoutBuilder extends AppCompatActivity {
         }
         String finalEquipmentString = "";
         for(String equipment: equipmentList){
-            finalEquipmentString += equipment+" · ";
+            if(!equipment.equals("None") && !equipment.equals("")) {
+                finalEquipmentString += equipment + " · ";
+            }
         }
         finalEquipmentString = finalEquipmentString.substring(0, finalEquipmentString.length() - 3);
         ((TextView)rl.findViewById(R.id.time)).setText("~"+(((totalReps*5)+(totalSets*60))/60)+" mins"); //TODO change the 60 second rest time to the rest period of the user defined in their profile
-        ((TextView)rl.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        if(totalExercises == 1){
+            ((TextView)rl.findViewById(R.id.number_of_exercises)).setText(totalExercises +" Exercises");
+        }else {
+            ((TextView) rl.findViewById(R.id.number_of_exercises)).setText(totalExercises + " Exercise");
+        }
         ((TextView)rl.findViewById(R.id.equipment)).setText(finalEquipmentString);
     }
 
