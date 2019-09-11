@@ -128,7 +128,9 @@ public class ResultsView extends AppCompatActivity {
 
                         // attaching data adapter to spinner
                         titleSpinner.setAdapter(dataAdapter);
+                        makeResultCard.bringToFront();
                         darken.addView(makeResultCard);
+                        fab.setVisibility(View.INVISIBLE);
 
                         Button done = makeResultCard.findViewById(R.id.button);
                         done.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +141,7 @@ public class ResultsView extends AppCompatActivity {
 
                                 String text = titleSpinner.getSelectedItem().toString();
 
+                                fab.setVisibility(View.VISIBLE);
                                 addCard(v, text);
                             }
                         });
