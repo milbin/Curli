@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,8 +110,7 @@ public class ResultsView extends AppCompatActivity {
             card.addView(title);
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    final View view = v;
+                public void onClick(final View v) {
                     TextView title =  v.findViewById(R.id.title);
                     String titleText = title.getText().toString();
                     if (resultsMap.get(titleText) != null){
@@ -119,7 +119,7 @@ public class ResultsView extends AppCompatActivity {
                         darken.setVisibility(View.VISIBLE);
 
                         RelativeLayout makeResultCard = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.result_card, null);
-                        Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
+                        final Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
                         // Creating adapter for spinner
                         ArrayAdapter dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, entries);
 
@@ -133,15 +133,18 @@ public class ResultsView extends AppCompatActivity {
                         Button done = makeResultCard.findViewById(R.id.button);
                         done.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onClick(View view) {
                                 darken.removeAllViews();
                                 darken.setVisibility(View.GONE);
-                                addCard(view);
+
+                                String text = titleSpinner.getSelectedItem().toString();
+
+                                addCard(v, text);
                             }
                         });
                     }
                     else {
-                        addCard(v);
+                        addCard(v, titleText);
                     }
                 }
             });
@@ -165,7 +168,7 @@ public class ResultsView extends AppCompatActivity {
         });
     }
 
-    public void addCard(View v){
+    public void addCard(View v, String titleText){
         View resultCard = LayoutInflater.from(context).inflate(R.layout.result_card_expanded, null);
         final RelativeLayout recordResultWrapper = resultCard.findViewById(R.id.recordResultWrapper);
         recordResultWrapper.setVisibility(View.GONE);
@@ -179,10 +182,8 @@ public class ResultsView extends AppCompatActivity {
 
         final EditText editText = resultCard.findViewById(R.id.editText);
 
-        TextView titleText = v.findViewById(R.id.title);
-        String titleTextString = titleText.getText().toString();
         TextView title = resultCard.findViewById(R.id.title);
-        title.setText(titleTextString);
+        title.setText(titleText);
 
         Button button = resultCard.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
