@@ -119,6 +119,9 @@ public class ResultsView extends AppCompatActivity {
                         darken.setVisibility(View.VISIBLE);
 
                         RelativeLayout makeResultCard = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.result_card, null);
+                        GraphView graph = makeResultCard.findViewById(R.id.graph);
+                        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+                        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
                         final Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
                         // Creating adapter for spinner
                         ArrayAdapter dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, entries);
@@ -182,6 +185,8 @@ public class ResultsView extends AppCompatActivity {
         graph.addSeries(series);
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(context));
         graph.getGridLabelRenderer().setHumanRounding(false);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
 
         final EditText editText = resultCard.findViewById(R.id.editText);
 
@@ -208,6 +213,8 @@ public class ResultsView extends AppCompatActivity {
                     series.appendData(new DataPoint(x, y), false, 10);
                     graph.addSeries(series);
                     recordResultWrapper.setVisibility(View.GONE);
+                    graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+                    graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
                 }
             }
         });
