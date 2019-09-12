@@ -28,17 +28,23 @@
         android:text="Nothing to Show"
         android:layout_gravity="center"
         />
-    <LinearLayout
-        android:id="@+id/resultsList"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/toolbar"
         app:layout_anchor="@id/toolbar"
         app:layout_anchorGravity="bottom"
-        android:layout_gravity="bottom"
-        >
-    </LinearLayout>
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:id="@+id/resultsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            app:layout_anchor="@id/toolbar"
+            app:layout_anchorGravity="bottom"/>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

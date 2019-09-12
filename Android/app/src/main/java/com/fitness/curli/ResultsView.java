@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -124,6 +125,7 @@ public class ResultsView extends AppCompatActivity {
                         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
                         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
                         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+                        graph.getViewport().setDrawBorder(true);
                         final Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
                         // Creating adapter for spinner
                         ArrayAdapter dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, entries);
@@ -189,6 +191,8 @@ public class ResultsView extends AppCompatActivity {
         graph.getGridLabelRenderer().setHumanRounding(false);
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graph.getViewport().setDrawBorder(true);
 
         final EditText editText = resultCard.findViewById(R.id.editText);
 
