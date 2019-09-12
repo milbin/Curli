@@ -15,6 +15,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +61,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
     //initialize variables
     String userName;
+    String height;
     String userEmail;
     String currentWeight;
     String weightGoal;
@@ -99,7 +101,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        changeEmail = (Button) findViewById(R.id.emailButton);
+        changePassword = (Button) findViewById(R.id.passwordButton);
 
 
         //retrieve values from edit texts into java variables
@@ -114,6 +117,52 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
                     userName = et.getText().toString();
                     System.out.println(userName);
                 }
+            }
+        });
+
+        final EditText etHeight = (EditText) findViewById(R.id.height_input);
+        etHeight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+
+                } else {
+                    height = etHeight.getText().toString();
+                    System.out.println(height);
+                }
+            }
+        });
+
+        etHeight.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (heightUnit.equals("Feet")) {
+                    if (event.getKeyCode() != KeyEvent.KEYCODE_DEL) {
+                        String input = etHeight.getText().toString();
+                        if (input.length() == 1) {
+                            input = input + "'";
+                            etHeight.setText(input);
+                            int pos = etHeight.getText().length();
+                            etHeight.setSelection(pos);
+                        } else if (input.length() > 3) {
+                            if (Character.getNumericValue(input.charAt(2)) > 1) {
+                                input = input.charAt(0) + "'";
+                                etHeight.setText(input);
+                                int pos = etHeight.getText().length();
+                                etHeight.setSelection(pos);
+                                Toast.makeText(getApplicationContext(), "Invalid Height", Toast.LENGTH_LONG).show();
+                            } else if (Character.getNumericValue(input.charAt(3)) > 1) {
+                                input = input.charAt(0) + "'";
+                                etHeight.setText(input);
+                                int pos = etHeight.getText().length();
+                                etHeight.setSelection(pos);
+                                Toast.makeText(getApplicationContext(), "Invalid Height", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+
+                }
+                return false;
             }
         });
 
@@ -132,11 +181,6 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
             }
         }); */
 
-        changeEmail = (Button) findViewById(R.id.emailButton);
-        changePassword = (Button) findViewById(R.id.passwordButton);
-
-        changeEmail.setOnClickListener(ProfileActivity.this);
-        changePassword.setOnClickListener(ProfileActivity.this);
 
         final EditText et2 = (EditText) findViewById(R.id.current_weight_input);
         et2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -260,6 +304,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         System.out.println(sexChoice);
         System.out.println(heightUnit);
         System.out.println(unitChoice);
+
     }
 
     @Override

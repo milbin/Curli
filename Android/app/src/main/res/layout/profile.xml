@@ -87,6 +87,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/back_button_background"
                 android:padding="4dp"
+                android:maxLength="4"
                 />
 
             <TextView
