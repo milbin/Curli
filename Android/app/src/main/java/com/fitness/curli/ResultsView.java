@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -122,6 +123,7 @@ public class ResultsView extends AppCompatActivity {
                         GraphView graph = makeResultCard.findViewById(R.id.graph);
                         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
                         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+                        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
                         final Spinner titleSpinner = makeResultCard.findViewById(R.id.title);
                         // Creating adapter for spinner
                         ArrayAdapter dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, entries);
@@ -200,21 +202,27 @@ public class ResultsView extends AppCompatActivity {
                 Button vButton = (Button) v;
                 TextView nothing = findViewById(R.id.nothing);
                 nothing.setVisibility(View.GONE);
+                String editTextString = editText.getText().toString();
                 if (recordResultWrapper.getVisibility() == View.GONE) {
                     vButton.setText("DONE");
                     recordResultWrapper.setVisibility(View.VISIBLE);
                 }
                 else if (recordResultWrapper.getVisibility() == View.VISIBLE){
-                    Calendar calendar = Calendar.getInstance();
-                    vButton.setText("RECORD RESULT");
-                    Float y = Float.valueOf(editText.getText().toString());
-                    //double x = series.getHighestValueX()+1;
-                    Date x = calendar.getTime();
-                    series.appendData(new DataPoint(x, y), false, 10);
-                    graph.addSeries(series);
-                    recordResultWrapper.setVisibility(View.GONE);
-                    graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-                    graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+                    try {
+                        Float y = Float.valueOf(editTextString);
+                        Calendar calendar = Calendar.getInstance();
+                        vButton.setText("RECORD RESULT");
+                        //double x = series.getHighestValueX()+1;
+                        Date x = calendar.getTime();
+                        series.appendData(new DataPoint(x, y), false, 10);
+                        graph.addSeries(series);
+                        recordResultWrapper.setVisibility(View.GONE);
+                        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+                        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+                    }
+                    catch (Exception e){
+
+                    }
                 }
             }
         });
