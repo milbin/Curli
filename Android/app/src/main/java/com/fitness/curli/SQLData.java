@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -256,8 +257,27 @@ public class SQLData {
 
         ContentValues values = new ContentValues();
         values.put("id", id);
+
+        try {
+            profile.add(0, ProfileActivity.userName);
+            profile.add(1, ProfileActivity.height);
+            profile.add(2, ProfileActivity.currentWeight);
+            profile.add(3, ProfileActivity.weightGoal);
+            profile.add(4, ProfileActivity.heightUnit);
+            profile.add(5, ProfileActivity.unitChoice);
+            profile.add(6, ProfileActivity.sexChoice);
+            profile.add(7, ProfileActivity.isNotifications);
+
+        }
+
+        catch(Exception e){
+            System.out.println("missing values");
+        }
+
+        c = db.rawQuery("INSERT INTO UserInfo(Name) VALUES ('" + profile.get(0)  + "') " , new String[]{});
+
         /*
-        values.put("name", profile.get(1));
+        values.put("Name", profile.get(1));
         values.put("sex", profile.get(2));
         values.put("height", profile.get(3));
         values.put("currentWeight", profile.get(4));

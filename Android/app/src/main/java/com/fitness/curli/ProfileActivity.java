@@ -60,15 +60,16 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     Menu menu;
 
     //initialize variables
-    String userName;
-    String height;
-    String userEmail;
-    String currentWeight;
-    String weightGoal;
-    Boolean isNotifications;
-    String unitChoice;
-    String sexChoice;
-    String heightUnit;
+    static String userName;
+    static String height;
+    static String currentWeight;
+    static String weightGoal;
+    static Boolean isNotifications;
+    static String unitChoice;
+    static String sexChoice;
+    static String heightUnit;
+
+    static String userEmail;
 
     //set weighing options
     String[] weights={"Pounds","Kilograms"};
@@ -326,10 +327,10 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
 
 
     //all getters which will be used to store data in database
-    public String getUsername(){
+    public static String getUsername(){
         return userName;
     }
-    public String getEmail(){
+    public static String getEmail(){
         return userEmail;
     }
     public int getCurrentWeight() {
