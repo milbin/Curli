@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     ProgressDialog dialog;
     Context context;
     Menu menu;
+    SQLData sqlData = new SQLData();
 
     //initialize variables
     static String userName;
@@ -305,6 +306,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         System.out.println(sexChoice);
         System.out.println(heightUnit);
         System.out.println(unitChoice);
+
+        //sqlData.saveProfile(1, ArrayList profileList, json);
 
     }
 

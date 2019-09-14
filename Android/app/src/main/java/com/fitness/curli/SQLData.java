@@ -253,7 +253,7 @@ public class SQLData {
         return returnList;
     }
 
-    public void saveProfile(int id, ArrayList profile){
+    public void saveProfile(int id, ArrayList profile, HashMap json){
 
         ContentValues values = new ContentValues();
         values.put("id", id);
@@ -276,14 +276,33 @@ public class SQLData {
 
         c = db.rawQuery("INSERT INTO UserInfo(Name) VALUES ('" + profile.get(0)  + "') " , new String[]{});
 
+
+
         /*
+        //fix this so that it is applicable to your values
+
+        c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+        int id = c.getCount();
+        Date calendar = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String date = df.format(calendar);
+        String title = (String) json.get("title");
+        String time = (String) json.get("time");
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(json);
+
         values.put("Name", profile.get(1));
         values.put("sex", profile.get(2));
         values.put("height", profile.get(3));
         values.put("currentWeight", profile.get(4));
         values.put("weightGoal", profile.get(5));
         values.put("notifications", profile.get(6));
+        db.insert("WorkoutHistory", null, values);
+        c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+        c.moveToFirst();
+        */
 
+        /*
         db.update("Profile", values, "id="+id, null);
         */
 
