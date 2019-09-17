@@ -47,6 +47,7 @@
         android:animateLayoutChanges="true">
 
         <Button
+            android:id="@+id/edit_button"
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:background="@drawable/done_button_background"
