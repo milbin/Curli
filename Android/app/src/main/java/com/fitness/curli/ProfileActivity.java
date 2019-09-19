@@ -92,6 +92,8 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
     Spinner spinHeight;
     Spinner spinWeight;
 
+    ArrayList profileList = new ArrayList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -307,7 +309,9 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         System.out.println(heightUnit);
         System.out.println(unitChoice);
 
-        //sqlData.saveProfile(1, ArrayList profileList, json);
+        sqlData.openUserDB(this);
+        sqlData.saveProfile(1, profileList);
+        sqlData.closeDB();
 
     }
 

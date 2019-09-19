@@ -43,6 +43,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar( (Toolbar) findViewById(R.id.toolbar));
+
+        SQLData sqlData1 = new SQLData();
+        sqlData1.openUserDB(this);
+        sqlData1.closeDB();
+
         //add workout cards programatically
         SQLData sqlData = new SQLData();
         sqlData.openUserDB(this);

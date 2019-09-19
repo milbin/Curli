@@ -141,11 +141,10 @@ public class SQLData {
 
 
 
-
-
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
     Cursor c = null;
+
     public void openUserDB(Context context){
         this.openHelper = new DatabaseOpenHelper(context, 1, "UserDB.sqlite");
         this.db = openHelper.getWritableDatabase();
@@ -161,6 +160,7 @@ public class SQLData {
 
     public void saveWorkoutToHistory(HashMap json) {
         c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
+
         int id = c.getCount();
         Date calendar = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -253,10 +253,10 @@ public class SQLData {
         return returnList;
     }
 
-    public void saveProfile(int id, ArrayList profile, HashMap json){
+    public void saveProfile(int id, ArrayList profile){
 
         ContentValues values = new ContentValues();
-        values.put("id", id);
+        values.put("Name", ProfileActivity.userName);
 
         try {
             profile.add(0, ProfileActivity.userName);
@@ -267,15 +267,14 @@ public class SQLData {
             profile.add(5, ProfileActivity.unitChoice);
             profile.add(6, ProfileActivity.sexChoice);
             profile.add(7, ProfileActivity.isNotifications);
-
         }
 
         catch(Exception e){
             System.out.println("missing values");
         }
 
-        c = db.rawQuery("INSERT INTO UserInfo(Name) VALUES ('" + profile.get(0)  + "') " , new String[]{});
-
+        //c = db.rawQuery("INSERT INTO UserInfo(Name) VALUES ('" + ProfileActivity.userName  + "') " , new String[]{});
+        db.insert("UserInfo", null, values);
 
 
         /*
