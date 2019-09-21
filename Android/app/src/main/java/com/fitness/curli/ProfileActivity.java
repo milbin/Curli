@@ -309,6 +309,17 @@ public class ProfileActivity extends AppCompatActivity implements AdapterView.On
         System.out.println(heightUnit);
         System.out.println(unitChoice);
 
+        profileList.clear();
+        profileList.add(userName);
+        profileList.add(height);
+        profileList.add(sexChoice);
+        profileList.add(currentWeight);
+        profileList.add(weightGoal);
+        profileList.add(heightUnit);
+        profileList.add(unitChoice);
+        profileList.add(isNotifications);
+
+
         sqlData.openUserDB(this);
         sqlData.saveProfile(1, profileList);
         sqlData.closeDB();

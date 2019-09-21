@@ -256,8 +256,8 @@ public class SQLData {
     public void saveProfile(int id, ArrayList profile){
 
         ContentValues values = new ContentValues();
-        values.put("Name", ProfileActivity.userName);
 
+        /*
         try {
             profile.add(0, ProfileActivity.userName);
             profile.add(1, ProfileActivity.height);
@@ -271,35 +271,24 @@ public class SQLData {
 
         catch(Exception e){
             System.out.println("missing values");
-        }
+        } */
 
         //c = db.rawQuery("INSERT INTO UserInfo(Name) VALUES ('" + ProfileActivity.userName  + "') " , new String[]{});
         db.insert("UserInfo", null, values);
 
 
-        /*
-        //fix this so that it is applicable to your values
+        values.put("Name", (String) profile.get(0));
+        values.put("sex", (String) profile.get(1));
+        values.put("height", (String) profile.get(2));
+        values.put("currentWeight", (String) profile.get(3));
+        values.put("weightGoal", (String) profile.get(4));
+        values.put("HeightUnit", (String) profile.get(5));
+        values.put("weightUnit", (String) profile.get(6));
+        values.put("notifications", (String) profile.get(7));
 
-        c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
-        int id = c.getCount();
-        Date calendar = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String date = df.format(calendar);
-        String title = (String) json.get("title");
-        String time = (String) json.get("time");
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(json);
-
-        values.put("Name", profile.get(1));
-        values.put("sex", profile.get(2));
-        values.put("height", profile.get(3));
-        values.put("currentWeight", profile.get(4));
-        values.put("weightGoal", profile.get(5));
-        values.put("notifications", profile.get(6));
         db.insert("WorkoutHistory", null, values);
         c = db.rawQuery("SELECT * FROM WorkoutHistory;", new String[]{});
         c.moveToFirst();
-        */
 
         /*
         db.update("Profile", values, "id="+id, null);
