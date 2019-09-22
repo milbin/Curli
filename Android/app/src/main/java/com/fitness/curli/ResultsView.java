@@ -212,20 +212,25 @@ public class ResultsView extends AppCompatActivity {
                     recordResultWrapper.setVisibility(View.VISIBLE);
                 }
                 else if (recordResultWrapper.getVisibility() == View.VISIBLE){
-                    try {
-                        Float y = Float.valueOf(editTextString);
-                        Calendar calendar = Calendar.getInstance();
+                    if (editTextString.equals("")){
                         vButton.setText("RECORD RESULT");
-                        //double x = series.getHighestValueX()+1;
-                        Date x = calendar.getTime();
-                        series.appendData(new DataPoint(x, y), false, 10);
-                        graph.addSeries(series);
                         recordResultWrapper.setVisibility(View.GONE);
-                        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-                        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
                     }
-                    catch (Exception e){
+                    else {
+                        try {
+                            Float y = Float.valueOf(editTextString);
+                            Calendar calendar = Calendar.getInstance();
+                            vButton.setText("RECORD RESULT");
+                            //double x = series.getHighestValueX()+1;
+                            Date x = calendar.getTime();
+                            series.appendData(new DataPoint(x, y), false, 10);
+                            graph.addSeries(series);
+                            recordResultWrapper.setVisibility(View.GONE);
+                            graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+                            graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+                        } catch (Exception e) {
 
+                        }
                     }
                 }
             }
