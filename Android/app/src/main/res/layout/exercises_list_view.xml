@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/textHolder"
-            android:layout_toRightOf="@id/equipmentIcon"
+            android:layout_toEndOf="@id/equipmentIcon"
             >
             <TextView
                 android:id="@+id/exercise"

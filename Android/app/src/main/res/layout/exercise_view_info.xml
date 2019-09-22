@@ -16,16 +16,14 @@
             android:layout_height="match_parent"
             android:elevation="4dp"
             >
-
-            <ImageView
-                android:id="@+id/backbutton"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/back_button"
+                android:background="@android:color/transparent"
                 android:layout_centerVertical="true"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:src="@drawable/back_button" />
-
+                />
             <ImageView
                 android:id="@+id/toolbarTitle"
                 android:layout_width="105dp"
@@ -73,13 +71,14 @@
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher_round"
             />
-        <ListView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/instructions"
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image"
             >
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

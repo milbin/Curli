@@ -267,37 +267,6 @@ public class ExerciseView extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         list.setVisibility(View.INVISIBLE);
 
-        /*
-        LinearLayout wrapper = toolbar.findViewById(R.id.toolbarWrapper);
-        RelativeLayout topBar = wrapper.findViewById(R.id.topBar);
-        ActionMenuView avmMenu = topBar.findViewById(R.id.avmMenu);
-
-        getMenuInflater().inflate(R.menu.search_menu, avmMenu.getMenu());
-        this.menu = avmMenu.getMenu();
-
-        MenuItem searchItem = avmMenu.getMenu().findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-        avmMenu.setOnMenuItemClickListener(new ActionMenuView.OnMenuItemClickListener() {
-                   @Override
-                   public boolean onMenuItemClick(MenuItem menuItem) {
-                       if(menuItem.getItemId() == R.id.action_search){
-                           searchView.setIconified(false);
-                           SearchView.SearchAutoComplete searchAutoComplete = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-                           searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
-                           searchAutoComplete.setTextColor(getResources().getColor(android.R.color.white));
-                           ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-                           icon.setColorFilter(Color.WHITE);
-                       }
-                       return false;
-                   }
-               }
-
-
-        );
-
-        */
-
         RelativeLayout topBar = findViewById(R.id.topBar);
         SearchView searchView = findViewById(R.id.searchView);
 

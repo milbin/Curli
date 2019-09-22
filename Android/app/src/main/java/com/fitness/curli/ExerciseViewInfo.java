@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,6 +61,14 @@ public class ExerciseViewInfo extends AppCompatActivity {
         String text = intent.getStringExtra("exercise");
         title.setText(text);
 
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         String group = SQLData.getGroupFromName(text);
         LinearLayout muscleTags = findViewById(R.id.muscleTags);
         View card = LayoutInflater.from(context).inflate(R.layout.tag, null);
@@ -67,27 +76,6 @@ public class ExerciseViewInfo extends AppCompatActivity {
         tagText.setText(group);
         muscleTags.addView(card);
         dialog.dismiss();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.back_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.back:
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
 
 }
