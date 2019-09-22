@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.MyViewHolder> {
 private String[] mDataset;
 private Context mContext;
-private ExerciseDb sqlData;
+private SQLData sqlData;
 private String source;
 
 // Provide a reference to the views for each data item
@@ -34,8 +34,8 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         mDataset = myDataset;
         mContext = context;
         this.source = source;
-        sqlData = new ExerciseDb(mContext);
-        sqlData.open();
+        sqlData = new SQLData();
+        sqlData.openExerciseDB(context);
     }
 
     // Create new views (invoked by the layout manager)
@@ -59,7 +59,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title = holder.cardView.findViewById(R.id.exercise);
         title.setText(exercise);
 
-        String equipmentText = sqlData.getEquipment(exercise);
+        String equipmentText = sqlData.getEquipmentFromName(exercise);
         TextView equipment = holder.cardView.findViewById(R.id.equipment);
         equipment.setText(equipmentText);
 

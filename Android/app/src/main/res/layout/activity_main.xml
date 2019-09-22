@@ -1,20 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff">
+
+    <include
+        layout="@layout/toolbar_divider"
+        android:id="@+id/toolbar"
+        >
+    </include>
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/no_workout_tv"
+        style="@style/BodyTight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerInParent="true"
+        android:alpha="2"
+        android:gravity="center_horizontal"
+        android:text="It looks like you haven't created any workouts yet!\nClick the &quot;+&quot; button below to get started"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/toolbar"
+    android:layout_above="@+id/ongoing_workout_toolbar">
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linearLayoutMain"
+    android:paddingBottom="30dp"
+    >
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
+</ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/ongoing_workout_toolbar"
+        android:src="@drawable/ic_add_black_24dp"
+        app:fabSize="normal"
+        android:theme="@style/AppTheme"
+        android:layout_margin="16dp" />
+
+    <FrameLayout
+        android:id="@+id/ongoing_workout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@+id/bottom_nav_bar"
+        />
+    <fragment android:name="com.fitness.curli.BottomNavBarFragment"
+        android:id="@+id/bottom_nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

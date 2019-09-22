@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:minHeight="?attr/actionBarSize"
+    android:layout_alignParentBottom="true"
+    android:elevation="0dp"
+    app:contentInsetStart="0dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="3px"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/divider_line"
+            />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            >
+            <ImageView
+                android:id="@+id/history"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#5f6267"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_access_time_black_24dp" />
+            <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="History"
+                android:layout_centerHorizontal="true"
+                android:textColor="#5f6267"
+                android:layout_below="@+id/history"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:id="@+id/schedule"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#5f6267"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_outline_calendar_today_24px" />
+            <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Schedule"
+                android:layout_centerHorizontal="true"
+                android:textColor="#5f6267"
+                android:layout_below="@+id/schedule"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            >
+            <ImageView
+                android:id="@+id/workout"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#5f6267"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_dumbell" />
+            <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workout"
+                android:layout_centerHorizontal="true"
+                android:textColor="#5f6267"
+                android:layout_below="@+id/workout"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            >
+            <ImageView
+                android:id="@+id/exercises"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#5f6267"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_info_blue_24dp" />
+            <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercises"
+                android:layout_centerHorizontal="true"
+                android:textColor="#5f6267"
+                android:layout_below="@+id/exercises"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            >
+            <ImageView
+                android:id="@+id/progress"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:tint="#5f6267"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/ic_trending_up_black_24dp" />
+            <TextView
+                android:id="@+id/bottom_icon_TV"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progress"
+                android:layout_centerHorizontal="true"
+                android:textColor="#5f6267"
+                android:layout_below="@+id/progress"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

@@ -34,18 +34,24 @@ public class MuscleView extends AppCompatActivity {
     private Toolbar toolbar;
     private ProgressDialog dialog;
     private Context context;
-    private ExerciseDb sqlData;
+    private SQLData sqlData;
     private String[] nameList;
     private ArrayList<SearchResult> arraylist = new ArrayList<>();
     private ListViewAdapter adapter;
     private ListView list;
     private Menu menu;
     private int check = 0;
+    private ArrayList<String> exercisesToAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.muscle_view);
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("FromWorkoutBuilder", false)){//check if this activity is getting called from workoutBuilder
+            exercisesToAdd = new ArrayList<>();
+            findViewById(R.id.bottom_nav_bar).setVisibility(View.GONE);
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setTitle("");
@@ -58,8 +64,8 @@ public class MuscleView extends AppCompatActivity {
         dialog = ProgressDialog.show(MuscleView.this, "", "Loading...", true);
 
         context = getApplicationContext();
-        sqlData = new ExerciseDb(context);
-        sqlData.open();
+        sqlData = new SQLData();
+        sqlData.openExerciseDB(context);
 
         nameList = sqlData.getExercises().toArray(new String[0]);
 
@@ -71,10 +77,8 @@ public class MuscleView extends AppCompatActivity {
 
         // Pass results to ListViewAdapter Class
         adapter = new ListViewAdapter(this, arraylist, 6);
-
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
-
         displayMuscles();
 
     }
@@ -93,7 +97,7 @@ public class MuscleView extends AppCompatActivity {
 
         int layoutWidth = display.getWidth();
 
-        System.out.println(layoutWidth);
+
         while (adding){
             LinearLayout rowLayout = new LinearLayout(this);
             for (int x = 0; x < cardsPerRow; x++){
@@ -127,8 +131,15 @@ public class MuscleView extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(MuscleView.this, ExerciseView.class);
                         intent.putExtra("group", titleText);
-                        intent.putExtra("source", "muscle_view");
-                        startActivity(intent);
+                        if(exercisesToAdd == null) {
+                            intent.putExtra("source", "muscle_view");
+                            startActivity(intent);
+                        }else{
+                            intent.putExtra("source", "WorkoutBuilder");
+                            intent.putExtra("exercisesToAdd", exercisesToAdd);
+                            startActivityForResult(intent, 1);
+                        }
+
                     }
                 });
 
@@ -201,5 +212,26 @@ public class MuscleView extends AppCompatActivity {
             intent.putExtra("exercise", name);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == 1) {
+            ArrayList<String> exercisesList = data.getStringArrayListExtra("exercisesToAdd");
+
+            for(String exercise:exercisesList){
+                if(!exercisesToAdd.contains(exercise)){
+                    exercisesToAdd.add(exercise);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("exercisesToAdd", exercisesToAdd);
+        setResult(1, intent);
+        super.onBackPressed();
     }
 }

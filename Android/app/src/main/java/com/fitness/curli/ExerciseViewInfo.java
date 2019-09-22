@@ -25,7 +25,7 @@ public class ExerciseViewInfo extends AppCompatActivity {
     ProgressDialog dialog;
     Context context;
     Menu menu;
-    ExerciseDb SQLData;
+    SQLData SQLData;
 
     @Override
     public void onCreate(Bundle savedInstanceBundle){
@@ -46,8 +46,8 @@ public class ExerciseViewInfo extends AppCompatActivity {
         dialog = ProgressDialog.show(ExerciseViewInfo.this, "", "Loading...", true);
 
         context = getApplicationContext();
-        SQLData = new ExerciseDb(context);
-        SQLData.open();
+        SQLData = new SQLData();
+        SQLData.openExerciseDB(context);
         relativeLayout = findViewById(R.id.relativeLayout);
 
         getInfo();
@@ -60,7 +60,7 @@ public class ExerciseViewInfo extends AppCompatActivity {
         String text = intent.getStringExtra("exercise");
         title.setText(text);
 
-        String group = SQLData.getGroup(text);
+        String group = SQLData.getGroupFromName(text);
         LinearLayout muscleTags = findViewById(R.id.muscleTags);
         View card = LayoutInflater.from(context).inflate(R.layout.tag, null);
         TextView tagText = card.findViewById(R.id.title);

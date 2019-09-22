@@ -46,7 +46,7 @@ public class ExerciseView extends AppCompatActivity {
     private LinearLayout linearLayout;
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
-    private ExerciseDb sqlData;
+    private SQLData sqlData;
     private String[] nameList;
     private ListView list;
     private Toolbar toolbar;
@@ -58,6 +58,7 @@ public class ExerciseView extends AppCompatActivity {
     private int equipmentSpinnerSelectedCheck = 0;
     private String source;
     private boolean spinnerSwitched = false;
+    private ArrayList<String> exercisesToAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -75,16 +76,21 @@ public class ExerciseView extends AppCompatActivity {
         AppBarLayout appbar = (AppBarLayout) findViewById(R.id.appbar);
         appbar.bringToFront();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         group = intent.getStringExtra("group");
         source = intent.getStringExtra("source");
+        if(source.equals("WorkoutBuilder")){
+            exercisesToAdd = intent.getStringArrayListExtra("exercisesToAdd");
+        }
 
         ImageView backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExerciseView.this, MuscleView.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                intent.putExtra("exercisesToAdd", exercisesToAdd);
+                setResult(1, intent);
+                onBackPressed();
             }
         });
 
@@ -94,8 +100,8 @@ public class ExerciseView extends AppCompatActivity {
         dialog = ProgressDialog.show(ExerciseView.this, "", "Loading...", true);
 
         context = getApplicationContext();
-        sqlData = new ExerciseDb(context);
-        sqlData.open();
+        sqlData = new SQLData();
+        sqlData.openExerciseDB(context);
 
         nameList = sqlData.getExercises("MainGroup", group).toArray(new String[0]);
 
@@ -360,8 +366,9 @@ public class ExerciseView extends AppCompatActivity {
             intent.putExtra("exercise", exerciseText);
             startActivity(intent);
         }
-        else if (source.equals("schedule_planner")){
-            System.out.println(exerciseText);
+        else if (source.equals("WorkoutBuilder")){
+            v.setBackground(getDrawable(R.drawable.selected_exercise_background));
+            exercisesToAdd.add((String)exercise.getText());
         }
     }
 }
