@@ -7,9 +7,64 @@
     android:background="@drawable/white_card_rounded"
     >
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Hello World"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        style="@style/Title"
+        android:gravity="center_horizontal"
+        android:text="Arms and Chest" />
+    <ImageView
+        android:id="@+id/repeats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_repeats_black_24dp"
+        android:tint="@color/colorGrey"
+        android:layout_margin="16dp"
+        android:layout_below="@+id/title"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/repeats"
+        android:layout_alignBottom="@+id/repeats"
+        android:paddingBottom="2dp"
+        android:text="Repeats"
+        style="@style/Subtitle1"/>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="32dp"
+        android:layout_alignBottom="@+id/repeats"/>
+    <ImageView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_access_time_black_24dp"
+        android:tint="@color/colorGrey"
+        android:layout_margin="16dp"
+        android:layout_below="@+id/repeats"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/repeats"
+        android:layout_alignBottom="@+id/time"
+        android:paddingBottom="2dp"
+        android:text="Time"
+        style="@style/Subtitle1"/>
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="35dp"
+        android:background="@drawable/done_button_background"
+        android:layout_alignBottom="@+id/time"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="32dp"
+        android:text="11:00-12:00 Pm"
+        style="@style/Button"
+        android:textColor="@android:color/white"/>
+
 
 </RelativeLayout>
